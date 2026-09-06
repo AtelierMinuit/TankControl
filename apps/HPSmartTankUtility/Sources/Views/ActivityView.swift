@@ -19,9 +19,7 @@ public struct ActivityView: View {
     }
 
     private var telemetrySourceLabel: String {
-        if printer.useMock {
-            return "Datos simulados (Mock)"
-        } else if printer.connectionState.isConnected {
+        if printer.connectionState.isConnected {
             return "Lectura directa de hardware (LIVE)"
         } else if printer.odometer != nil {
             return "Último registro guardado"
@@ -31,9 +29,7 @@ public struct ActivityView: View {
     }
 
     private var telemetrySourceColor: Color {
-        if printer.useMock {
-            return .purple
-        } else if printer.connectionState.isConnected {
+        if printer.connectionState.isConnected {
             return .green
         } else {
             return .secondary
@@ -60,7 +56,7 @@ public struct ActivityView: View {
                             .frame(width: 8, height: 8)
                         Text(telemetrySourceLabel)
                             .font(DesignTokens.Fonts.captionBold)
-                            .foregroundColor(printer.useMock ? .purple : .primary)
+                            .foregroundColor(printer.connectionState.isConnected ? .green : .secondary)
                     }
                     .padding(.horizontal, 10)
                     .padding(.vertical, 4)

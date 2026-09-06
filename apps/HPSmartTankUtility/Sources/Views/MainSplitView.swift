@@ -125,16 +125,7 @@ public struct MainSplitView: View {
                 HStack(spacing: 6) {
                     StatusBadge(state: printer.connectionState)
 
-                    if printer.useMock {
-                        Text("MOCK STATE")
-                            .font(.system(size: 10, weight: .bold))
-                            .foregroundColor(.purple)
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(Color.purple.opacity(0.12))
-                            .cornerRadius(3)
-                            .fixedSize()
-                    } else if printer.connectionState.isConnected {
+                    if printer.connectionState.isConnected {
                         Text("LIVE")
                             .font(.system(size: 10, weight: .bold))
                             .foregroundColor(.green)

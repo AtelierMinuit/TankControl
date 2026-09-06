@@ -121,7 +121,7 @@ public struct DiagnosticsView: View {
 
         RESUMEN EJECUTIVO:
         - Estado de Conexión: \(printer.connectionState.label)
-        - Modo Simulación Activo: \(printer.useMock ? "SÍ (Mock 100% Offline)" : "NO (Hardware Real)")
+        - Modo de Operación: Exclusivamente Hardware Real
         - Pruebas Aprobadas: \(overallPassCount)
         - Advertencias: \(overallWarningCount)
         - Fallos: \(overallFailCount)

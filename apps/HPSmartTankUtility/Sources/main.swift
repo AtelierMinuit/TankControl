@@ -17,7 +17,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // 2. Argumentos de Línea de Comandos para Inspección y Control Visual
         var targetSection: SidebarSection = .general
         var targetAppearance: String? = nil
-        var targetMockState: String? = nil
         var targetWidth: CGFloat = 860
         var targetHeight: CGFloat = 560
         var capturePath: String? = nil
@@ -45,9 +44,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             } else if args[i] == "--appearance" && i + 1 < args.count {
                 targetAppearance = args[i + 1].lowercased()
                 i += 2
-            } else if args[i] == "--mock-state" && i + 1 < args.count {
-                targetMockState = args[i + 1].lowercased()
-                i += 2
             } else if args[i] == "--window-size" && i + 1 < args.count {
                 let parts = args[i + 1].split(separator: "x")
                 if parts.count == 2, let w = Double(parts[0]), let h = Double(parts[1]) {
@@ -60,49 +56,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 i += 2
             } else {
                 i += 1
-            }
-        }
-
-        if let mock = targetMockState {
-            printer.pauseAutoRefresh = true
-            printer.useMock = true
-            switch mock {
-            case "low-ink", "low_ink":
-                printer.supplies = [
-                    SupplyItem(code: "K", name: "Negro", level: 8, state: "low", isDemo: true),
-                    SupplyItem(code: "C", name: "Cian", level: 5, state: "low", isDemo: true),
-                    SupplyItem(code: "M", name: "Magenta", level: 9, state: "low", isDemo: true),
-                    SupplyItem(code: "Y", name: "Amarillo", level: 7, state: "low", isDemo: true)
-                ]
-                printer.connectionState = .warning(message: "Nivel de tinta bajo en todos los depósitos")
-                printer.statusDescription = "Atención: Tinta baja (CISS < 10%)"
-            case "paper-empty", "paper_empty":
-                printer.connectionState = .warning(message: "Bandeja de entrada sin papel")
-                printer.statusDescription = "Cargue papel en la bandeja superior"
-            case "door-open", "door_open":
-                printer.connectionState = .warning(message: "Cubierta frontal abierta")
-                printer.statusDescription = "Cierre la puerta de acceso a los cabezales"
-            case "scanner-busy":
-                printer.connectionState = .scanning
-                printer.statusDescription = "Escáner ocupado. Espera a que finalice la tarea."
-                printer.isBusy = true
-            case "busy":
-                printer.connectionState = .busy(reason: "Imprimiendo trabajo PCL3GUI (Pág 1/3)...")
-                printer.statusDescription = "Ocupada: Procesando cola de impresión"
-                printer.isBusy = true
-                printer.busyMessage = "Imprimiendo..."
-            case "timeout":
-                printer.connectionState = .warning(message: "La impresora no respondió a tiempo")
-                printer.statusDescription = "Comprueba la conexión y vuelve a actualizar"
-            case "error":
-                printer.connectionState = .error(message: "Error desconocido")
-                printer.statusDescription = "No se pudo determinar la causa. Actualiza el estado."
-            case "disconnected":
-                printer.connectionState = .disconnected
-                printer.statusDescription = "Impresora desconectada o apagada"
-                printer.supplies = []
-            default:
-                break
             }
         }
 
@@ -140,7 +93,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         // 4. Captura programada si se solicita por CLI
         if let outPath = capturePath {
-            let delay: Double = (targetMockState != nil) ? 0.6 : 2.2
+            let delay: Double = 2.0
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 let wid = self.window.windowNumber
                 let proc = Process()
@@ -325,11 +278,7 @@ extension PrinterManager {
         }
         let task = Process()
         task.executableURL = URL(fileURLWithPath: bin)
-        var finalArgs = args
-        if useMock && !finalArgs.contains("--mock") {
-            finalArgs.append("--mock")
-        }
-        task.arguments = finalArgs
+        task.arguments = args
         let pipe = Pipe()
         task.standardOutput = pipe
         task.standardError = pipe

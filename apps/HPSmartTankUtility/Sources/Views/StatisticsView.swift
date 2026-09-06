@@ -6,12 +6,12 @@ public struct StatisticsView: View {
     @ObservedObject var printer: PrinterManager
 
     private var telemetrySourceLabel: String {
-        if printer.useMock {
-            return "Datos simulados (Mock)"
-        } else if printer.connectionState.isConnected {
+        if printer.connectionState.isConnected {
             return "Lectura directa de hardware (EWS)"
-        } else {
+        } else if printer.odometer != nil {
             return "Último registro local guardado"
+        } else {
+            return "Sin conexión activa"
         }
     }
 
@@ -31,10 +31,10 @@ public struct StatisticsView: View {
 
                     Text(telemetrySourceLabel)
                         .font(DesignTokens.Fonts.captionBold)
-                        .foregroundColor(printer.useMock ? .purple : .secondary)
+                        .foregroundColor(printer.connectionState.isConnected ? .green : .secondary)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
-                        .background((printer.useMock ? Color.purple : Color.secondary).opacity(0.12))
+                        .background((printer.connectionState.isConnected ? Color.green : Color.secondary).opacity(0.12))
                         .cornerRadius(DesignTokens.Radii.small)
                 }
 

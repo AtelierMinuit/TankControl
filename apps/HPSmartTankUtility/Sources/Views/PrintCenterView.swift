@@ -7,7 +7,7 @@ public struct PrintCenterView: View {
     @State private var showingResult = false
 
     private var isHardwareReady: Bool {
-        printer.connectionState.isConnected && !printer.useMock && !printer.isBusy
+        printer.connectionState.isConnected && !printer.isBusy
     }
 
     public var body: some View {

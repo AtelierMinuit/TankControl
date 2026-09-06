@@ -24,24 +24,14 @@ public struct StatusView: View {
                         Text("Depósitos")
                             .font(DesignTokens.Fonts.sectionHeader)
                         Spacer()
-                        if printer.useMock {
-                            Text("Datos simulados (Mock)")
-                                .font(DesignTokens.Fonts.caption)
-                                .foregroundColor(.purple)
-                                .padding(.horizontal, 6)
-                                .padding(.vertical, 2)
-                                .background(Color.purple.opacity(0.12))
-                                .cornerRadius(3)
-                        } else {
-                            Text("Estimación por conteo de gotas")
-                                .font(DesignTokens.Fonts.caption)
-                                .foregroundColor(.secondary)
-                        }
+                        Text("Estimación por conteo de gotas")
+                            .font(DesignTokens.Fonts.caption)
+                            .foregroundColor(.secondary)
                     }
 
                     HStack(spacing: DesignTokens.Spacing.lg) {
                         Spacer()
-                        if printer.supplies.isEmpty || (!printer.useMock && !printer.connectionState.isConnected) {
+                        if printer.supplies.isEmpty || !printer.connectionState.isConnected {
                             EmptyStateView(
                                 icon: "drop.triangle",
                                 title: "Sin Lectura de Depósitos",

@@ -33,19 +33,15 @@ public struct DashboardView: View {
     }
 
     private var sourceBadgeText: String {
-        if printer.useMock {
-            return "MOCK (Simulado)"
-        } else if printer.connectionState.isConnected {
-            return "LIVE (Hardware Real)"
+        if printer.connectionState.isConnected {
+            return "LIVE"
         } else {
             return "DESCONECTADA"
         }
     }
 
     private var sourceBadgeColor: Color {
-        if printer.useMock {
-            return .purple
-        } else if printer.connectionState.isConnected {
+        if printer.connectionState.isConnected {
             return .green
         } else {
             return .secondary
@@ -76,7 +72,7 @@ public struct DashboardView: View {
                                 Text("•")
                                     .foregroundColor(.secondary)
 
-                                Text(printer.useMock ? "Modo Simulación" : (printer.connectionState.isConnected ? "Conectada por USB" : "Sin conexión"))
+                                Text(printer.connectionState.isConnected ? "Conectada por USB" : "Sin conexión")
                                     .font(DesignTokens.Fonts.callout)
                                     .foregroundColor(.secondary)
                             }
@@ -151,19 +147,13 @@ public struct DashboardView: View {
                         Text("Tinta")
                             .font(DesignTokens.Fonts.sectionHeader)
                         Spacer()
-                        if printer.useMock {
-                            Text("Modo Simulación Offline")
-                                .font(DesignTokens.Fonts.caption)
-                                .foregroundColor(.purple)
-                        } else {
-                            Text("Nivel estimado")
-                                .font(DesignTokens.Fonts.caption)
-                                .foregroundColor(.secondary)
-                        }
+                        Text("Nivel estimado")
+                            .font(DesignTokens.Fonts.caption)
+                            .foregroundColor(.secondary)
                     }
 
                     VStack(spacing: DesignTokens.Spacing.sm) {
-                        if printer.supplies.isEmpty || (!printer.useMock && !printer.connectionState.isConnected) {
+                        if printer.supplies.isEmpty || !printer.connectionState.isConnected {
                             EmptyStateView(
                                 icon: "drop.triangle",
                                 title: "Sin Lectura de Tinta",

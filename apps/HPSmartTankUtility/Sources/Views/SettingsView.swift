@@ -66,15 +66,6 @@ public struct SettingsView: View {
                         Text("Habilita el visor de descriptores USB, volcados XML de firmware y diagnósticos de subsistemas.")
                             .font(DesignTokens.Fonts.caption)
                             .foregroundColor(.secondary)
-
-                        if printer.developerMode {
-                            Divider()
-                            Toggle("Modo Simulación Offline (MOCK STATE)", isOn: $printer.useMock)
-                                .font(DesignTokens.Fonts.bodyMedium)
-                            Text("Genera lecturas sintéticas para evaluar la interfaz cuando el hardware está desconectado.")
-                                .font(DesignTokens.Fonts.caption)
-                                .foregroundColor(.secondary)
-                        }
                     }
                     .padding(DesignTokens.Spacing.sm)
                     .background(DesignTokens.Colors.surfaceGrouped)

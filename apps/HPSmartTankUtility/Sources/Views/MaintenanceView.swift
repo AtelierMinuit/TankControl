@@ -7,7 +7,7 @@ public struct MaintenanceView: View {
     @State private var showingDeepCleanConfirmation = false
 
     private var isHardwareAvailable: Bool {
-        (printer.connectionState.isConnected || printer.useMock) && !printer.isBusy
+        printer.connectionState.isConnected && !printer.isBusy
     }
 
     public var body: some View {
@@ -24,7 +24,7 @@ public struct MaintenanceView: View {
 
                 Divider()
 
-                if !printer.connectionState.isConnected && !printer.useMock {
+                if !printer.connectionState.isConnected {
                     HStack(spacing: DesignTokens.Spacing.sm) {
                         Image(systemName: "wrench.and.screwdriver")
                             .foregroundColor(.secondary)

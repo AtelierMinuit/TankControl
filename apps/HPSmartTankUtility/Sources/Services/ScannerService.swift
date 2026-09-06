@@ -55,77 +55,73 @@ public final class ScannerService: ObservableObject {
         NSWorkspace.shared.open(appURL)
     }
 
-    /// Simula o inicia un escaneo o previsualización directa guardando un documento de muestra
-    public func performScan(isMock: Bool, isPreview: Bool = false, completion: @escaping (Result<URL, Error>) -> Void) {
-        guard isMock else {
-            completion(.failure(NSError(domain: "ScannerService", code: 501,
-                userInfo: [NSLocalizedDescriptionKey: "El escáner físico requiere Captura de Imagen de macOS o conexión USB activa."])))
+    /// Ejecuta una digitalización real en el hardware físico de la HP Smart Tank 500 usando `hp_scan`.
+    public func performScan(isMock: Bool = false, isPreview: Bool = false, completion: @escaping (Result<URL, Error>) -> Void) {
+        guard let helperURL = ProcessRunner.shared.resolveHelperPath(named: "hp_scan") else {
+            completion(.failure(NSError(
+                domain: "ScannerService",
+                code: 404,
+                userInfo: [NSLocalizedDescriptionKey: "No se encontró el helper 'hp_scan' en el bundle de la aplicación."]
+            )))
             return
         }
+
         isScanning = true
-        scanStatusMessage = isPreview ? "Generando vista previa..." : "Digitalizando a \(selectedResolution.label)..."
+        let dpi = isPreview ? 75 : selectedResolution.rawValue
+        scanStatusMessage = isPreview ? "Generando previsualización óptica (\(dpi) DPI)..." : "Digitalizando documento (\(dpi) DPI)..."
 
-        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + (isMock ? 1.5 : 4.0)) { [weak self] in
+        let downloadsDir = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first
+            ?? URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent("Downloads")
+        let timestamp = ISO8601DateFormatter().string(from: Date()).replacingOccurrences(of: ":", with: "-")
+        let baseFilename = isPreview ? "TankControl_Preview_\(timestamp)" : "HP_Smart_Tank_Scan_\(timestamp)"
+        let tempJpgURL = downloadsDir.appendingPathComponent("\(baseFilename).jpg")
+
+        let modeArg = (selectedColorMode == .grayscale) ? "gray" : "color"
+        let width = (selectedPaperSize == .photo) ? 1200 : 2480
+        let height = (selectedPaperSize == .photo) ? 1800 : 3508
+
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self = self else { return }
+            let res = ProcessRunner.shared.run(
+                executableURL: helperURL,
+                arguments: [
+                    tempJpgURL.path,
+                    "\(dpi)",
+                    modeArg,
+                    "0", "0",
+                    "\(width)", "\(height)"
+                ]
+            )
+
             DispatchQueue.main.async {
-                self?.isScanning = false
-                // En modo offline/mock, creamos una previsualización de documento de prueba
-                let tempDir = FileManager.default.temporaryDirectory
-                let outputURL = tempDir.appendingPathComponent("TankControl-Scan-\(UUID().uuidString.prefix(8)).png")
-
-                // Crear imagen bitmap de prueba (A4 en ratio)
-                let rep = NSBitmapImageRep(
-                    bitmapDataPlanes: nil,
-                    pixelsWide: 600,
-                    pixelsHigh: 850,
-                    bitsPerSample: 8,
-                    samplesPerPixel: 4,
-                    hasAlpha: true,
-                    isPlanar: false,
-                    colorSpaceName: .calibratedRGB,
-                    bytesPerRow: 600 * 4,
-                    bitsPerPixel: 32
-                )
-                if let rep = rep {
-                    NSGraphicsContext.saveGraphicsState()
-                    let ctx = NSGraphicsContext(bitmapImageRep: rep)
-                    NSGraphicsContext.current = ctx
-
-                    // Fondo de hoja
-                    NSColor.white.setFill()
-                    NSRect(x: 0, y: 0, width: 600, height: 850).fill()
-
-                    // Contenido de muestra escaneado
-                    let title = "MOCK STATE — Documento de demostración" as NSString
-                    title.draw(at: NSPoint(x: 50, y: 760), withAttributes: [
-                        .font: NSFont.boldSystemFont(ofSize: 22),
-                        .foregroundColor: NSColor.black
-                    ])
-
-                    let meta = "HP Smart Tank 500 — Resolución: \(self?.selectedResolution.label ?? "300 DPI") — \(self?.selectedColorMode.rawValue ?? "Color")" as NSString
-                    meta.draw(at: NSPoint(x: 50, y: 730), withAttributes: [
-                        .font: NSFont.systemFont(ofSize: 13),
-                        .foregroundColor: NSColor.darkGray
-                    ])
-
-                    // Dibujar marcas de calibración
-                    NSColor.systemBlue.setStroke()
-                    let path = NSBezierPath()
-                    path.move(to: NSPoint(x: 50, y: 700))
-                    path.line(to: NSPoint(x: 550, y: 700))
-                    path.lineWidth = 2
-                    path.stroke()
-
-                    NSGraphicsContext.restoreGraphicsState()
-
-                    if let pngData = rep.representation(using: .png, properties: [:]) {
-                        try? pngData.write(to: outputURL)
-                        self?.lastScanResultURL = outputURL
-                        completion(.success(outputURL))
-                        return
+                self.isScanning = false
+                if res.isSuccess && FileManager.default.fileExists(atPath: tempJpgURL.path) {
+                    if self.selectedFormat == .pdf && !isPreview {
+                        // Convertir a PDF mediante sips
+                        let pdfURL = downloadsDir.appendingPathComponent("\(baseFilename).pdf")
+                        let sipsRes = ProcessRunner.shared.run(
+                            executableURL: URL(fileURLWithPath: "/usr/bin/sips"),
+                            arguments: ["-s", "format", "pdf", tempJpgURL.path, "--out", pdfURL.path]
+                        )
+                        if sipsRes.isSuccess && FileManager.default.fileExists(atPath: pdfURL.path) {
+                            try? FileManager.default.removeItem(at: tempJpgURL)
+                            self.lastScanResultURL = pdfURL
+                            completion(.success(pdfURL))
+                            return
+                        }
                     }
-                }
 
-                completion(.failure(NSError(domain: "ScannerService", code: 500, userInfo: [NSLocalizedDescriptionKey: "Error al generar imagen de escaneo"])))
+                    self.lastScanResultURL = tempJpgURL
+                    completion(.success(tempJpgURL))
+                } else {
+                    let rawErr = res.stderr.isEmpty ? res.stdout : res.stderr
+                    let errMsg = rawErr.isEmpty ? "El escáner no respondió en el bus USB. Comprueba que el equipo esté encendido." : rawErr
+                    completion(.failure(NSError(
+                        domain: "ScannerService",
+                        code: Int(res.exitCode),
+                        userInfo: [NSLocalizedDescriptionKey: errMsg]
+                    )))
+                }
             }
         }
     }

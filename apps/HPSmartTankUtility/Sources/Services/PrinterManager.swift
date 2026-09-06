@@ -40,14 +40,6 @@ public final class PrinterManager: ObservableObject {
     @Published public var isBusy: Bool = false
     @Published public var busyMessage: String = ""
     public var pauseAutoRefresh: Bool = false
-    @Published public var useMock: Bool = false {
-        didSet {
-            updateService()
-            if !pauseAutoRefresh {
-                refresh()
-            }
-        }
-    }
     @Published public var developerMode: Bool = false
     @Published public var selectedSection: SidebarSection? = .general
 
@@ -58,10 +50,8 @@ public final class PrinterManager: ObservableObject {
     private var refreshInFlight: Bool = false
 
     public init() {
-        // Comprobar variable de entorno SMARTTANK_USE_MOCK
-        let envMock = ProcessInfo.processInfo.environment["SMARTTANK_USE_MOCK"] == "1"
-        self.useMock = envMock
-        self.service = envMock ? MockSmartTankService() : RealSmartTankService()
+        // La aplicación opera EXCLUSIVAMENTE con hardware real. Jamás en modo demo/mock.
+        self.service = RealSmartTankService()
         scheduleRefresh(after: 0.1)
     }
 
@@ -70,11 +60,7 @@ public final class PrinterManager: ObservableObject {
     }
 
     private func updateService() {
-        if useMock {
-            self.service = MockSmartTankService()
-        } else {
-            self.service = RealSmartTankService()
-        }
+        self.service = RealSmartTankService()
     }
 
     public func scheduleRefresh(after interval: TimeInterval) {

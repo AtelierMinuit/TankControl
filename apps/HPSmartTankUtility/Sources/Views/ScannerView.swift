@@ -8,7 +8,7 @@ public struct ScannerView: View {
     @State private var successNotice: String?
 
     private var isHardwareReady: Bool {
-        (printer.connectionState.isConnected || printer.useMock) && !printer.isBusy && !service.isScanning
+        printer.connectionState.isConnected && !printer.isBusy && !service.isScanning
     }
 
     public var body: some View {
@@ -24,22 +24,12 @@ public struct ScannerView: View {
                             .foregroundColor(.secondary)
                     }
                     Spacer()
-
-                    if printer.useMock {
-                        Text("MOCK STATE")
-                            .font(.system(size: 10, weight: .bold))
-                            .foregroundColor(.purple)
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(Color.purple.opacity(0.12))
-                            .cornerRadius(DesignTokens.Radii.small)
-                    }
                 }
 
                 Divider()
 
                 // Estado de hardware del escáner
-                if !printer.connectionState.isConnected && !printer.useMock {
+                if !printer.connectionState.isConnected {
                     HStack(spacing: DesignTokens.Spacing.sm) {
                         Image(systemName: "scanner")
                             .font(.system(size: 16))
@@ -264,7 +254,7 @@ public struct ScannerView: View {
     private func triggerPreview() {
         errorMessage = nil
         successNotice = nil
-        service.performScan(isMock: printer.useMock, isPreview: true) { result in
+        service.performScan(isPreview: true) { result in
             switch result {
             case .success(let url):
                 preview = NSImage(contentsOf: url)
@@ -278,7 +268,7 @@ public struct ScannerView: View {
     private func triggerScan() {
         errorMessage = nil
         successNotice = nil
-        service.performScan(isMock: printer.useMock, isPreview: false) { result in
+        service.performScan(isPreview: false) { result in
             switch result {
             case .success(let url):
                 preview = NSImage(contentsOf: url)

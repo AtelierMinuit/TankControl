@@ -181,7 +181,7 @@ public struct DeveloperModeView: View {
         Host: macOS Apple Silicon (ARM64)
         Impresora: HP Smart Tank 500 series (0x03F0:0x2B54, ASIC P15_CISS)
         Estado: \(printer.connectionState.label)
-        Modo Simulación: \(printer.useMock ? "Activo (Digital Twin)" : "Inactivo (Hardware Real)")
+        Modo de Operación: Exclusivamente Hardware Real
 
         SUBSISTEMAS:
         """
