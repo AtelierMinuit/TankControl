@@ -56,13 +56,19 @@ mkdir -p "${PKG_SCRIPTS}"
 # 2. Copiar aplicación GUI SwiftUI nativa
 echo "[pkg] Copiando HP Smart Tank Utility.app..."
 cp -RX "${BUILD_DIR}/HP Smart Tank Utility.app" "${PKG_ROOT}/Applications/"
-for helper in "${PKG_ROOT}/Applications/HP Smart Tank Utility.app/Contents/Helpers/hp_scan" "${PKG_ROOT}/Applications/HP Smart Tank Utility.app/Contents/Helpers/hp-smart-tank-tool"; do
-    if [ -f "$helper" ]; then
-        install_name_tool -change /opt/homebrew/opt/libusb/lib/libusb-1.0.0.dylib @rpath/libusb-1.0.0.dylib "$helper"
-        install_name_tool -add_rpath /usr/local/lib "$helper"
-    fi
+if [ -d "${BUILD_DIR}/TankControl.app" ]; then
+    cp -RX "${BUILD_DIR}/TankControl.app" "${PKG_ROOT}/Applications/"
+fi
+for app_path in "${PKG_ROOT}/Applications/HP Smart Tank Utility.app" "${PKG_ROOT}/Applications/TankControl.app"; do
+    [ -d "$app_path" ] || continue
+    for helper in "${app_path}/Contents/Helpers/hp_scan" "${app_path}/Contents/Helpers/hp-smart-tank-tool"; do
+        if [ -f "$helper" ]; then
+            install_name_tool -change /opt/homebrew/opt/libusb/lib/libusb-1.0.0.dylib @rpath/libusb-1.0.0.dylib "$helper" 2>/dev/null || true
+            install_name_tool -add_rpath /usr/local/lib "$helper" 2>/dev/null || true
+        fi
+    done
+    codesign --force --deep --sign - "$app_path"
 done
-codesign --force --deep --sign - "${PKG_ROOT}/Applications/HP Smart Tank Utility.app"
 
 # 3. Copiar filtro binario CUPS nativo, backend bidireccional, icono Retina y PPD
 echo "[pkg] Copiando filtro CUPS, backend smarttank, icono Retina y PPD..."
@@ -72,14 +78,14 @@ echo "[pkg] Copiando filtro CUPS, backend smarttank, icono Retina y PPD..."
     cp -X "${BUILD_DIR}/hp_scan" "${PKG_ROOT}/usr/local/bin/"
     cp -X "${BUILD_DIR}/hp-smart-tank-tool" "${PKG_ROOT}/usr/local/bin/"
     cp -X "${DIR}/lib/libusb-1.0.0.dylib" "${PKG_ROOT}/usr/local/lib/"
-    install_name_tool -change /opt/homebrew/opt/libusb/lib/libusb-1.0.0.dylib @rpath/libusb-1.0.0.dylib "${PKG_ROOT}/Library/Printers/hp/cups/backend/smarttank"
-    install_name_tool -change /opt/homebrew/opt/libusb/lib/libusb-1.0.0.dylib @rpath/libusb-1.0.0.dylib "${PKG_ROOT}/usr/local/bin/smarttank"
-    install_name_tool -change /opt/homebrew/opt/libusb/lib/libusb-1.0.0.dylib @rpath/libusb-1.0.0.dylib "${PKG_ROOT}/usr/local/bin/hp_scan"
-    install_name_tool -change /opt/homebrew/opt/libusb/lib/libusb-1.0.0.dylib @rpath/libusb-1.0.0.dylib "${PKG_ROOT}/usr/local/bin/hp-smart-tank-tool"
-    install_name_tool -add_rpath /usr/local/lib "${PKG_ROOT}/Library/Printers/hp/cups/backend/smarttank"
-    install_name_tool -add_rpath /usr/local/lib "${PKG_ROOT}/usr/local/bin/smarttank"
-    install_name_tool -add_rpath /usr/local/lib "${PKG_ROOT}/usr/local/bin/hp_scan"
-    install_name_tool -add_rpath /usr/local/lib "${PKG_ROOT}/usr/local/bin/hp-smart-tank-tool"
+    install_name_tool -change /opt/homebrew/opt/libusb/lib/libusb-1.0.0.dylib @rpath/libusb-1.0.0.dylib "${PKG_ROOT}/Library/Printers/hp/cups/backend/smarttank" 2>/dev/null || true
+    install_name_tool -change /opt/homebrew/opt/libusb/lib/libusb-1.0.0.dylib @rpath/libusb-1.0.0.dylib "${PKG_ROOT}/usr/local/bin/smarttank" 2>/dev/null || true
+    install_name_tool -change /opt/homebrew/opt/libusb/lib/libusb-1.0.0.dylib @rpath/libusb-1.0.0.dylib "${PKG_ROOT}/usr/local/bin/hp_scan" 2>/dev/null || true
+    install_name_tool -change /opt/homebrew/opt/libusb/lib/libusb-1.0.0.dylib @rpath/libusb-1.0.0.dylib "${PKG_ROOT}/usr/local/bin/hp-smart-tank-tool" 2>/dev/null || true
+    install_name_tool -add_rpath /usr/local/lib "${PKG_ROOT}/Library/Printers/hp/cups/backend/smarttank" 2>/dev/null || true
+    install_name_tool -add_rpath /usr/local/lib "${PKG_ROOT}/usr/local/bin/smarttank" 2>/dev/null || true
+    install_name_tool -add_rpath /usr/local/lib "${PKG_ROOT}/usr/local/bin/hp_scan" 2>/dev/null || true
+    install_name_tool -add_rpath /usr/local/lib "${PKG_ROOT}/usr/local/bin/hp-smart-tank-tool" 2>/dev/null || true
 cp -X "${DIR}/research/builds/HP_Smart_Tank_500.icns" "${PKG_ROOT}/Library/Printers/hp/Icons/"
 cp -X "${DIR}/research/builds/hp-smart_tank_500_series_mac.ppd" "${PKG_ROOT}/Library/Printers/PPDs/Contents/Resources/HP Smart Tank 500.ppd"
 

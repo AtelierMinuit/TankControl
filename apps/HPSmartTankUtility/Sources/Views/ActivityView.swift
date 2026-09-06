@@ -4,7 +4,7 @@ import SwiftUI
 public struct ActivityView: View {
     @ObservedObject var printer: PrinterManager
 
-    @State private var sampleJobs: [PrintJob] = []
+    @ObservedObject private var historyStore = JobHistoryStore.shared
 
     private var numberFormatter: NumberFormatter {
         let f = NumberFormatter()
@@ -186,25 +186,25 @@ public struct ActivityView: View {
                         VStack(alignment: .leading, spacing: 2) {
                             Text("Historial Local de Trabajos")
                                 .font(DesignTokens.Fonts.sectionHeader)
-                            Text("El historial persistente todavía no está integrado.")
+                            Text("Registro persistente sincronizado con la cola CUPS local.")
                                 .font(DesignTokens.Fonts.caption)
                                 .foregroundColor(.secondary)
                         }
                         Spacer()
 
                         Button("Limpiar Registro") {
-                            sampleJobs.removeAll()
+                            historyStore.clearJobs()
                         }
                         .buttonStyle(.bordered)
                         .controlSize(.small)
-                        .disabled(sampleJobs.isEmpty)
+                        .disabled(historyStore.jobs.isEmpty)
                     }
 
-                    if sampleJobs.isEmpty {
+                    if historyStore.jobs.isEmpty {
                         EmptyStateView(
                             icon: "clock.arrow.circlepath",
                             title: "Sin Trabajos Registrados",
-                            message: "Consulta los trabajos desde la cola de impresión de macOS."
+                            message: "Los trabajos enviados a la impresora se registrarán automáticamente."
                         )
                         .frame(height: 140)
                         .frame(maxWidth: .infinity)
@@ -216,7 +216,7 @@ public struct ActivityView: View {
                         )
                     } else {
                         VStack(spacing: 6) {
-                            ForEach(sampleJobs) { job in
+                            ForEach(historyStore.jobs) { job in
                                 HStack(spacing: DesignTokens.Spacing.md) {
                                     Image(systemName: "doc.fill")
                                         .font(.system(size: 16))

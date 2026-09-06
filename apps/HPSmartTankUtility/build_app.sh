@@ -86,6 +86,7 @@ if [ "${APP_DIR}" != "${LEGACY_APP_DIR}" ]; then
     echo "[build_app] Creando bundle de compatibilidad para ruta heredada: ${LEGACY_APP_DIR}..."
     rm -rf "${LEGACY_APP_DIR}"
     cp -R "${APP_DIR}" "${LEGACY_APP_DIR}"
+    ln -sf "TankControl" "${LEGACY_APP_DIR}/Contents/MacOS/HP Smart Tank Utility"
     codesign --force --deep --sign - "${LEGACY_APP_DIR}"
 fi
 
