@@ -1,0 +1,6 @@
+14b2cc00414a261eb1b286c2691d370fe3ed30009924049833c3877f77e99aa1  research/audits/post-hardening-20260904-065139/MASTER-AUDIT-2026.md
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  research/audits/post-hardening-20260904-065139/install-audit-shellcheck.log
+c60c467f66ba474bdef752389461fcb9aca09cc628b09dc211f6ecaa58919a07  research/audits/post-hardening-20260904-065139/install-audit-tests.log
+6947f8351b2e5940628586141e380f30bbb55daf67a7af2cbde554dcd8174ee1  research/audits/post-hardening-20260904-065139/install_native.sh
+daa4c25d0fde05fd65edb5a44f7c8127e5f8f28058181a4ddc446a09888d0b92  research/audits/post-hardening-20260904-065139/postinstall
+98cc9e22252c0eff6e56dafa4fe5ba1178c79c894f187a5b5dab0de515353af9  research/audits/post-hardening-20260904-065139/uninstall.sh

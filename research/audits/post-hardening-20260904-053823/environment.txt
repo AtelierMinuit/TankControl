@@ -1,0 +1,8 @@
+ProductName:		macOS
+ProductVersion:		26.6.2
+BuildVersion:		25G83
+Darwin Jorges-MacBook-Pro.local 25.6.0 Darwin Kernel Version 25.6.0: Fri Jul 31 19:11:03 PDT 2026; root:xnu-12377.161.14~5/RELEASE_ARM64_T8132 arm64
+arm64
+Apple clang version 21.0.0 (clang-2100.1.1.101)
+/Applications/Xcode.app/Contents/Developer
+Python 3.14.6

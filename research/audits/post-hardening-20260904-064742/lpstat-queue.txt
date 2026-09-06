@@ -1,0 +1,1 @@
+dispositivo para HP_Smart_Tank_500: usb://HP/Smart%20Tank%20500%20series?serial=CN1924S1W7

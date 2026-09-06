@@ -1,0 +1,141 @@
+HTTP/1.1 200 OK
+Server: nginx
+Date: Wed, 01 Jan 2014 00:05:15 GMT
+Content-Type: text/xml
+Transfer-Encoding: chunked
+Connection: close
+Cache-Control: must-revalidate, max-age=0
+Pragma: no-cache
+
+f75
+<?xml version="1.0" encoding="UTF-8" ?> 
+                               <!-- THIS DATA SUBJECT TO DISCLAIMER(S) INCLUDED WITH THE PRODUCT OF ORIGIN. --> 
+<prdcfgdyn2:ProductConfigDyn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dd="http://www.hp.com/schemas/imaging/con/dictionaries/1.0/"   xmlns:prdcfgdyn2="http://www.hp.com/schemas/imaging/con/ledm/productconfigdyn/2009/03/16" xmlns:prdcfgdyn="http://www.hp.com/schemas/imaging/con/ledm/productconfigdyn/2007/11/05"   xsi:schemaLocation="http://www.hp.com/schemas/imaging/con/ledm/productconfigdyn/2009/03/16  ../schemas/ledm2/ProductConfigDyn.xsd    http://www.hp.com/schemas/imaging/con/ledm/productconfigdyn/2007/11/05 ../schemas/ProductConfigDyn.xsd  http://www.hp.com/schemas/imaging/con/dictionaries/1.0/  ../schemas/dd/DataDictionaryMasterLEDM.xsd">
+	<dd:Version>
+		<dd:Revision>SVN-IPG-LEDM.690</dd:Revision>
+		<dd:Date>2011-03-30</dd:Date>
+	</dd:Version>
+	<prdcfgdyn:ProductInformation>
+		<dd:Version>
+			<dd:Revision>POSPPLPP1N001.2330A.00</dd:Revision>
+			<dd:Date>2023-07-26</dd:Date>
+		</dd:Version>
+		<dd:MakeAndModel>Smart Tank 500 series</dd:MakeAndModel>
+		<dd:MakeAndModelBase>Smart Tank 500 series</dd:MakeAndModelBase>
+		<dd:MakeAndModelFamily>Smart Tank 500 series</dd:MakeAndModelFamily>
+		<prdcfgdyn:SKUIdentifier>500</prdcfgdyn:SKUIdentifier>
+		<dd:UUID>91d7ac75-5a04-587a-3ee8-b50100619b45</dd:UUID>
+		<dd:SerialNumber>CN1924S1W7</dd:SerialNumber>
+		<dd:ProductNumber>4SR29A</dd:ProductNumber>
+		<dd:ServiceID>32178</dd:ServiceID>
+		<dd:AvailableLanguages>
+			<dd:Language>en</dd:Language>
+			<dd:Language>es</dd:Language>
+			<dd:Language>fr</dd:Language>
+			<dd:Language>pt</dd:Language>
+			<dd:Language>de</dd:Language>
+			<dd:Language>zh-CN</dd:Language>
+			<dd:Language>zh-TW</dd:Language>
+			<dd:Language>it</dd:Language>
+			<dd:Language>nl</dd:Language>
+			<dd:Language>da</dd:Language>
+			<dd:Language>sv</dd:Language>
+			<dd:Language>no</dd:Language>
+			<dd:Language>fi</dd:Language>
+			<dd:Language>ar</dd:Language>
+			<dd:Language>ru</dd:Language>
+			<dd:Language>tr</dd:Language>
+			<dd:Language>pl</dd:Language>
+			<dd:Language>el</dd:Language>
+			<dd:Language>cs</dd:Language>
+			<dd:Language>hu</dd:Language>
+			<dd:Language>sk</dd:Language>
+			<dd:Language>ro</dd:Language>
+			<dd:Language>sl</dd:Language>
+			<dd:Language>bg</dd:Language>
+			<dd:Language>hr</dd:Language>
+		</dd:AvailableLanguages>
+		<dd:PasswordStatus>notSet</dd:PasswordStatus>
+		<dd:RegionInformation>
+			<dd:RegionIdentifier>0</dd:RegionIdentifier>
+			<dd:SuccessfulAttemptsRemaining>3</dd:SuccessfulAttemptsRemaining>
+			<dd:FailedAttemptsRemaining>50</dd:FailedAttemptsRemaining>
+			<dd:RegionSetupCode>0</dd:RegionSetupCode>
+		</dd:RegionInformation>
+		<dd:FirmwareDownloadID>42504f5350504c5050314e3030312e32333330412e3030000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</dd:FirmwareDownloadID>
+		<dd:ProductDerivativeNumber>23394951</dd:ProductDerivativeNumber>
+		<dd:ProductDerivativeFlavorStatus>valid</dd:ProductDerivativeFlavorStatus>
+		<prdcfgdyn:WOOBESeriesID>envy7100</prdcfgdyn:WOOBESeriesID>
+		<prdcfgdyn:Manufacturer>
+			<dd:Name>HP</dd:Name>
+			<dd:Date>2021-09-02</dd:Date>
+		</prdcfgdyn:Manufacturer>
+	</prdcfgdyn:ProductInformation>
+	<prdcfgdyn2:ProductSettings>
+		<dd:PowerSaveTimeout>5minutes</dd:PowerSaveTimeout>
+		<dd:AutoOffTime>2hours</dd:AutoOffTime>
+		<prdcfgdyn2:DeepSleepEnergyUsageMode>saveMostEnergy</prdcfgdyn2:DeepSleepEnergyUsageMode>
+		<prdcfgdyn:ProductLanguage>
+			<dd:DeviceLanguage>es</dd:DeviceLanguage>
+			<dd:PreferredLanguage>es</dd:PreferredLanguage>
+		</prdcfgdyn:ProductLanguage>
+		<prdcfgdyn:CountryAndRegionName PEID="30062">chile</prdcfgdyn:CountryAndRegionName>
+		<dd:TimeStamp>2014-01-01T00:05:15+00:00</dd:TimeStamp>
+		<dd:TimeFormat>HR12</dd:TimeFormat>
+		<dd:D
+6c2
+ateFormat>MMMDDYYYY</dd:DateFormat>
+		<dd:QuietPrintMode>disabled</dd:QuietPrintMode>
+		<prdcfgdyn:EWS>
+			<dd:EnableDisable>enabled</dd:EnableDisable>
+			<prdcfgdyn:LanguageConfiguration>
+				<prdcfgdyn:LanguageSource>browser</prdcfgdyn:LanguageSource>
+				<prdcfgdyn:Language>en</prdcfgdyn:Language>
+			</prdcfgdyn:LanguageConfiguration>
+		</prdcfgdyn:EWS>
+		<dd:PowerSave>on</dd:PowerSave>
+		<dd:OobePhase>setupComplete</dd:OobePhase>
+		<prdcfgdyn:DeviceInformation>
+			<dd:DeviceLocation></dd:DeviceLocation>
+			<prdcfgdyn:GeoLocation>
+				<dd:GeoCoordinates>
+					<dd:Latitude>NaN</dd:Latitude>
+					<dd:Longitude>NaN</dd:Longitude>
+					<dd:Altitude>NaN</dd:Altitude>
+					<dd:Accuracy>NaN</dd:Accuracy>
+				</dd:GeoCoordinates>
+			</prdcfgdyn:GeoLocation>
+		</prdcfgdyn:DeviceInformation>
+		<dd:ControlPanel>
+			<dd:Display>LED</dd:Display>
+			<dd:Detachable>false</dd:Detachable>
+		</dd:ControlPanel>
+	</prdcfgdyn2:ProductSettings>
+	<prdcfgdyn:Memory>
+		<dd:AvailableMemory>158570</dd:AvailableMemory>
+		<dd:TotalMemory>262144</dd:TotalMemory>
+		<dd:MemorySlot>
+			<dd:DigitalStorageTypeEnum>DIMM</dd:DigitalStorageTypeEnum>
+			<dd:DigitalStorageConfig>
+				<dd:Capacity>
+					<dd:MaxCapacity>93596</dd:MaxCapacity>
+					<dd:Unit>kilobyte</dd:Unit>
+				</dd:Capacity>
+				<dd:DigitalStorageTypeEnum>ram</dd:DigitalStorageTypeEnum>
+				<dd:Sides>1</dd:Sides>
+			</dd:DigitalStorageConfig>
+			<dd:DigitalStorageConfig>
+				<dd:Capacity>
+					<dd:MaxCapacity>55224</dd:MaxCapacity>
+					<dd:Unit>kilobyte</dd:Unit>
+				</dd:Capacity>
+				<dd:DigitalStorageTypeEnum>rom</dd:DigitalStorageTypeEnum>
+				<dd:Sides>1</dd:Sides>
+			</dd:DigitalStorageConfig>
+		</dd:MemorySlot>
+	</prdcfgdyn:Memory>
+</prdcfgdyn2:ProductConfigDyn>
+
+0
+
+

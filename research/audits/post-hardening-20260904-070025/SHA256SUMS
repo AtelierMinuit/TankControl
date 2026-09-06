@@ -1,0 +1,5 @@
+0ae0b70af5a97b269fb56709b3b2f208134159c214d52819d7b1d312e9bdb7e3  research/audits/post-hardening-20260904-070025/MASTER-AUDIT-2026.md
+2f963a2fa9599a50277b26266d203fa9c30e95d59f72f6e41c86b23d5e68125d  research/audits/post-hardening-20260904-070025/SCANNER.md
+b92760b0c441fce10c4e29b2b42fe595bb0be726d7a3b49f3eb629d2f4cf3f57  research/audits/post-hardening-20260904-070025/hp_escl_bridge.py
+4e3be40428b39b07bf31376509c0127645552140c50d9bef6822e34c417b91f4  research/audits/post-hardening-20260904-070025/port-fix-tests.log
+12467c86e41342c74f541cf0497a72248352d2224538ea64ef6ca80742234dc0  research/audits/post-hardening-20260904-070025/test_escl_bridge.py

@@ -1,0 +1,7 @@
+2ba0ae384e890b143fafdf5d259a56e799b079310cbef3d0be08cf100c7eff9b  research/audits/post-hardening-20260904-064145/KNOWN-LIMITATIONS.md
+9fe8783898f973d96c9264200fa054d45836a97b82fde5e6b270d40bb1c3d611  research/audits/post-hardening-20260904-064145/MASTER-AUDIT-2026.md
+b85ae0454f68caf01be002666861e36c7c9d661dc1d8597c2f19837ad6c912ba  research/audits/post-hardening-20260904-064145/PACKAGE-MANIFEST.md
+38a7d3469bde461701edc235b00cd254dc29df9aa6e0ed4dced74549fef45d44  research/audits/post-hardening-20260904-064145/appledouble-fix-package.log
+ebeac8581496de85bcee52119f707eea617cc954d07c392621070327eead87ef  research/audits/post-hardening-20260904-064145/appledouble-fix-tests.log
+8d2c74d8ba95b6cbffa5e88686c7f4e62d98814d36fb63910fe0303a337e0d2c  research/audits/post-hardening-20260904-064145/audit_package.sh
+e7a152ae6c4a1c54a5a17734b1b9323e1d47c9cf07f8ab8cfede923b4c4ff33e  research/audits/post-hardening-20260904-064145/package_dist.sh

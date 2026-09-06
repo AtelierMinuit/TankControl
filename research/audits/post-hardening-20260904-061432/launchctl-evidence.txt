@@ -1,0 +1,3 @@
+research/staging/package_root-20260904-061039/Library/LaunchAgents/com.hp.smarttank.airscan.plist: OK
+Bad request.
+Could not find service "com.hp.smarttank.airscan" in domain for user gui: 501

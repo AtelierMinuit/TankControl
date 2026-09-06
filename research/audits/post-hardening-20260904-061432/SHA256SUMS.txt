@@ -1,0 +1,2 @@
+dda694ae53cc5cf6a9b640ba33c7f60a18f0c6e34af8a85107508916a63ad244  research/staging/package_root-20260904-061039/Library/LaunchAgents/com.hp.smarttank.airscan.plist
+76ada229f5019233e5c370fc686e60f26604a044479c21dd9dec5f04ca370f7a  docs/MASTER-AUDIT-2026.md

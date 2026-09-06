@@ -1,0 +1,4 @@
+plist=/tmp/hp-pkg-final-79637/Payload/Library/LaunchAgents/com.hp.smarttank.airscan.plist: OK
+forbidden_refs=payload_entries=      26
+launchctl_print_rc=113
+launchctl_blame_rc=113

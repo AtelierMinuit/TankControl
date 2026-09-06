@@ -1,0 +1,23 @@
+Comando desconocido: --json
+Uso: research/builds/audit-clean/night-20260904/hp-smart-tank-tool <comando> [opciones]
+
+Comandos disponibles:
+  info             Muestra inventario completo de descriptores, interfaces y endpoints USB
+  status           Consulta el estado de la impresora (Puerta, Error, Papel) vía EWS
+  supplies         Consulta niveles de tinta (C, M, Y, K) y estado de cabezales vía EWS
+  odometer         Consulta telemetría de hardware (páginas, atascos, consumo de tinta)
+  scan-caps        Consulta capacidades del escáner (resoluciones, formatos) vía LEDM
+  scan-status      Consulta estado actual del escáner (Reposo, Ocupado) vía LEDM
+  clean-heads      Limpieza Nivel 1: purga básica de burbujas en cabezales vía EWS
+  deep-clean       Limpieza Nivel 2: purga profunda con bomba de vacío vía EWS
+  clean-rollers    Limpieza Nivel 3: limpieza de rodillos y manchas de papel vía EWS
+  nozzle-test      Imprime patrón de verificación de inyectores vía EWS (diag-page)
+  align            Inicia el proceso de alineación óptica de cabezales vía EWS
+  dump-tree        Vuelca el árbol de capacidades XML y configuración profunda del firmware
+  inject-raw <f>   Inyecta flujo binario directo (PJL/PCL3GUI/PML) al puerto USB Bulk OUT
+  accounting       Muestra la auditoría financiera, consumo de tinta y coste por página
+  test-pattern <t> Imprime patrón profesional de diagnóstico (grid, cmyk, alignment)
+  prime-tubes      Taller CISS: purga forzada y cebado de aire en mangueras de tinta
+  waste-ink        Auditoría de saturación de almohadillas de tinta residual (Absorber)
+  head-health      Diagnóstico térmico, eléctrico y de inyectores de cabezales K y CMY
+  scan <archivo>   Realiza un escaneo en color a 300 DPI y guarda la imagen JPEG

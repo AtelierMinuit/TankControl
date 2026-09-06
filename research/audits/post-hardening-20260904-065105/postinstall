@@ -1,0 +1,84 @@
+#!/bin/bash
+set -e
+
+echo "=== Configurando HP Smart Tank 500 en macOS ==="
+
+FILTER="/Library/Printers/hp/cups/filters/rastertopcl3gui"
+BACKEND="/Library/Printers/hp/cups/backend/smarttank"
+PPD="/Library/Printers/PPDs/Contents/Resources/HP Smart Tank 500.ppd"
+ICON_DIR="/Library/Printers/hp/Icons"
+ICC_DIR="/Library/ColorSync/Profiles"
+
+require_regular_owned_path() {
+    local path="$1"
+    if [ ! -f "$path" ] || [ -L "$path" ]; then
+        echo "ERROR: destino ausente o symlink no permitido: $path" >&2
+        exit 1
+    fi
+}
+
+# Seguridad estricta CUPS: root:wheel y 755
+require_regular_owned_path "$FILTER"
+chmod 755 "$FILTER"
+chown root:wheel "$FILTER"
+
+if [ -f "$BACKEND" ]; then
+    require_regular_owned_path "$BACKEND"
+    chmod 755 "$BACKEND"
+    chown root:wheel "$BACKEND"
+    if [ ! -e /usr/libexec/cups/backend/smarttank ]; then
+        ln -s "$BACKEND" /usr/libexec/cups/backend/smarttank
+    fi
+fi
+
+require_regular_owned_path "$PPD"
+chmod 644 "$PPD"
+chown root:wheel "$PPD"
+
+if [ -d "$ICON_DIR" ]; then
+    require_regular_owned_path "$ICON_DIR/HP_Smart_Tank_500.icns"
+    chown root:wheel "$ICON_DIR/HP_Smart_Tank_500.icns"
+    chmod 644 "$ICON_DIR/HP_Smart_Tank_500.icns"
+fi
+
+for icc in "$ICC_DIR"/HP_Smart_Tank_*.icc; do
+    [ -e "$icc" ] || continue
+    require_regular_owned_path "$icc"
+    chmod 644 "$icc"
+    chown root:wheel "$icc"
+done
+
+require_regular_owned_path /usr/local/bin/hp-smart-tank
+chmod 755 /usr/local/bin/hp-smart-tank
+require_regular_owned_path /usr/local/bin/hp_scan
+chmod 755 /usr/local/bin/hp_scan
+require_regular_owned_path /usr/local/bin/hp-smart-tank-tool
+chmod 755 /usr/local/bin/hp-smart-tank-tool
+if [ -e /usr/local/bin/smarttank ]; then
+    require_regular_owned_path /usr/local/bin/smarttank
+    chmod 755 /usr/local/bin/smarttank
+fi
+
+# Determinar URI de dispositivo (backend nativo bidireccional smarttank:// o usb:// estándar)
+DEVICE_URI="usb://HP/Smart%20Tank%20500%20series"
+if [ -x /usr/libexec/cups/backend/smarttank ]; then
+    DEVICE_URI="smarttank://HP/Smart%20Tank%20500%20series"
+fi
+
+# Registrar cola en CUPS
+lpadmin -p "HP_Smart_Tank_500" \
+    -v "$DEVICE_URI" \
+    -P "$PPD" \
+    -D "HP Smart Tank 500 (Nativo Apple Silicon)" \
+    -L "Local USB" \
+    -E
+
+# Cargar LaunchAgent de AirScan para el usuario activo
+CURRENT_USER=$(stat -f "%Su" /dev/console 2>/dev/null || echo "$USER")
+if [ -n "$CURRENT_USER" ] && [ "$CURRENT_USER" != "root" ]; then
+    USER_ID=$(id -u "$CURRENT_USER")
+    launchctl asuser "$USER_ID" launchctl load -w /Library/LaunchAgents/com.hp.smarttank.airscan.plist 2>/dev/null || true
+fi
+
+echo "¡Instalación completada con éxito!"
+exit 0

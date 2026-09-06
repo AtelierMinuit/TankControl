@@ -1,0 +1,14 @@
+=== changed-source hashes ===
+f533bf8bdb0eedcbfbca18b2d6dcc8dccf41a2845af65aa5054b7b306aaa163d  tools/cups_backend_smarttank.c
+129f0b09f298b149f617a768d83821ca6ffb5c98ea9495a95f6d6e57870629ec  tools/rastertopcl3gui.c
+08b583c4386635cec8a534092b1553fdc76245f4f486ff8ea953f02c09a6cd3e  tools/hp_scan.c
+e81326f96b1f0b80a4eefff5139563a57c8938f3eb9acd81b8c521e8a5cb7845  tools/hp-smart-tank-tool.c
+3a64ddeb64aff7f3ba18be2dc6f115b856ae7c20bf656010839bfa022f16a06e  tools/hp_escl_bridge.py
+=== docs ===
+-rw-r--r--@ 1 jorge  staff   543 Sep  4 01:47 CHANGELOG.md
+-rw-r--r--@ 1 jorge  staff   706 Sep  4 01:48 docs/BUILD-REPRODUCIBILITY-AUDIT.md
+-rw-r--r--@ 1 jorge  staff   826 Sep  4 01:48 docs/DEPENDENCY-AUDIT.md
+-rw-r--r--@ 1 jorge  staff  1518 Sep  4 01:47 docs/INK-CONTROL-AUDIT.md
+-rw-r--r--@ 1 jorge  staff   832 Sep  4 01:47 docs/KNOWN-LIMITATIONS.md
+-rw-r--r--@ 1 jorge  staff  6863 Sep  4 01:48 docs/MASTER-AUDIT-2026.md
+-rw-r--r--@ 1 jorge  staff  1135 Sep  4 01:47 docs/PRO-FEATURE-VALIDATION.md

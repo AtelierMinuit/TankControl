@@ -1,0 +1,62 @@
+# macOS System Files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Python Cache & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Swift / Xcode Build Artifacts
+.build/
+*.o
+*.dSYM
+*.app
+*.pkg
+*.dylib
+*.a
+
+# Build Artifacts & Staging
+research/builds/
+research/staging/
+research/package_root*/
+research/package_scripts*/
+
+# Heavy Raw Data & Upstream Trees (Preserved locally, excluded from git)
+research/corpus/
+research/hardware-validation/
+research/hplip/
+research/cups-apple-v2.3.6/
+research/extracted/
+research/captures/
+
+# Intermediate UI Review Sessions (Keep latest 20260905-210520 & docs)
+research/ui-review/20260905-133201/
+research/ui-review/20260905-204403/
+research/ui-review/20260905-204706/
+research/ui-review/20260905-live/
+research/ui-review/round2/
+
+# Temporary and Scratch Dumps
+scratch/
+tmp/
+*.ppm
+*.raw
+*.bin
+*.log
+
+# Editor Settings
+.vscode/
+.idea/
+*.swp
+*~
+*.raster

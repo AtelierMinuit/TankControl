@@ -1,0 +1,51 @@
+# Limitaciones conocidas
+
+- La máquina auditada ya contenía una cola `HP_Smart_Tank_500` y una app en `/Applications/HP Smart Tank Utility.app` antes de esta pasada. La app preexistente no supera `codesign --verify --deep --strict` por recursos ausentes; no se eliminó ni reemplazó. El paquete nocturno se auditó sin instalar.
+- La cola preexistente usa `usb://...`, no la URI `smarttank://...` descubierta por el backend auditado; faltan sus filtro, backend y PPD en las rutas del sistema. Su estado no acredita integración de este proyecto.
+
+- No existe prueba física reproducida de impresión A4/color/foto, escaneo, reconexión, consumibles o estados de error en esta pasada.
+- El backend compila actualmente; el fallo de sintaxis reportado previamente no se reproduce.
+- El filtro y los clientes nativos ya compilan sin warnings con flags estrictos; la app SwiftUI usa UserNotifications, pero aún requiere validación de accesibilidad y ejecución instalada.
+- La build de desarrollo usa Homebrew; el paquete actual incluye `libusb` vendorizada y la enlaza mediante `@rpath`. Esto no elimina la dependencia externa respecto del sistema base.
+- El bridge eSCL sólo queda local (`127.0.0.1`) y no implementa AirPrint IPP.
+- `install_root.sh` quedó deshabilitado por obsoleto; no reemplaza filtros HP ajenos. `install_native.sh` exige `--confirm` y un artefacto auditado previo.
+- `install.sh` también quedó deshabilitado: apuntaba a un binario hpcups histórico mediante rutas relativas y ejecutaba cambios privilegiados sin confirmación.
+- El desinstalador sólo elimina el enlace CUPS `smarttank` si apunta al backend propio; enlaces ajenos se preservan.
+- El daemon usa un directorio de estado privado con permisos 700 y rechaza symlinks para PID/log.
+- El `uninstall --dry-run` enumera todos los destinos declarados y el estado de la cola CUPS sin modificarlos; `--confirm` protege la ejecución posterior, pero el script no persiste un comprobante de un dry-run previo entre procesos.
+- El lock USB global usa `O_NOFOLLOW` y permisos 0600; sigue siendo un lock global deliberadamente conservador y no demuestra concurrencia física entre interfaces independientes.
+- El desinstalador mantiene un manifiesto explícito de archivos propiedad del proyecto y se distribuye dentro del paquete; ofrece `--dry-run`, rechaza argumentos desconocidos y preserva symlinks ajenos en todas las rutas declaradas. Una instalación real aún no se ha ejecutado en root.
+- El desinstalador identifica la cola por URI `smarttank://` y exige recibo del paquete propio antes de eliminar la app; una cola/app preexistente con el mismo nombre se preserva. La eliminación real sigue sin ejecutarse.
+- El paquete generado previamente queda invalidado: `pkgutil --payload-files` reveló entradas AppleDouble `._*`. El empaquetador y auditor ahora las rechazan; la regeneración requiere un staging/volumen donde `com.apple.provenance` pueda eliminarse realmente. No se instaló en root temporal.
+- La inspección XAR/expansión del paquete nocturno actual no encontró entradas AppleDouble `._*`; los staging históricos no deben confundirse con el artefacto actual.
+- El monitor de barra de menú tiene polling adaptativo y evita solapamientos, pero aún no está validado con reconexiones USB reales ni medición de consumo idle.
+- La app SwiftUI sólo ejecuta helpers regulares no-symlink dentro de su bundle; el fallback global `/usr/local/bin/hp-smart-tank-tool` fue eliminado y tiene regresión de seguridad.
+- En hardware conectado, la enumeración `info` responde, pero `scan-caps`/`scan-status` terminan actualmente con timeout USB (`-7`); `supplies` también sigue sin respuesta (`exit 1`).
+- Un probe EWS sólo lectura detectó respuestas desfasadas entre las interfaces duplicadas 2/3; hace falta modelar la cola/transporte antes de habilitar consultas concurrentes.
+- Smoke ASan/UBSan del filtro corregido: 16 corpus raster, 0 fallos y 0 hallazgos; LeakSanitizer no está disponible en este macOS y no se considera probado.
+- El bridge eSCL limita `Content-Length` a 1 MiB y rechaza cuerpos ausentes, inválidos, incompletos o sobredimensionados; chunked encoding todavía no está implementado. Los clientes C nativos también lo rechazan explícitamente, evitando tratar fragmentos como cuerpo completo.
+- En modo hardware, capacidades y estado eSCL responden 503 hasta integrar una lectura física segura; el modo mock permanece disponible para pruebas offline.
+- Cada conexión cliente del bridge eSCL tiene timeout de 15 segundos para evitar sockets fragmentados o abandonados indefinidamente.
+- Los perfiles ICC abren con `sips`, pero no hay calibración física trazable.
+- Los comandos de mantenimiento, `inject-raw` y waste-ink requieren bloqueo/confirmación humana y no se ejecutaron.
+- El parser de `waste-ink` pasó smoke ASan/UBSan en modo mock; la lectura real sigue sin validación y no se ejecutaron comandos físicos.
+- La suite disponible es `unittest`; `pytest` no está instalado.
+- `tools/generate_test_page.py` requiere `Pillow`, ausente en el Python activo; su fallo de dependencia no afecta los binarios del paquete y queda separado de las pruebas de hardware.
+- La consulta Python `status` ya no se cae por `SIGSEGV`; con el hardware conectado actualmente termina con código 1 porque no puede reclamar la interfaz USB. No se presenta como lectura física válida.
+- `find_channel()` del cliente Python libera ahora siempre el descriptor USB; la consulta física actual termina controladamente con `Respuesta HTTP USB incompleta` y código 1.
+- La captura física de escaneo aún falla en una sesión controlada de 75 DPI/100x100: el dispositivo entrega residuos de transacciones previas antes de la respuesta a `POST /Scan/Jobs`. No se debe presentar como captura funcional hasta corregir la sincronización del canal USB.
+- `hp_scan` ahora ejecuta primero un GET seguro `/Scan/Status` y aborta si no obtiene respuesta; esto evita enviar `POST /Scan/Jobs` sobre una sesión no sincronizada, pero deja la captura bloqueada hasta resolver el transporte.
+- `hp_scan` abre el archivo de salida con `O_NOFOLLOW` y modo 0600; una ruta symlink se rechaza en vez de sobrescribir el destino enlazado.
+- `hp_scan` exige una ruta de salida explícita; ya no usa un nombre predeterminado predecible en `/tmp`.
+- `hp_scan` exige encontrar las marcas JPEG SOI/EOI y comprueba escrituras; la sesión física actual falla antes del POST por desincronización de `/Scan/Status` y no declara captura completada.
+- El LaunchAgent ya no fija logs en `/tmp`; la salida no se redirige a nombres predecibles para evitar riesgos de symlink/race. Los logs de diagnóstico deben habilitarse mediante un mecanismo seguro y explícito.
+- El plist pasa `plutil -lint`, pero el servicio no está cargado en el usuario auditado: `launchctl print/blame` devuelve código 113. La activación real de `LaunchEvents` sigue sin prueba.
+- `hp_escl_bridge.py` limita a 180 segundos la ejecución de `hp_scan` y elimina el temporal si el job termina cancelado; no se declara todavía tolerancia completa a concurrencia ni a fragmentación HTTP chunked.
+- El daemon aplica `umask 077`, usa un directorio de estado privado bajo `TMPDIR` y valida que el PID almacenado sea numérico antes de ejecutar `kill`; la persistencia sigue siendo temporal y no está validada como servicio instalado.
+- El bridge protege la tabla y el contador de jobs con un lock y pasa una prueba local de 24 creaciones concurrentes; la concurrencia del transporte USB y el indicador físico de escaneo siguen sin validación.
+- El CLI exige `--confirm-hardware` para comandos de mantenimiento, patrones e inyección RAW cuando no está en modo `--mock`; sin esa confirmación devuelve código 2 y no abre una sesión de operación física.
+- La contabilidad local usa archivos fijos por compatibilidad con la app, pero ahora rechaza symlinks y aplica permisos 0600; no debe considerarse almacenamiento cifrado ni una medición física de tinta.
+- La acción RAW de la app usa un archivo temporal único y lo elimina tras el intento; la operación sigue siendo experimental y requiere confirmación explícita.
+- `waste-ink` sólo muestra cifras en `--mock` o cuando existe `TotalSpitCount` real; sin esa evidencia devuelve error y no inventa saturación ni vida útil.
+- `waste-ink` fue corregido para consultar el endpoint de estado por la interfaz EWS de gestión (`ff/04/01`); la corrección tiene regresión offline, pero la lectura física sigue sin validarse.
+- El PPD pasa `cupstestppd -W all` con código 0 y mantiene advertencias de nombres Adobe no estándar; sin `-W all`, el árbol de desarrollo devuelve código 4 por recursos absolutos ausentes que sólo existen tras la instalación. Requiere una revisión específica antes de exigir una validación PPD sin warnings.

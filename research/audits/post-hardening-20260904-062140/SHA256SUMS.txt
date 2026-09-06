@@ -1,0 +1,5 @@
+21c2814a3efdf17d90fa713fa5990798b0a7766ccd520ad4c041831604bc1c7c  docs/MASTER-AUDIT-2026.md
+7e00a3f8d6d4d929c23d61f2c1a04aa4bd0fabc5b24438ae9ac9e3323f95ab43  docs/TEST-MATRIX-2026.md
+c1cebdc559af6cb70e5c2074273fa2f20cea5a341980661114c79a7bd55586b2  research/audits/post-hardening-20260904-062140/hp-physical-info.out
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  research/audits/post-hardening-20260904-062140/hp-physical-scan-caps.out
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  research/audits/post-hardening-20260904-062140/hp-physical-scan-status.out

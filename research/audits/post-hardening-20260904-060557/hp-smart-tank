@@ -1,0 +1,219 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# hp-smart-tank: Utilidad Unificada de Mantenimiento para HP Smart Tank 500
+# Compatible con macOS Apple Silicon (ARM64)
+# ==============================================================================
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BIN_TOOL="${SCRIPT_DIR}/hp-smart-tank-tool"
+BIN_SCAN="${SCRIPT_DIR}/hp_scan"
+SHARE_DIR="/usr/local/share/hp-smart-tank"
+
+confirm_hardware() {
+    read -r -p "Escribe CONFIRMAR para ejecutar esta operación en hardware: " answer
+    [ "$answer" = "CONFIRMAR" ]
+}
+
+make_private_scan_path() {
+    local dir
+    dir="$(mktemp -d "${TMPDIR:-/tmp}/hp-smart-tank-scan.XXXXXX")" || return 1
+    printf '%s/scan.jpg\n' "$dir"
+}
+
+# Colores ANSI
+BOLD="\033[1m"
+GREEN="\033[1;32m"
+BLUE="\033[1;34m"
+YELLOW="\033[1;33m"
+CYAN="\033[1;36m"
+MAGENTA="\033[1;35m"
+RED="\033[1;31m"
+RESET="\033[0m"
+
+if [ ! -f "${BIN_TOOL}" ] || [ ! -x "${BIN_TOOL}" ] || [ -L "${BIN_TOOL}" ]; then
+    echo -e "${RED}Error: Binario hp-smart-tank-tool ausente, no ejecutable o symlink en ${BIN_TOOL}${RESET}"
+    exit 1
+fi
+
+show_banner() {
+    clear
+    echo -e "${BOLD}==============================================================${RESET}"
+    echo -e "   ${CYAN}HP SMART TANK 500 — PANEL DE CONTROL Y MANTENIMIENTO${RESET}"
+    echo -e "   ${BLUE}Arquitectura nativa macOS ARM64 (Apple Silicon)${RESET}"
+    echo -e "${BOLD}==============================================================${RESET}"
+}
+
+interactive_menu() {
+    while true; do
+        show_banner
+        echo -e " ${BOLD}1.${RESET} 📊 Consultar niveles de tinta y cabezales (${CYAN}supplies${RESET})"
+        echo -e " ${BOLD}2.${RESET} 🚦 Ver estado de la impresora (${GREEN}status${RESET})"
+        echo -e " ${BOLD}3.${RESET} 🧹 Limpieza básica de inyectores (${YELLOW}clean-heads${RESET})"
+        echo -e " ${BOLD}4.${RESET} 🧽 Limpieza profunda y purga (${RED}deep-clean${RESET})"
+        echo -e " ${BOLD}5.${RESET} 📄 Imprimir página de diagnóstico y calidad (${BLUE}diag-page${RESET})"
+        echo -e " ${BOLD}6.${RESET} 📐 Iniciar alineación de cabezales (${MAGENTA}align${RESET})"
+        echo -e " ${BOLD}7.${RESET} 📸 Escanear documento directo a archivo (${CYAN}scan${RESET})"
+        echo -e " ${BOLD}8.${RESET} 🎨 Generar carta de calibración cromática (${MAGENTA}calibrate-chart${RESET})"
+        echo -e " ${BOLD}9.${RESET} 🔬 Calibrar perfil ICC en bucle cerrado (${YELLOW}calibrate-icc${RESET})"
+        echo -e " ${BOLD}10.${RESET} ℹ️  Información de interfaces y canales USB (${BOLD}info${RESET})"
+        echo -e " ${BOLD}0.${RESET} 🚪 Salir"
+        echo -e "${BOLD}==============================================================${RESET}"
+        read -r -p "Selecciona una opción [0-10]: " opt
+
+        case $opt in
+            1)
+                "${BIN_TOOL}" supplies
+                read -r -p "Presiona [Enter] para volver al menú..."
+                ;;
+            2)
+                "${BIN_TOOL}" status
+                read -r -p "Presiona [Enter] para volver al menú..."
+                ;;
+            3)
+                echo -e "\n${YELLOW}Iniciando limpieza básica de inyectores en el hardware...${RESET}"
+                if confirm_hardware; then "${BIN_TOOL}" clean-heads --confirm-hardware; else echo "Operación cancelada."; fi
+                read -r -p "Presiona [Enter] para volver al menú..."
+                ;;
+            4)
+                echo -e "\n${RED}Iniciando limpieza profunda (purga) en el hardware...${RESET}"
+                if confirm_hardware; then "${BIN_TOOL}" deep-clean --confirm-hardware; else echo "Operación cancelada."; fi
+                read -r -p "Presiona [Enter] para volver al menú..."
+                ;;
+            5)
+                echo -e "\n${BLUE}Enviando trabajo de página de diagnóstico interno...${RESET}"
+                if confirm_hardware; then "${BIN_TOOL}" diag-page --confirm-hardware; else echo "Operación cancelada."; fi
+                read -r -p "Presiona [Enter] para volver al menú..."
+                ;;
+            6)
+                echo -e "\n${MAGENTA}Iniciando rutina de alineación de cabezales...${RESET}"
+                if confirm_hardware; then "${BIN_TOOL}" align --confirm-hardware; else echo "Operación cancelada."; fi
+                read -r -p "Presiona [Enter] para volver al menú..."
+                ;;
+            7)
+                read -r -p "Ruta destino del archivo JPEG (obligatoria): " dest
+                if [ -z "$dest" ]; then echo "Operación cancelada: se requiere una ruta explícita."; continue; fi
+                read -r -p "Resolución DPI (75, 150, 300, 600, 1200) [300]: " dpi
+                dpi="${dpi:-300}"
+                read -r -p "Modo (color / gray) [color]: " mode
+                mode="${mode:-color}"
+                if [ -f "${BIN_SCAN}" ]; then
+                    "${BIN_SCAN}" "${dest}" "${dpi}" "${mode}"
+                else
+                    "${BIN_TOOL}" scan "${dest}"
+                fi
+                read -r -p "Presiona [Enter] para volver al menú..."
+                ;;
+            8)
+                echo -e "\n${MAGENTA}Generando carta de calibración de alta precisión (PDF y PNG)...${RESET}"
+                python3 "${SHARE_DIR}/generate_color_target.py" --dpi 300
+                echo -e "${GREEN}Carta lista para imprimir en: /tmp/HP_Smart_Tank_Color_Target.pdf${RESET}"
+                read -r -p "Presiona [Enter] para volver al menú..."
+                ;;
+            9)
+                echo -e "\n${YELLOW}Calibración cromática en bucle cerrado (Closed-Loop ICC Profiling)...${RESET}"
+                read -r -p "¿Deseas escanear la hoja impresa colocada en el cristal ahora? [S/n]: " do_scan
+                if [[ "$do_scan" =~ ^[Nn] ]]; then
+                    python3 "${SHARE_DIR}/calibrate_icc.py" --mock --install
+                else
+                    echo -e "${CYAN}Digitalizando carta en la cama plana a 600 DPI...${RESET}"
+                    if [ -f "${BIN_SCAN}" ]; then
+                        calib_scan="$(make_private_scan_path)" || { echo "No se pudo crear temporal privado." >&2; break; }
+                        calib_dir="$(dirname "$calib_scan")"
+                        trap 'rm -f -- "$calib_scan"; rmdir -- "$calib_dir" 2>/dev/null || true' EXIT HUP INT TERM
+                        "${BIN_SCAN}" "$calib_scan" "600" "Color"
+                        python3 "${SHARE_DIR}/calibrate_icc.py" --scan "$calib_scan" --install
+                        trap - EXIT HUP INT TERM
+                        rm -f -- "$calib_scan"
+                        rmdir -- "$calib_dir" 2>/dev/null || true
+                    else
+                        python3 "${SHARE_DIR}/calibrate_icc.py" --mock --install
+                    fi
+                fi
+                read -r -p "Presiona [Enter] para volver al menú..."
+                ;;
+            10)
+                "${BIN_TOOL}" info
+                read -r -p "Presiona [Enter] para volver al menú..."
+                ;;
+            0)
+                echo -e "\n${GREEN}¡Hasta pronto!${RESET}"
+                exit 0
+                ;;
+            *)
+                echo -e "\n${RED}Opción inválida.${RESET}"
+                sleep 1
+                ;;
+        esac
+    done
+}
+
+# Despacho de subcomandos de línea de órdenes
+case "$1" in
+    ""|"menu")
+        interactive_menu
+        ;;
+    "supplies"|"tinta"|"levels")
+        "${BIN_TOOL}" supplies
+        ;;
+    "status"|"estado")
+        "${BIN_TOOL}" status
+        ;;
+    "clean"|"clean-heads"|"limpiar")
+        if confirm_hardware; then "${BIN_TOOL}" clean-heads --confirm-hardware; else echo "Operación cancelada."; fi
+        ;;
+    "deep-clean"|"purga")
+        if confirm_hardware; then "${BIN_TOOL}" deep-clean --confirm-hardware; else echo "Operación cancelada."; fi
+        ;;
+    "diag"|"diag-page"|"diagnostico")
+        if confirm_hardware; then "${BIN_TOOL}" diag-page --confirm-hardware; else echo "Operación cancelada."; fi
+        ;;
+    "align"|"alinear")
+        if confirm_hardware; then "${BIN_TOOL}" align --confirm-hardware; else echo "Operación cancelada."; fi
+        ;;
+    "chart"|"target"|"calibrate-chart")
+        python3 "${SHARE_DIR}/generate_color_target.py" --dpi 300
+        ;;
+    "calibrate"|"calibrate-icc"|"icc")
+        shift
+        python3 "${SHARE_DIR}/calibrate_icc.py" "$@"
+        ;;
+    "info")
+        "${BIN_TOOL}" info
+        ;;
+    "scan")
+        shift
+        if [ "$#" -lt 1 ] || [ -z "${1:-}" ]; then
+            echo "Uso: hp-smart-tank scan <ruta-salida> [dpi] [color|gray]" >&2
+            exit 2
+        fi
+        dest="$1"
+        dpi="${2:-300}"
+        mode="${3:-color}"
+        if [ -f "${BIN_SCAN}" ]; then
+            "${BIN_SCAN}" "${dest}" "${dpi}" "${mode}"
+        else
+            "${BIN_TOOL}" scan "${dest}"
+        fi
+        ;;
+    "help"|"-h"|"--help")
+        echo -e "${BOLD}Uso:${RESET} hp-smart-tank [comando] [opciones]"
+        echo ""
+        echo "Comandos directos:"
+        echo "  supplies        Muestra niveles de tinta y cabezales"
+        echo "  status          Muestra estado de papel, tapas y reposo"
+        echo "  clean           Ejecuta limpieza de inyectores (Head Cleaning)"
+        echo "  deep-clean      Ejecuta limpieza profunda (purga de cabezal)"
+        echo "  diag            Imprime página de prueba de calidad"
+        echo "  align           Ejecuta rutina de alineación"
+        echo "  chart           Genera carta de calibración cromática (PDF/PNG)"
+        echo "  calibrate       Analiza escaneo y genera perfil ColorSync ICC"
+        echo "  scan <out.jpg>  Escanea a archivo JPEG (DPI opcional)"
+        echo "  info            Inventario de canales USB"
+        echo "  (sin args)      Abre el menú interactivo con interfaz"
+        ;;
+    *)
+        echo -e "${RED}Comando desconocido: $1${RESET}"
+        echo "Usa 'hp-smart-tank --help' para ver la lista de comandos o ejecuta sin argumentos para el menú."
+        exit 1
+        ;;
+esac

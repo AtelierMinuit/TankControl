@@ -1,0 +1,3 @@
+la impresora HP_Smart_Tank_500 está inactiva. activada desde Fri Sep  4 02:27:11 2026
+dispositivo para HP_Smart_Tank_500: usb://HP/Smart%20Tank%20500%20series?serial=CN1924S1W7
+/Applications/HP Smart Tank Utility.app: code has no resources but signature indicates they must be present

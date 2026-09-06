@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "docs/hardware-validation-summary.schema.json",
+  "title": "HP Smart Tank 500 Hardware Validation Session Summary",
+  "description": "Esquema formal de validación para los reportes JSON generados por tools/run_hardware_validation.sh",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "session_id",
+    "timestamp",
+    "mode",
+    "host",
+    "device",
+    "steps",
+    "result",
+    "evidence"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["dry-run", "probe", "telemetry", "print", "scan", "fault-tests", "mock"]
+    },
+    "host": {
+      "type": "object",
+      "required": ["os", "arch"],
+      "properties": {
+        "os": { "type": "string" },
+        "arch": { "type": "string" },
+        "kernel": { "type": "string" }
+      }
+    },
+    "device": {
+      "type": "object",
+      "required": ["vid", "pid", "model"],
+      "properties": {
+        "vid": { "type": "string", "pattern": "^0x[0-9a-fA-F]{4}$" },
+        "pid": { "type": "string", "pattern": "^0x[0-9a-fA-F]{4}$" },
+        "model": { "type": "string" },
+        "serial": { "type": "string" }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["key", "name", "status", "exit_code", "duration_ms", "evidence_files"],
+        "properties": {
+          "key": { "type": "string" },
+          "name": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["PASS", "DRY-RUN", "MOCK", "BLOCKED", "TIMEOUT", "FAIL"]
+          },
+          "exit_code": { "type": "integer" },
+          "duration_ms": { "type": "integer", "minimum": 0 },
+          "evidence_files": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "result": {
+      "type": "object",
+      "required": ["overall_status", "final_exit_code", "step_count", "fail_count", "blocked_count"],
+      "properties": {
+        "overall_status": {
+          "type": "string",
+          "enum": ["PASS", "BLOCKED", "FAIL"]
+        },
+        "final_exit_code": { "type": "integer", "enum": [0, 1, 2] },
+        "step_count": { "type": "integer", "minimum": 0 },
+        "fail_count": { "type": "integer", "minimum": 0 },
+        "blocked_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["manifest_file", "session_dir"],
+      "properties": {
+        "manifest_file": { "type": "string" },
+        "session_dir": { "type": "string" }
+      }
+    }
+  },
+  "additionalProperties": false
+}
