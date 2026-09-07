@@ -24,6 +24,7 @@ venv/
 *.pkg
 *.dylib
 *.a
+tools/rastertopcl3gui
 
 # Build Artifacts & Staging
 research/builds/

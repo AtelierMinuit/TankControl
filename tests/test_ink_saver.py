@@ -37,8 +37,11 @@ class TestInkSaverPPD(unittest.TestCase):
         self.assertIn("*OpenUI *HPInkSaver/Tecnologia InkSaver: PickOne", self.ppd_text)
         self.assertIn("*DefaultHPInkSaver: Off", self.ppd_text)
         self.assertIn("*HPInkSaver Off/", self.ppd_text)
+        self.assertIn("*HPInkSaver Eco15/", self.ppd_text)
         self.assertIn("*HPInkSaver Eco25/", self.ppd_text)
+        self.assertIn("*HPInkSaver Eco35/", self.ppd_text)
         self.assertIn("*HPInkSaver Eco50/", self.ppd_text)
+        self.assertIn("*HPInkSaver Eco65/", self.ppd_text)
         self.assertIn("*HPInkSaver Eco75/", self.ppd_text)
         self.assertIn("*HPInkSaver EdgePreserve/", self.ppd_text)
         self.assertIn("*HPInkSaver DotGainGrid/", self.ppd_text)
@@ -111,6 +114,42 @@ class TestInkSaverRIPEngine(unittest.TestCase):
         stderr = proc.stderr.decode("utf-8", errors="replace")
         self.assertIn("ColorDrop: EcoGrayscale (Escala Grises Eco)", stderr)
         self.assertIn("Reduccion raster estimada (no tinta fisica):", stderr)
+
+    @unittest.skipUnless(SAMPLE_RASTER.exists(), "Requiere scratch/05-black-square.rgb.raster")
+    def test_arbitrary_percent_35(self):
+        """Verifica que HPInkSaver=35 aplique 35% de ahorro continuo con micro-perforación."""
+        cmd = [str(FILTER_PATH), "1", "user", "doc", "1", "HPInkSaver=35", str(SAMPLE_RASTER)]
+        proc = subprocess.run(cmd, capture_output=True, check=True)
+        stderr = proc.stderr.decode("utf-8", errors="replace")
+        self.assertIn("InkSaver: Pagina 1 (Modo: Eco35", stderr)
+        self.assertIn("Reduccion raster estimada (no tinta fisica):", stderr)
+
+    @unittest.skipUnless(SAMPLE_RASTER.exists(), "Requiere scratch/05-black-square.rgb.raster")
+    def test_arbitrary_percent_15(self):
+        """Verifica que HPInkSaver=15 aplique 15% de ahorro continuo sin micro-perforación."""
+        cmd = [str(FILTER_PATH), "1", "user", "doc", "1", "HPInkSaver=15", str(SAMPLE_RASTER)]
+        proc = subprocess.run(cmd, capture_output=True, check=True)
+        stderr = proc.stderr.decode("utf-8", errors="replace")
+        self.assertIn("InkSaver: Pagina 1 (Modo: Eco15", stderr)
+        self.assertIn("Reduccion raster estimada (no tinta fisica):", stderr)
+
+    @unittest.skipUnless(SAMPLE_RASTER.exists(), "Requiere scratch/05-black-square.rgb.raster")
+    def test_ink_saver_cli_alias_and_clamping(self):
+        """Verifica compatibilidad con alias ink_saver=XX y acotamiento a [0, 75]."""
+        # Alias directo
+        cmd = [str(FILTER_PATH), "1", "user", "doc", "1", "ink_saver=35", str(SAMPLE_RASTER)]
+        proc = subprocess.run(cmd, capture_output=True, check=True)
+        self.assertIn("InkSaver: Pagina 1 (Modo: Eco35", proc.stderr.decode("utf-8", errors="replace"))
+
+        # Clamping superior > 75 -> 75 (Eco75)
+        cmd_high = [str(FILTER_PATH), "1", "user", "doc", "1", "HPInkSaver=99", str(SAMPLE_RASTER)]
+        proc_high = subprocess.run(cmd_high, capture_output=True, check=True)
+        self.assertIn("InkSaver: Pagina 1 (Modo: Eco75", proc_high.stderr.decode("utf-8", errors="replace"))
+
+        # Clamping inferior < 0 -> 0 (Off)
+        cmd_low = [str(FILTER_PATH), "1", "user", "doc", "1", "HPInkSaver=-10", str(SAMPLE_RASTER)]
+        proc_low = subprocess.run(cmd_low, capture_output=True, check=True)
+        self.assertEqual(proc_low.returncode, 0)
 
 
 class TestAccountingAndSavings(unittest.TestCase):

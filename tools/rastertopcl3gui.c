@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <unistd.h>
 
 #define UEL "\033%-12345X"
@@ -206,9 +207,9 @@ static inline void process_pixel_pro(unsigned char *r, unsigned char *g, unsigne
     *b = (unsigned char)B;
 }
 
-/* Motor InkSaver: micro-perforación dot-gain, preservación de contornos y eliminación de fondo */
+/* Motor InkSaver continuo: micro-perforación dot-gain, preservación de contornos y eliminación de fondo */
 static void apply_ink_saver_pro(unsigned char *cur_row, const unsigned char *seed_row,
-                                int width, int y, int saver_mode, int color_drop_mode,
+                                int width, int y, int saver_percent, int saver_mode, int color_drop_mode,
                                 unsigned long long *input_units, unsigned long long *saved_units) {
     if (!cur_row || width <= 0) return;
     for (int x = 0; x < width; x++) {
@@ -258,22 +259,7 @@ static void apply_ink_saver_pro(unsigned char *cur_row, const unsigned char *see
 
         /* 2. Modos de ahorro InkSaver */
         int orig_px_ink = (255 - r) + (255 - g) + (255 - b);
-        if (saver_mode == 1) {
-            /* Eco25: atenuación raster nominal del 25%; no es volumen físico */
-            r = 255 - ((255 - r) * 75) / 100;
-            g = 255 - ((255 - g) * 75) / 100;
-            b = 255 - ((255 - b) * 75) / 100;
-        } else if (saver_mode == 2) {
-            /* Eco50: atenuación raster nominal del 50%; no es volumen físico */
-            r = 255 - ((255 - r) * 50) / 100;
-            g = 255 - ((255 - g) * 50) / 100;
-            b = 255 - ((255 - b) * 50) / 100;
-        } else if (saver_mode == 3) {
-            /* Eco75: atenuación raster nominal del 75%; no es volumen físico */
-            r = 255 - ((255 - r) * 25) / 100;
-            g = 255 - ((255 - g) * 25) / 100;
-            b = 255 - ((255 - b) * 25) / 100;
-        } else if (saver_mode == 4) {
+        if (saver_mode == 4) {
             /* EdgePreserve: preserva bordes y atenúa el relleno en el raster. */
             int r_left = (x > 0) ? cur_row[(x - 1) * 3] : r;
             int g_left = (x > 0) ? cur_row[(x - 1) * 3 + 1] : g;
@@ -308,6 +294,47 @@ static void apply_ink_saver_pro(unsigned char *cur_row, const unsigned char *see
                     r = 255 - ((255 - r) * 50) / 100;
                     g = 255 - ((255 - g) * 50) / 100;
                     b = 255 - ((255 - b) * 50) / 100;
+                }
+            }
+        } else if (saver_percent > 0) {
+            /* Motor InkSaver continuo (0% a 75%):
+             * - Para texto y gráficos vectoriales: detección de bordes (delta > 45) para preservar los contornos oscuros y nítidos.
+             * - Para los interiores/rellenos: aplica la atenuación exacta correspondiente al porcentaje: 255 - ((255 - val) * (100 - percent)) / 100.
+             * - Para valores de ahorro >= 30%: aplica la micro-perforación inteligente (x + y) % 2 == 1 para aprovechar la ganancia de punto capilar del papel.
+             */
+            int r_left = (x > 0) ? cur_row[(x - 1) * 3] : r;
+            int g_left = (x > 0) ? cur_row[(x - 1) * 3 + 1] : g;
+            int b_left = (x > 0) ? cur_row[(x - 1) * 3 + 2] : b;
+
+            int r_right = (x < width - 1) ? cur_row[(x + 1) * 3] : r;
+            int g_right = (x < width - 1) ? cur_row[(x + 1) * 3 + 1] : g;
+            int b_right = (x < width - 1) ? cur_row[(x + 1) * 3 + 2] : b;
+
+            int r_top = (seed_row) ? seed_row[x * 3] : r;
+            int g_top = (seed_row) ? seed_row[x * 3 + 1] : g;
+            int b_top = (seed_row) ? seed_row[x * 3 + 2] : b;
+
+            int delta = abs(r - r_left) + abs(r - r_right) +
+                        abs(g - g_left) + abs(g - g_right) +
+                        abs(b - b_left) + abs(b - b_right) +
+                        abs(r - r_top)  + abs(g - g_top)   + abs(b - b_top);
+
+            if (delta > 45) {
+                /* Contorno de letra o trazo vectorial fino: preservar contornos oscuros y nítidos */
+            } else {
+                /* Interiores y rellenos */
+                if (saver_percent >= 30) {
+                    /* Micro-perforación inteligente para dot gain capilar del papel */
+                    if ((x + y) % 2 == 1) {
+                        r = 255 - ((255 - r) * (100 - saver_percent)) / 100;
+                        g = 255 - ((255 - g) * (100 - saver_percent)) / 100;
+                        b = 255 - ((255 - b) * (100 - saver_percent)) / 100;
+                    }
+                } else {
+                    /* Atenuación nominal directa según porcentaje continuo */
+                    r = 255 - ((255 - r) * (100 - saver_percent)) / 100;
+                    g = 255 - ((255 - g) * (100 - saver_percent)) / 100;
+                    b = 255 - ((255 - b) * (100 - saver_percent)) / 100;
                 }
             }
         }
@@ -489,11 +516,87 @@ int main(int argc, char *argv[]) {
     else if (strstr(options, "HPWatermark=Sample") || strstr(options, "watermark=sample")) watermark_text = "MUESTRA";
 
     int ink_saver_mode = 0;
-    if (strstr(options, "HPInkSaver=Eco25") || strstr(options, "ink_saver=eco25") || strstr(options, "ink_saver=25")) ink_saver_mode = 1;
-    else if (strstr(options, "HPInkSaver=Eco50") || strstr(options, "ink_saver=eco50") || strstr(options, "ink_saver=50")) ink_saver_mode = 2;
-    else if (strstr(options, "HPInkSaver=Eco75") || strstr(options, "ink_saver=eco75") || strstr(options, "ink_saver=75")) ink_saver_mode = 3;
-    else if (strstr(options, "HPInkSaver=EdgePreserve") || strstr(options, "ink_saver=edge")) ink_saver_mode = 4;
-    else if (strstr(options, "HPInkSaver=DotGainGrid") || strstr(options, "ink_saver=dotgain")) ink_saver_mode = 5;
+    int ink_saver_percent = 0;
+    char ink_saver_label[32] = "Off";
+    char ink_saver_desc[64] = "Desactivado";
+
+    const char *p_saver = NULL;
+    if ((p_saver = strstr(options, "HPInkSaver=")) != NULL) p_saver += 11;
+    else if ((p_saver = strstr(options, "hpinksaver=")) != NULL) p_saver += 11;
+    else if ((p_saver = strstr(options, "ink_saver=")) != NULL) p_saver += 10;
+    else if ((p_saver = strstr(options, "InkSaver=")) != NULL) p_saver += 9;
+    else if ((p_saver = strstr(options, "inksaver=")) != NULL) p_saver += 9;
+
+    if (p_saver) {
+        if (strncasecmp(p_saver, "Off", 3) == 0 || strncmp(p_saver, "0", 1) == 0) {
+            ink_saver_mode = 0;
+            ink_saver_percent = 0;
+            snprintf(ink_saver_label, sizeof(ink_saver_label), "Off");
+            snprintf(ink_saver_desc, sizeof(ink_saver_desc), "Desactivado");
+        } else if (strncasecmp(p_saver, "EdgePreserve", 12) == 0 || strncasecmp(p_saver, "edge", 4) == 0) {
+            ink_saver_mode = 4;
+            ink_saver_percent = 35;
+            snprintf(ink_saver_label, sizeof(ink_saver_label), "EdgePreserve");
+            snprintf(ink_saver_desc, sizeof(ink_saver_desc), "EdgePreserve (bordes preservados)");
+        } else if (strncasecmp(p_saver, "DotGainGrid", 11) == 0 || strncasecmp(p_saver, "dotgain", 7) == 0) {
+            ink_saver_mode = 5;
+            ink_saver_percent = 50;
+            snprintf(ink_saver_label, sizeof(ink_saver_label), "DotGainGrid");
+            snprintf(ink_saver_desc, sizeof(ink_saver_desc), "DotGainGrid (Micro-perforado Dot-Gain)");
+        } else if (strncasecmp(p_saver, "Eco", 3) == 0) {
+            long val = strtol(p_saver + 3, NULL, 10);
+            if (val < 0) val = 0;
+            else if (val > 75) val = 75;
+            ink_saver_percent = (int)val;
+            if (val == 0) {
+                ink_saver_mode = 0;
+                snprintf(ink_saver_label, sizeof(ink_saver_label), "Off");
+                snprintf(ink_saver_desc, sizeof(ink_saver_desc), "Desactivado");
+            } else if (val == 25) {
+                ink_saver_mode = 1;
+                snprintf(ink_saver_label, sizeof(ink_saver_label), "Eco25");
+                snprintf(ink_saver_desc, sizeof(ink_saver_desc), "Eco25 (nivel raster 1)");
+            } else if (val == 50) {
+                ink_saver_mode = 2;
+                snprintf(ink_saver_label, sizeof(ink_saver_label), "Eco50");
+                snprintf(ink_saver_desc, sizeof(ink_saver_desc), "Eco50 (nivel raster 2)");
+            } else if (val == 75) {
+                ink_saver_mode = 3;
+                snprintf(ink_saver_label, sizeof(ink_saver_label), "Eco75");
+                snprintf(ink_saver_desc, sizeof(ink_saver_desc), "Eco75 (nivel raster 3)");
+            } else {
+                ink_saver_mode = 6;
+                snprintf(ink_saver_label, sizeof(ink_saver_label), "Eco%d", ink_saver_percent);
+                snprintf(ink_saver_desc, sizeof(ink_saver_desc), "Eco%d (%d%% ahorro)", ink_saver_percent, ink_saver_percent);
+            }
+        } else if (*p_saver == '-' || (*p_saver >= '0' && *p_saver <= '9')) {
+            long val = strtol(p_saver, NULL, 10);
+            if (val < 0) val = 0;
+            else if (val > 75) val = 75;
+            ink_saver_percent = (int)val;
+            if (val == 0) {
+                ink_saver_mode = 0;
+                snprintf(ink_saver_label, sizeof(ink_saver_label), "Off");
+                snprintf(ink_saver_desc, sizeof(ink_saver_desc), "Desactivado");
+            } else if (val == 25) {
+                ink_saver_mode = 1;
+                snprintf(ink_saver_label, sizeof(ink_saver_label), "Eco25");
+                snprintf(ink_saver_desc, sizeof(ink_saver_desc), "Eco25 (nivel raster 1)");
+            } else if (val == 50) {
+                ink_saver_mode = 2;
+                snprintf(ink_saver_label, sizeof(ink_saver_label), "Eco50");
+                snprintf(ink_saver_desc, sizeof(ink_saver_desc), "Eco50 (nivel raster 2)");
+            } else if (val == 75) {
+                ink_saver_mode = 3;
+                snprintf(ink_saver_label, sizeof(ink_saver_label), "Eco75");
+                snprintf(ink_saver_desc, sizeof(ink_saver_desc), "Eco75 (nivel raster 3)");
+            } else {
+                ink_saver_mode = 6;
+                snprintf(ink_saver_label, sizeof(ink_saver_label), "Eco%d", ink_saver_percent);
+                snprintf(ink_saver_desc, sizeof(ink_saver_desc), "Eco%d (%d%% ahorro)", ink_saver_percent, ink_saver_percent);
+            }
+        }
+    }
 
     int eco_color_drop = 0;
     if (strstr(options, "HPEcoColorDrop=DropColorBg") || strstr(options, "color_drop=bg")) eco_color_drop = 1;
@@ -529,11 +632,7 @@ int main(int argc, char *argv[]) {
         int apply_density = (fabsf(page_density - 1.0f) >= 0.001f || gamma_curve_mode == 1 || gamma_curve_mode == 2);
         int is_vivid = (gamma_curve_mode == 3);
 
-        const char *sm_dbg = (ink_saver_mode == 1) ? "Eco25" :
-                             (ink_saver_mode == 2) ? "Eco50" :
-                             (ink_saver_mode == 3) ? "Eco75" :
-                             (ink_saver_mode == 4) ? "EdgePreserve" :
-                             (ink_saver_mode == 5) ? "DotGainGrid" : "Off";
+        const char *sm_dbg = ink_saver_label;
         const char *cd_dbg = (eco_color_drop == 1) ? "DropColorBg" :
                              (eco_color_drop == 2) ? "EcoGrayscale" : "None";
 
@@ -802,9 +901,9 @@ int main(int argc, char *argv[]) {
             }
 
             /* Procesamiento ecológico InkSaver & ColorDrop */
-            if (ink_saver_mode > 0 || eco_color_drop > 0) {
+            if (ink_saver_percent > 0 || ink_saver_mode > 0 || eco_color_drop > 0) {
                 apply_ink_saver_pro(cur_row, (y > 0) ? seed_row : NULL, width, y,
-                                    ink_saver_mode, eco_color_drop,
+                                    ink_saver_percent, ink_saver_mode, eco_color_drop,
                                     &page_input_ink, &page_saved_ink);
             }
 
@@ -856,13 +955,9 @@ int main(int argc, char *argv[]) {
         fwrite(GRAPHICS_END, 1, strlen(GRAPHICS_END), stdout);
         fwrite(PAGE_EJECT, 1, strlen(PAGE_EJECT), stdout);
 
-        if (ink_saver_mode > 0 || eco_color_drop > 0) {
+        if (ink_saver_percent > 0 || ink_saver_mode > 0 || eco_color_drop > 0) {
             double pct = (page_input_ink > 0) ? ((double)page_saved_ink * 100.0 / (double)page_input_ink) : 0.0;
-            const char *sm_name = (ink_saver_mode == 1) ? "Eco25 (nivel raster 1)" :
-                                  (ink_saver_mode == 2) ? "Eco50 (nivel raster 2)" :
-                                  (ink_saver_mode == 3) ? "Eco75 (nivel raster 3)" :
-                                  (ink_saver_mode == 4) ? "EdgePreserve (bordes preservados)" :
-                                  (ink_saver_mode == 5) ? "DotGainGrid (Micro-perforado Dot-Gain)" : "Desactivado";
+            const char *sm_name = ink_saver_desc;
             const char *cd_name = (eco_color_drop == 1) ? "DropColorBg (Fondo Web/Diapositivas Eliminado)" :
                                   (eco_color_drop == 2) ? "EcoGrayscale (Escala Grises Eco)" : "Ninguno";
             fprintf(stderr, "INFO: [rastertopcl3gui] InkSaver: Pagina %d (Modo: %s, ColorDrop: %s) -> Reduccion raster estimada (no tinta fisica): %.1f%%\n",

@@ -57,6 +57,14 @@ public struct MainSplitView: View {
                     ) {
                         Label(SidebarSection.ink.rawValue, systemImage: SidebarSection.ink.icon)
                     }
+
+                    NavigationLink(
+                        destination: InkSaverCenterView(printer: printer),
+                        tag: SidebarSection.inkSaver,
+                        selection: navigationSelection
+                    ) {
+                        Label(SidebarSection.inkSaver.rawValue, systemImage: SidebarSection.inkSaver.icon)
+                    }
                 }
 
                 Section(header: Text("Mantenimiento y Uso").font(.caption.weight(.bold))) {

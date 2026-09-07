@@ -82,6 +82,13 @@ public struct PrintCenterView: View {
                             .controlSize(.regular)
                             .disabled(!isHardwareReady)
                             .help(isHardwareReady ? "Envía la página de prueba oficial CUPS" : "Requiere impresora física conectada por USB")
+
+                            Button(action: { printer.selectedSection = .inkSaver }) {
+                                Label("Ahorro InkSaver…", systemImage: "leaf.fill")
+                            }
+                            .buttonStyle(.bordered)
+                            .controlSize(.regular)
+                            .help("Ajustar ahorro raster y presets de tinta GT51/GT52/GT53")
                         }
                     }
                     .padding(DesignTokens.Spacing.md)
@@ -114,6 +121,30 @@ public struct PrintCenterView: View {
                                     .foregroundColor(.secondary)
                             }
                             .padding(.top, 4)
+
+                            Divider()
+                                .padding(.vertical, 4)
+
+                            HStack {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text("Tecnología InkSaver")
+                                        .font(DesignTokens.Fonts.captionBold)
+                                    Text("Control de atenuación raster continuo, simulador comparativo y predeterminado CUPS.")
+                                        .font(DesignTokens.Fonts.caption)
+                                        .foregroundColor(.secondary)
+                                }
+
+                                Spacer()
+
+                                Button(action: {
+                                    printer.selectedSection = .inkSaver
+                                }) {
+                                    Label("Abrir InkSaver Center", systemImage: "leaf.fill")
+                                }
+                                .buttonStyle(.borderedProminent)
+                                .controlSize(.regular)
+                            }
+                            .padding(.top, 2)
                         }
                         .padding(.vertical, 8)
                     }
