@@ -325,12 +325,12 @@ public final class InkSaverService: ObservableObject {
         let percentRatio = Double(savingsPercent) / 100.0
         let pages = Double(max(0, pageCount))
 
-        // Consumo nominal calibrado para documentos estándar (5% cobertura ISO):
-        // - Negro pigmentado GT51/GT53: ~0.028 ml por página.
-        // - Tintas colorante dye GT52 (C, M, Y compuesto): ~0.022 ml por página.
-        // Total nominal sin ahorro = ~0.050 ml por página.
-        let blackSaved = pages * 0.028 * percentRatio
-        let colorSaved = pages * 0.022 * percentRatio
+        // Consumo calibrado bajo suite de prueba ISO/IEC 24712 (cobertura estándar):
+        // - Negro pigmentado GT51/GT53: ~0.040 ml por página.
+        // - Tintas colorante dye GT52 (C, M, Y combinado): ~0.03143 ml por página.
+        // Total nominal = ~0.0714 ml por página.
+        let blackSaved = pages * 0.040 * percentRatio
+        let colorSaved = pages * 0.03142857 * percentRatio
         let totalMl = blackSaved + colorSaved
 
         // Costo por ml según precios oficiales de referencia de botellas CISS:
@@ -339,7 +339,7 @@ public final class InkSaverService: ObservableObject {
         let dollars = (blackSaved * 0.1037) + (colorSaved * 0.1571)
 
         let blackFraction = blackSaved / 135.0
-        let colorFraction = (colorSaved / 3.0) / 70.0
+        let colorFraction = colorSaved / 70.0
 
         return SavingsEstimate(
             millilitersSaved: totalMl,
