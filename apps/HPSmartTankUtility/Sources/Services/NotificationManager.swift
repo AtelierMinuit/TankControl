@@ -6,6 +6,7 @@ public final class NotificationManager {
     public static let shared = NotificationManager()
 
     private var activeAlertKeys = Set<String>()
+    private let lock = NSLock()
 
     private init() {}
 
@@ -18,8 +19,13 @@ public final class NotificationManager {
     }
 
     public func notifyOnce(key: String, title: String, body: String) {
-        guard !activeAlertKeys.contains(key) else { return }
+        lock.lock()
+        if activeAlertKeys.contains(key) {
+            lock.unlock()
+            return
+        }
         activeAlertKeys.insert(key)
+        lock.unlock()
 
         let content = UNMutableNotificationContent()
         content.title = title
@@ -35,10 +41,14 @@ public final class NotificationManager {
     }
 
     public func clearKey(_ key: String) {
+        lock.lock()
+        defer { lock.unlock() }
         activeAlertKeys.remove(key)
     }
 
     public func clearAll() {
+        lock.lock()
+        defer { lock.unlock() }
         activeAlertKeys.removeAll()
     }
 }

@@ -6,12 +6,12 @@ public struct StatusView: View {
 
     public var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: DesignTokens.Spacing.lg) {
+            VStack(alignment: .leading, spacing: DesignTokens.Spacing.md) {
                 // Cabecera
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Tinta")
                         .font(DesignTokens.Fonts.title)
-                    Text("Niveles estimados de los cuatro depósitos.")
+                    Text("Niveles estimados de los cuatro depósitos y especificaciones CISS.")
                         .font(DesignTokens.Fonts.caption)
                         .foregroundColor(.secondary)
                 }
@@ -19,12 +19,12 @@ public struct StatusView: View {
                 Divider()
 
                 // MARK: - Depósitos CISS Compactos
-                VStack(alignment: .leading, spacing: DesignTokens.Spacing.sm) {
+                VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {
                     HStack {
-                        Text("Depósitos")
+                        Text("Depósitos CISS")
                             .font(DesignTokens.Fonts.sectionHeader)
                         Spacer()
-                        Text("Estimación por conteo de gotas")
+                        Text("Estimación por conteo de microgotas")
                             .font(DesignTokens.Fonts.caption)
                             .foregroundColor(.secondary)
                     }
@@ -37,7 +37,7 @@ public struct StatusView: View {
                                 title: "Sin Lectura de Depósitos",
                                 message: "Conecta la impresora vía USB para consultar los niveles de tinta."
                             )
-                            .frame(minHeight: 140)
+                            .frame(minHeight: 130)
                         } else {
                             ForEach(printer.supplies.sorted { (["K", "C", "M", "Y"].firstIndex(of: $0.code) ?? 4) < (["K", "C", "M", "Y"].firstIndex(of: $1.code) ?? 4) }) { item in
                                 InkTankGauge(item: item)
@@ -55,20 +55,90 @@ public struct StatusView: View {
 
                     // Aviso de verificación física en ventana frontal
                     HStack(alignment: .top, spacing: 6) {
-                        Image(systemName: "eye")
+                        Image(systemName: "eye.fill")
                             .font(.caption)
                             .foregroundColor(.secondary)
-                        Text("Comprueba el nivel real en los depósitos transparentes de la impresora. Estos valores son estimaciones.")
+                        Text("Comprueba visualmente el nivel en los depósitos transparentes de la impresora. La lectura de software es una estimación.")
                             .font(DesignTokens.Fonts.caption)
                             .foregroundColor(.secondary)
                     }
-                    .padding(.top, 4)
+                    .padding(.top, 2)
                 }
 
-                Text("Los detalles técnicos están disponibles en Desarrollo.")
-                    .font(.callout).foregroundColor(.secondary)
+                // MARK: - Referencia de Botellas de Repuesto CISS
+                VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {
+                    Text("Botellas de Repuesto Compatibles")
+                        .font(DesignTokens.Fonts.sectionHeader)
+
+                    HStack(spacing: DesignTokens.Spacing.sm) {
+                        // Negro
+                        HStack(spacing: 8) {
+                            Circle()
+                                .fill(Color.black)
+                                .frame(width: 8, height: 8)
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text("Negro (K)")
+                                    .font(DesignTokens.Fonts.captionBold)
+                                Text("HP GT53XL (135 ml) / GT51")
+                                    .font(DesignTokens.Fonts.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(DesignTokens.Spacing.sm)
+                        .background(DesignTokens.Colors.surfaceGrouped)
+                        .cornerRadius(DesignTokens.Radii.small)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: DesignTokens.Radii.small)
+                                .stroke(DesignTokens.Colors.border, lineWidth: 1)
+                        )
+
+                        // Colores
+                        HStack(spacing: 8) {
+                            HStack(spacing: 2) {
+                                Circle().fill(DesignTokens.Colors.inkCyan).frame(width: 4, height: 4)
+                                Circle().fill(DesignTokens.Colors.inkMagenta).frame(width: 4, height: 4)
+                                Circle().fill(DesignTokens.Colors.inkYellow).frame(width: 4, height: 4)
+                            }
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text("Colores (C, M, Y)")
+                                    .font(DesignTokens.Fonts.captionBold)
+                                Text("HP GT52 (70 ml c/u)")
+                                    .font(DesignTokens.Fonts.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(DesignTokens.Spacing.sm)
+                        .background(DesignTokens.Colors.surfaceGrouped)
+                        .cornerRadius(DesignTokens.Radii.small)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: DesignTokens.Radii.small)
+                                .stroke(DesignTokens.Colors.border, lineWidth: 1)
+                        )
+                    }
+                }
+
+                HStack(spacing: DesignTokens.Spacing.sm) {
+                    Button("Ajustar Ahorro en InkSaver Center…") {
+                        printer.selectedSection = .inkSaver
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.regular)
+
+                    Spacer()
+
+                    Button("Ver actividad de la impresora") {
+                        printer.selectedSection = .activity
+                    }
+                    .buttonStyle(.link)
+                    .font(DesignTokens.Fonts.caption)
+                }
+                .padding(.top, 4)
             }
-            .padding(DesignTokens.Spacing.xl)
+            .padding(DesignTokens.Spacing.md)
+            .frame(maxWidth: 960, alignment: .leading)
+            .frame(maxWidth: .infinity, alignment: .top)
         }
     }
 }

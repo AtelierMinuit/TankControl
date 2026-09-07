@@ -62,11 +62,25 @@ public final class ProcessRunner {
             }
             timer.resume()
 
-            process.waitUntilExit()
-            timer.cancel()
+            let group = DispatchGroup()
+            var stdoutData = Data()
+            var stderrData = Data()
 
-            let stdoutData = stdoutPipe.fileHandleForReading.readDataToEndOfFile()
-            let stderrData = stderrPipe.fileHandleForReading.readDataToEndOfFile()
+            group.enter()
+            DispatchQueue.global(qos: .userInitiated).async {
+                stdoutData = stdoutPipe.fileHandleForReading.readDataToEndOfFile()
+                group.leave()
+            }
+
+            group.enter()
+            DispatchQueue.global(qos: .userInitiated).async {
+                stderrData = stderrPipe.fileHandleForReading.readDataToEndOfFile()
+                group.leave()
+            }
+
+            process.waitUntilExit()
+            group.wait()
+            timer.cancel()
 
             let stdoutStr = String(data: stdoutData, encoding: .utf8) ?? ""
             let stderrStr = String(data: stderrData, encoding: .utf8) ?? ""

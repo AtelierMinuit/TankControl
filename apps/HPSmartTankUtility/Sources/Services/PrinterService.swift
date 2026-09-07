@@ -9,28 +9,39 @@ public final class PrinterService: ObservableObject {
 
     public init() {}
 
-    /// Envía una página de prueba CUPS a la impresora configurada
-    public func sendTestPage() -> Result<String, Error> {
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/usr/bin/lp")
-        // Nombre de cola estándar creada por el instalador
-        process.arguments = ["-d", "HP_Smart_Tank_500", "/usr/share/cups/data/testprint"]
-        let pipe = Pipe()
-        process.standardOutput = pipe
-        process.standardError = pipe
-
-        do {
-            try process.run()
-            process.waitUntilExit()
-            let data = pipe.fileHandleForReading.readDataToEndOfFile()
-            let out = String(data: data, encoding: .utf8) ?? ""
-            if process.terminationStatus == 0 {
-                return .success("Página de prueba enviada a la cola CUPS (HP_Smart_Tank_500).")
-            } else {
-                return .failure(NSError(domain: "PrinterService", code: Int(process.terminationStatus), userInfo: [NSLocalizedDescriptionKey: out.isEmpty ? "No se pudo enviar trabajo a CUPS" : out]))
+    /// Envía una página de prueba CUPS a la impresora configurada de forma asíncrona
+    public func sendTestPageAsync(completion: @escaping (Result<String, Error>) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let res = ProcessRunner.shared.run(
+                executableURL: URL(fileURLWithPath: "/usr/bin/lp"),
+                arguments: ["-d", "HP_Smart_Tank_500", "/usr/share/cups/data/testprint"]
+            )
+            DispatchQueue.main.async {
+                if res.isSuccess {
+                    completion(.success("Página de prueba enviada a la cola CUPS (HP_Smart_Tank_500)."))
+                } else {
+                    let out = res.stderr.isEmpty ? res.stdout : res.stderr
+                    completion(.failure(NSError(
+                        domain: "PrinterService",
+                        code: Int(res.exitCode),
+                        userInfo: [NSLocalizedDescriptionKey: out.isEmpty ? "No se pudo enviar trabajo a CUPS" : out]
+                    )))
+                }
             }
-        } catch {
-            return .failure(error)
+        }
+    }
+
+    /// Versión síncrona delegada a ProcessRunner seguro
+    public func sendTestPage() -> Result<String, Error> {
+        let res = ProcessRunner.shared.run(
+            executableURL: URL(fileURLWithPath: "/usr/bin/lp"),
+            arguments: ["-d", "HP_Smart_Tank_500", "/usr/share/cups/data/testprint"]
+        )
+        if res.isSuccess {
+            return .success("Página de prueba enviada a la cola CUPS (HP_Smart_Tank_500).")
+        } else {
+            let out = res.stderr.isEmpty ? res.stdout : res.stderr
+            return .failure(NSError(domain: "PrinterService", code: Int(res.exitCode), userInfo: [NSLocalizedDescriptionKey: out.isEmpty ? "No se pudo enviar trabajo a CUPS" : out]))
         }
     }
 

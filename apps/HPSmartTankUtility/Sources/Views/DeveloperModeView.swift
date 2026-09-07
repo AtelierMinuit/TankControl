@@ -11,7 +11,7 @@ public struct DeveloperModeView: View {
 
     public var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: DesignTokens.Spacing.lg) {
+            VStack(alignment: .leading, spacing: DesignTokens.Spacing.md) {
                 // Cabecera
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
@@ -134,7 +134,7 @@ public struct DeveloperModeView: View {
                     }
                 }
             }
-            .padding(DesignTokens.Spacing.xl)
+            .padding(DesignTokens.Spacing.md)
             .frame(maxWidth: 900, alignment: .leading)
             .frame(maxWidth: .infinity, alignment: .leading)
         }

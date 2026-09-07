@@ -96,6 +96,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if let outPath = capturePath {
             let delay: Double = 2.0
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                try? FileManager.default.removeItem(atPath: outPath)
                 let wid = self.window.windowNumber
                 let proc = Process()
                 proc.executableURL = URL(fileURLWithPath: "/usr/sbin/screencapture")

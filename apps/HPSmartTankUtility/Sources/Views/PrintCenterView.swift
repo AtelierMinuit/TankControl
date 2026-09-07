@@ -12,7 +12,7 @@ public struct PrintCenterView: View {
 
     public var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: DesignTokens.Spacing.lg) {
+            VStack(alignment: .leading, spacing: DesignTokens.Spacing.md) {
                 // MARK: - Cabecera
                 HStack(alignment: .firstTextBaseline) {
                     VStack(alignment: .leading, spacing: 2) {
@@ -54,7 +54,7 @@ public struct PrintCenterView: View {
                                         .cornerRadius(3)
                                 }
 
-                                Text("URI: usb://HP/Smart%20Tank%20500%20series?serial=CN1924S1W7")
+                                Text("URI: usb://HP/Smart%20Tank%20500%20series")
                                     .font(DesignTokens.Fonts.mono)
                                     .foregroundColor(.secondary)
 
@@ -157,7 +157,7 @@ public struct PrintCenterView: View {
                     )
                 }
             }
-            .padding(DesignTokens.Spacing.xl)
+            .padding(DesignTokens.Spacing.md)
             .frame(maxWidth: 960, alignment: .leading)
             .frame(maxWidth: .infinity, alignment: .top)
         }
@@ -169,17 +169,23 @@ public struct PrintCenterView: View {
     }
 
     private func openCupsQueue() {
+        if let settingsUrl = URL(string: "x-apple.systempreferences:com.apple.Print-Scan-Settings.extension"),
+           NSWorkspace.shared.open(settingsUrl) {
+            return
+        }
         let url = URL(fileURLWithPath: "/System/Library/PreferencePanes/PrintAndScan.prefPane")
         NSWorkspace.shared.open(url)
     }
 
     private func triggerTestPage() {
-        switch service.sendTestPage() {
-        case .success(let value):
-            message = value
-        case .failure(let error):
-            message = error.localizedDescription
+        service.sendTestPageAsync { result in
+            switch result {
+            case .success(let value):
+                message = value
+            case .failure(let error):
+                message = error.localizedDescription
+            }
+            showingResult = true
         }
-        showingResult = true
     }
 }

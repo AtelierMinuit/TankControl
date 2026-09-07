@@ -12,7 +12,7 @@ public struct MaintenanceView: View {
 
     public var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: DesignTokens.Spacing.lg) {
+            VStack(alignment: .leading, spacing: DesignTokens.Spacing.md) {
                 // Cabecera
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Mantenimiento")
@@ -63,6 +63,7 @@ public struct MaintenanceView: View {
 
                         Button(action: { printer.nozzleTest() }) {
                             Text("Imprimir Patrón")
+                                .frame(width: 135)
                         }
                         .buttonStyle(.borderedProminent)
                         .controlSize(.regular)
@@ -102,8 +103,9 @@ public struct MaintenanceView: View {
 
                             Spacer()
 
-                            Button("Limpiar Cabezales") {
-                                printer.cleanHeads()
+                            Button(action: { printer.cleanHeads() }) {
+                                Text("Limpiar Cabezales")
+                                    .frame(width: 135)
                             }
                             .buttonStyle(.bordered)
                             .controlSize(.regular)
@@ -133,8 +135,9 @@ public struct MaintenanceView: View {
 
                             Spacer()
 
-                            Button("Alinear Cabezales") {
-                                printer.alignHeads()
+                            Button(action: { printer.alignHeads() }) {
+                                Text("Alinear Cabezales")
+                                    .frame(width: 135)
                             }
                             .buttonStyle(.bordered)
                             .controlSize(.regular)
@@ -164,8 +167,9 @@ public struct MaintenanceView: View {
 
                             Spacer()
 
-                            Button("Limpiar Rodillos") {
-                                printer.cleanRollers()
+                            Button(action: { printer.cleanRollers() }) {
+                                Text("Limpiar Rodillos")
+                                    .frame(width: 135)
                             }
                             .buttonStyle(.bordered)
                             .controlSize(.regular)
@@ -211,7 +215,8 @@ public struct MaintenanceView: View {
                         Spacer()
 
                         Button(action: { showingDeepCleanConfirmation = true }) {
-                            Text("Iniciar Limpieza Profunda...")
+                            Text("Limpieza Nivel 2...")
+                                .frame(width: 135)
                         }
                         .buttonStyle(.bordered)
                         .controlSize(.regular)
@@ -226,7 +231,7 @@ public struct MaintenanceView: View {
                     )
                 }
             }
-            .padding(DesignTokens.Spacing.xl)
+            .padding(DesignTokens.Spacing.md)
             .frame(maxWidth: 960, alignment: .leading)
             .frame(maxWidth: .infinity, alignment: .top)
         }

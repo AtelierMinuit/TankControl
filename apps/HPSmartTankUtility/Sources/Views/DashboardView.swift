@@ -32,25 +32,9 @@ public struct DashboardView: View {
         }
     }
 
-    private var sourceBadgeText: String {
-        if printer.connectionState.isConnected {
-            return "LIVE"
-        } else {
-            return "DESCONECTADA"
-        }
-    }
-
-    private var sourceBadgeColor: Color {
-        if printer.connectionState.isConnected {
-            return .green
-        } else {
-            return .secondary
-        }
-    }
-
     public var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: DesignTokens.Spacing.lg) {
+            VStack(alignment: .leading, spacing: DesignTokens.Spacing.md) {
                 // MARK: - Tarjeta de Decisión Rápida (<10 segundos)
                 VStack(alignment: .leading, spacing: DesignTokens.Spacing.md) {
                     VStack(alignment: .leading, spacing: 12) {
@@ -68,6 +52,7 @@ public struct DashboardView: View {
                                 Text(statusTitle)
                                     .font(DesignTokens.Fonts.headline)
                                     .foregroundColor(.primary)
+                                    .lineLimit(1)
 
                                 Text("•")
                                     .foregroundColor(.secondary)
@@ -75,9 +60,8 @@ public struct DashboardView: View {
                                 Text(printer.connectionState.isConnected ? "Conectada por USB" : "Sin conexión")
                                     .font(DesignTokens.Fonts.callout)
                                     .foregroundColor(.secondary)
+                                    .lineLimit(1)
                             }
-
-
                         }
 
                         // MARK: - 3 Botones de Acción Inmediata
@@ -196,7 +180,7 @@ public struct DashboardView: View {
                 Button("Ver actividad de la impresora") { printer.selectedSection = .activity }
                     .buttonStyle(.link)
             }
-            .padding(DesignTokens.Spacing.xl)
+            .padding(DesignTokens.Spacing.md)
             .frame(maxWidth: 960, alignment: .leading)
             .frame(maxWidth: .infinity, alignment: .top)
         }

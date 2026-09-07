@@ -77,8 +77,21 @@ public final class ScannerService: ObservableObject {
         let tempJpgURL = downloadsDir.appendingPathComponent("\(baseFilename).jpg")
 
         let modeArg = (selectedColorMode == .grayscale) ? "gray" : "color"
-        let width = (selectedPaperSize == .photo) ? 1200 : 2480
-        let height = (selectedPaperSize == .photo) ? 1800 : 3508
+        let widthInches: Double
+        let heightInches: Double
+        switch selectedPaperSize {
+        case .a4:
+            widthInches = 8.27
+            heightInches = 11.69
+        case .letter:
+            widthInches = 8.50
+            heightInches = 11.00
+        case .photo:
+            widthInches = 4.00
+            heightInches = 6.00
+        }
+        let width = max(100, Int(widthInches * Double(dpi)))
+        let height = max(100, Int(heightInches * Double(dpi)))
 
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
@@ -107,6 +120,19 @@ public final class ScannerService: ObservableObject {
                             try? FileManager.default.removeItem(at: tempJpgURL)
                             self.lastScanResultURL = pdfURL
                             completion(.success(pdfURL))
+                            return
+                        }
+                    } else if self.selectedFormat == .png && !isPreview {
+                        // Convertir a PNG mediante sips
+                        let pngURL = downloadsDir.appendingPathComponent("\(baseFilename).png")
+                        let sipsRes = ProcessRunner.shared.run(
+                            executableURL: URL(fileURLWithPath: "/usr/bin/sips"),
+                            arguments: ["-s", "format", "png", tempJpgURL.path, "--out", pngURL.path]
+                        )
+                        if sipsRes.isSuccess && FileManager.default.fileExists(atPath: pngURL.path) {
+                            try? FileManager.default.removeItem(at: tempJpgURL)
+                            self.lastScanResultURL = pngURL
+                            completion(.success(pngURL))
                             return
                         }
                     }

@@ -124,6 +124,8 @@ public struct ScannerView: View {
                                         .foregroundColor(.secondary)
                                     Text(service.destinationFolder)
                                         .font(DesignTokens.Fonts.callout)
+                                        .lineLimit(1)
+                                        .truncationMode(.middle)
                                 }
                             }
                         }
@@ -175,7 +177,7 @@ public struct ScannerView: View {
                                 .foregroundColor(.green)
                         }
                     }
-                    .frame(width: 290)
+                    .frame(width: 250)
 
                     // Columna 2: Canvas de Vista Previa
                     VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {
@@ -240,12 +242,12 @@ public struct ScannerView: View {
                                 }
                             }
                         }
-                        .frame(minHeight: 280, maxHeight: 330)
+                        .frame(minHeight: 220, maxHeight: 260)
                         .frame(maxWidth: .infinity)
                     }
                 }
             }
-            .padding(DesignTokens.Spacing.xl)
+            .padding(DesignTokens.Spacing.md)
             .frame(maxWidth: 960, alignment: .leading)
             .frame(maxWidth: .infinity, alignment: .top)
         }

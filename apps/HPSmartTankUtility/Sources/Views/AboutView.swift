@@ -84,7 +84,7 @@ public struct AboutView: View {
                     .foregroundColor(.secondary.opacity(0.8))
                     .padding(.bottom, DesignTokens.Spacing.md)
             }
-            .padding(DesignTokens.Spacing.xl)
+            .padding(DesignTokens.Spacing.md)
             .frame(maxWidth: .infinity)
         }
     }

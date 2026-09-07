@@ -110,7 +110,7 @@ public final class JobHistoryStore: ObservableObject {
                 id: jobIdNum,
                 title: "Trabajo #\(jobIdNum) (PCL3GUI)",
                 user: user,
-                pages: max(1, sizeBytes / 120000),
+                pages: 1,
                 sizeBytes: sizeBytes,
                 state: .completed,
                 date: date

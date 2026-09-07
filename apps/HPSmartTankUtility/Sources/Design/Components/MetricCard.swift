@@ -44,6 +44,7 @@ public struct MetricCard: View {
                 .fixedSize(horizontal: false, vertical: true)
         }
         .padding(DesignTokens.Spacing.sm)
+        .frame(maxWidth: .infinity, minHeight: 68, alignment: .topLeading)
         .background(DesignTokens.Colors.surfaceGrouped)
         .cornerRadius(DesignTokens.Radii.medium)
         .overlay(

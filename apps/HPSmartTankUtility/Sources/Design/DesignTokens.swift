@@ -49,7 +49,16 @@ public enum DesignTokens {
         public static let secondaryText = Color.secondary
 
         // Tintas CISS (Aplicadas con estricta finalidad informativa)
-        public static let inkBlack = Color.black
+        public static let inkBlack = Color(NSColor(name: nil, dynamicProvider: { appearance in
+            appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+                ? NSColor(white: 0.85, alpha: 1.0)
+                : NSColor(white: 0.12, alpha: 1.0)
+        }))
+        public static let inkBlackFill = Color(NSColor(name: nil, dynamicProvider: { appearance in
+            appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+                ? NSColor(white: 0.30, alpha: 1.0)
+                : NSColor(white: 0.12, alpha: 1.0)
+        }))
         public static let inkCyan = Color(red: 0.0, green: 0.64, blue: 0.88)
         public static let inkMagenta = Color(red: 0.92, green: 0.0, blue: 0.55)
         public static let inkYellow = Color(red: 0.98, green: 0.80, blue: 0.05)
@@ -66,12 +75,24 @@ public enum DesignTokens {
         public static let statusWarning = statusAttention
         public static let statusOffline = statusUnavailable
 
-        // Superficies de Material Nativo macOS
-        public static let surfaceGrouped = Color(NSColor.controlBackgroundColor)
+        // Superficies de Material Nativo macOS con contraste enriquecido en Dark Mode
+        public static let surfaceGrouped = Color(NSColor(name: nil, dynamicProvider: { appearance in
+            appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+                ? NSColor(white: 0.18, alpha: 1.0)
+                : NSColor.controlBackgroundColor
+        }))
         public static let surfaceSubtle = Color(NSColor.windowBackgroundColor)
-        public static let cardBackground = Color(NSColor.controlBackgroundColor)
+        public static let cardBackground = surfaceGrouped
         public static let windowBackground = Color(NSColor.windowBackgroundColor)
-        public static let border = Color(NSColor.separatorColor)
-        public static let borderSubtle = Color(NSColor.separatorColor).opacity(0.6)
+        public static let border = Color(NSColor(name: nil, dynamicProvider: { appearance in
+            appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+                ? NSColor(white: 0.28, alpha: 0.8)
+                : NSColor.separatorColor
+        }))
+        public static let borderSubtle = Color(NSColor(name: nil, dynamicProvider: { appearance in
+            appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+                ? NSColor(white: 0.25, alpha: 0.6)
+                : NSColor.separatorColor.withAlphaComponent(0.6)
+        }))
     }
 }

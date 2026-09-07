@@ -102,7 +102,7 @@ public struct SettingsView: View {
                     )
                 }
             }
-            .padding(DesignTokens.Spacing.lg)
+            .padding(DesignTokens.Spacing.md)
         }
         .confirmationDialog("¿Mostrar herramientas de desarrollo?", isPresented: $showingDeveloperModeConfirmation, titleVisibility: .visible) {
             Button("Mostrar herramientas") { printer.developerMode = true }

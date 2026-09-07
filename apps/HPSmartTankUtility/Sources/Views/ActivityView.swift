@@ -38,7 +38,7 @@ public struct ActivityView: View {
 
     public var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: DesignTokens.Spacing.lg) {
+            VStack(alignment: .leading, spacing: DesignTokens.Spacing.md) {
                 // MARK: - Cabecera Principal
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
@@ -249,7 +249,7 @@ public struct ActivityView: View {
                     }
                 }
             }
-            .padding(DesignTokens.Spacing.xl)
+            .padding(DesignTokens.Spacing.md)
             .frame(maxWidth: 960, alignment: .leading)
             .frame(maxWidth: .infinity, alignment: .top)
         }

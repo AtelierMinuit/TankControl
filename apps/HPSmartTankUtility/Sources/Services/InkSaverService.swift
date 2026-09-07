@@ -73,8 +73,6 @@ public final class InkSaverService: ObservableObject {
     }
 
     @Published public var activeLevel: InkSaverLevel = .eco50
-    @Published public var pureBlackEnabled: Bool = true
-    @Published public var tacLimitPercent: Int = 260 // Total Area Coverage (200-300%)
 
     // Telemetría y estado de sincronización CUPS
     @Published public var isApplying: Bool = false

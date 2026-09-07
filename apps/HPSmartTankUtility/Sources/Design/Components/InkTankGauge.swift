@@ -25,24 +25,24 @@ public struct InkTankGauge: View {
                 // Nivel de tinta
                 let fillHeight = CGFloat(max(4, min(100, item.level))) * 0.70
                 RoundedRectangle(cornerRadius: 4)
-                    .fill(item.code == "K" ? Color(red: 0.16, green: 0.16, blue: 0.19) : item.color)
+                    .fill(item.code == "K" ? DesignTokens.Colors.inkBlackFill : item.color)
                     .overlay(
                         RoundedRectangle(cornerRadius: 4)
-                            .stroke(item.code == "K" ? Color.white.opacity(0.35) : Color.black.opacity(0.1), lineWidth: 1)
+                            .stroke(item.code == "K" ? Color.white.opacity(0.40) : Color.black.opacity(0.12), lineWidth: 1)
                     )
                     .frame(width: 36, height: fillHeight)
                     .padding(3)
 
                 // Línea de referencia de mínimo físico en depósito
                 Rectangle()
-                    .fill(Color.white.opacity(0.35))
+                    .fill(Color.white.opacity(0.40))
                     .frame(width: 38, height: 1)
                     .offset(y: -14)
 
                 // Símbolo de diferenciación accesible
                 Image(systemName: item.shapeSymbol)
                     .font(.system(size: 8, weight: .bold))
-                    .foregroundColor(item.code == "K" || item.code == "C" ? .white.opacity(0.9) : .black.opacity(0.8))
+                    .foregroundColor(item.code == "K" || item.code == "C" ? .white.opacity(0.95) : .black.opacity(0.85))
                     .offset(y: -6)
             }
 
@@ -59,8 +59,8 @@ public struct InkTankGauge: View {
 
             if item.level <= 15 {
                 Label("Bajo", systemImage: "exclamationmark.triangle.fill")
-                    .font(.system(size: 11, weight: .medium))
-                    .foregroundColor(.primary)
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundColor(.orange)
             }
 
         }

@@ -1,8 +1,11 @@
 import SwiftUI
 
 /// Comparador visual interactivo Antes/Después con tirador central.
-/// Muestra las barras de color comparativas recortadas por la máscara divisoria,
-/// sin textos dentro del área de corte para evitar cualquier corte o solapamiento.
+/// Simula con alta fidelidad una hoja de documento real impresa en papel común A4:
+/// - Muestra texto negro con contornos 100% K protegidos por el algoritmo EdgePreserve™.
+/// - Muestra gráficos e infografías CISS (Cian, Magenta, Amarillo) que atenúan su densidad
+///   según el porcentaje de ahorro seleccionado.
+/// - Un divisor vertical interactivo permite arrastrar y comparar la densidad original frente a la reducida.
 public struct VisualComparatorView: View {
     @Binding var sliderPosition: CGFloat // 0.0 (todo original) a 1.0 (todo eco)
     let savingsPercent: Int
@@ -27,61 +30,39 @@ public struct VisualComparatorView: View {
             let dividerX = width * sliderPosition
 
             let attenuation = Double(savingsPercent) / 100.0
-            let colorAlpha = max(0.20, 1.0 - (attenuation * 0.72))
+            let colorAlpha = max(0.22, 1.0 - (attenuation * 0.70))
 
             ZStack(alignment: .leading) {
-                // Lado Izquierdo: Vista Con InkSaver (Después)
-                ZStack {
-                    Color.white
+                // LADO IZQUIERDO: Vista Con InkSaver (Después - Tinta reducida)
+                documentSheet(isEco: true, colorAlpha: colorAlpha, height: height)
 
-                    HStack(alignment: .bottom, spacing: 16) {
-                        chartBar(label: "Q1", height: height * 0.44, color: Color.blue.opacity(colorAlpha))
-                        chartBar(label: "Q2", height: height * 0.68, color: DesignTokens.Colors.inkMagenta.opacity(colorAlpha * 0.92))
-                        chartBar(label: "Q3", height: height * 0.54, color: DesignTokens.Colors.inkYellow.opacity(min(1.0, colorAlpha * 1.05)))
-                        chartBar(label: "Q4", height: height * 0.76, color: DesignTokens.Colors.brandTeal.opacity(colorAlpha * 0.88))
-                        chartBar(label: "Meta", height: height * 0.60, color: Color.green.opacity(colorAlpha * 0.88))
-                    }
-                    .frame(maxWidth: .infinity, alignment: .center)
-                }
+                // LADO DERECHO: Vista Original 100% saturada (recortada por máscara)
+                documentSheet(isEco: false, colorAlpha: 1.0, height: height)
+                    .mask(
+                        HStack(spacing: 0) {
+                            Spacer()
+                            Rectangle()
+                                .frame(width: max(0, width - dividerX))
+                        }
+                    )
 
-                // Lado Derecho: Vista Original 100% saturada (recortada por máscara)
-                ZStack {
-                    Color.white
-
-                    HStack(alignment: .bottom, spacing: 16) {
-                        chartBar(label: "Q1", height: height * 0.44, color: Color.blue)
-                        chartBar(label: "Q2", height: height * 0.68, color: DesignTokens.Colors.inkMagenta)
-                        chartBar(label: "Q3", height: height * 0.54, color: DesignTokens.Colors.inkYellow)
-                        chartBar(label: "Q4", height: height * 0.76, color: DesignTokens.Colors.brandTeal)
-                        chartBar(label: "Meta", height: height * 0.60, color: Color.green)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .center)
-                }
-                .mask(
-                    HStack(spacing: 0) {
-                        Spacer()
-                        Rectangle()
-                            .frame(width: max(0, width - dividerX))
-                    }
-                )
-
-                // Divisor interactivo vertical
+                // Línea divisoria interactiva
                 Rectangle()
                     .fill(DesignTokens.Colors.brandTeal)
                     .frame(width: 2)
                     .offset(x: dividerX)
 
-                // Tirador central con icono de flechas
+                // Tirador central con icono de flechas izquierda/derecha
                 Circle()
                     .fill(Color.white)
-                    .frame(width: 22, height: 22)
-                    .shadow(color: Color.black.opacity(0.20), radius: 3, x: 0, y: 1)
+                    .frame(width: 24, height: 24)
+                    .shadow(color: Color.black.opacity(0.25), radius: 3, x: 0, y: 1)
                     .overlay(
                         Image(systemName: "arrow.left.and.right")
-                            .font(.system(size: 8.5, weight: .bold))
+                            .font(.system(size: 9, weight: .bold))
                             .foregroundColor(DesignTokens.Colors.brandTeal)
                     )
-                    .offset(x: dividerX - 11, y: height / 2 - 11)
+                    .offset(x: dividerX - 12, y: (height / 2) - 12)
                     .gesture(
                         DragGesture()
                             .onChanged { value in
@@ -90,34 +71,34 @@ public struct VisualComparatorView: View {
                             }
                     )
 
-                // Badges superpuestos en las esquinas superiores (fuera del rango de corte)
+                // Badges discretos en las esquinas superiores (completamente despejados del contenido)
                 VStack {
                     HStack {
                         Text("CON INKSAVER (\(savingsPercent)%)")
-                            .font(.system(size: 8, weight: .heavy))
-                            .padding(.horizontal, 5)
-                            .padding(.vertical, 2)
-                            .background(Color.black.opacity(0.65))
+                            .font(.system(size: 8, weight: .heavy, design: .rounded))
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2.5)
+                            .background(Color.black.opacity(0.72))
                             .foregroundColor(.white)
                             .cornerRadius(3)
-                            .padding(6)
+                            .padding(5)
 
                         Spacer()
 
                         Text("ORIGINAL (100%)")
-                            .font(.system(size: 8, weight: .heavy))
-                            .padding(.horizontal, 5)
-                            .padding(.vertical, 2)
-                            .background(Color.black.opacity(0.65))
+                            .font(.system(size: 8, weight: .heavy, design: .rounded))
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2.5)
+                            .background(Color.black.opacity(0.72))
                             .foregroundColor(.white)
                             .cornerRadius(3)
-                            .padding(6)
+                            .padding(5)
                     }
                     Spacer()
                 }
             }
         }
-        .frame(height: 86)
+        .frame(height: 116)
         .cornerRadius(DesignTokens.Radii.small)
         .overlay(
             RoundedRectangle(cornerRadius: DesignTokens.Radii.small)
@@ -125,45 +106,109 @@ public struct VisualComparatorView: View {
         )
     }
 
-    private func chartBar(label: String, height: CGFloat, color: Color) -> some View {
+    /// Renderizado de la hoja de documento de muestra
+    private func documentSheet(isEco: Bool, colorAlpha: Double, height: CGFloat) -> some View {
+        ZStack {
+            Color.white
+
+            VStack(alignment: .leading, spacing: 4) {
+                // Cabecera del documento simulado (Título y regla con margen para badges)
+                HStack(alignment: .firstTextBaseline) {
+                    Text("INFORME DE GESTIÓN CISS")
+                        .font(.system(size: 7.5, weight: .black))
+                        .foregroundColor(Color.black.opacity(0.88))
+
+                    Spacer()
+
+                    Text("HP SMART TANK 500")
+                        .font(.system(size: 6.8, weight: .bold, design: .monospaced))
+                        .foregroundColor(Color.black.opacity(0.60))
+                }
+                .padding(.top, 16) // Margen vertical para no solaparse jamás con los badges
+
+                Rectangle()
+                    .fill(Color.black.opacity(0.20))
+                    .frame(height: 0.8)
+
+                // Área de contenido con texto EdgePreserve 100% K y gráficos CISS
+                HStack(alignment: .top, spacing: 14) {
+                    // Columna izquierda: Líneas de texto tipográfico simulado (100% K)
+                    VStack(alignment: .leading, spacing: 3.5) {
+                        HStack(spacing: 3) {
+                            Text("EdgePreserve™:")
+                                .font(.system(size: 7, weight: .bold))
+                                .foregroundColor(.black)
+                            Text("Texto negro 100% K nítido")
+                                .font(.system(size: 6.8, weight: .semibold))
+                                .foregroundColor(Color.black.opacity(0.75))
+                        }
+
+                        // Líneas de párrafo simuladas
+                        RoundedRectangle(cornerRadius: 1)
+                            .fill(Color.black.opacity(0.80))
+                            .frame(width: 140, height: 2.2)
+
+                        RoundedRectangle(cornerRadius: 1)
+                            .fill(Color.black.opacity(0.80))
+                            .frame(width: 170, height: 2.2)
+
+                        RoundedRectangle(cornerRadius: 1)
+                            .fill(Color.black.opacity(0.80))
+                            .frame(width: 125, height: 2.2)
+
+                        RoundedRectangle(cornerRadius: 1)
+                            .fill(Color.black.opacity(0.80))
+                            .frame(width: 155, height: 2.2)
+                    }
+
+                    Spacer()
+
+                    // Columna derecha: Gráfico infográfico CISS (C, M, Y, K) con atenuación visual
+                    VStack(alignment: .trailing, spacing: 3) {
+                        Text("Distribución de Tinta")
+                            .font(.system(size: 6.8, weight: .bold))
+                            .foregroundColor(Color.black.opacity(0.70))
+
+                        HStack(alignment: .bottom, spacing: 6) {
+                            cissBar(label: "C", height: height * 0.32, color: DesignTokens.Colors.inkCyan.opacity(colorAlpha))
+                            cissBar(label: "M", height: height * 0.40, color: DesignTokens.Colors.inkMagenta.opacity(colorAlpha * 0.95))
+                            cissBar(label: "Y", height: height * 0.30, color: DesignTokens.Colors.inkYellow.opacity(min(1.0, colorAlpha * 1.05)))
+                            cissBar(label: "K", height: height * 0.44, color: Color.black.opacity(0.88)) // El texto y barras K se mantienen oscuros
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+        }
+    }
+
+    private func cissBar(label: String, height: CGFloat, color: Color) -> some View {
         VStack(spacing: 2) {
-            RoundedRectangle(cornerRadius: 2)
+            RoundedRectangle(cornerRadius: 1.5)
                 .fill(color)
-                .frame(width: 32, height: max(8, height))
+                .frame(width: 22, height: max(6, height))
             Text(label)
-                .font(.system(size: 7.5, weight: .bold))
-                .foregroundColor(.black.opacity(0.70))
+                .font(.system(size: 7, weight: .bold, design: .monospaced))
+                .foregroundColor(Color.black.opacity(0.65))
         }
     }
 }
 
-/// Centro de Ahorro Inteligente de Tinta InkSaver (Condensado en 3 Tarjetas Modulares).
+/// Centro de Ahorro Inteligente de Tinta InkSaver.
+/// Diseño ergonómico macOS HIG sin selectores redundantes ni datos sintéticos:
+/// - Graduación continua mediante una única línea de control (Slider) con saltos de 5%.
+/// - Comparador visual con simulación de documento impreso real y algoritmos EdgePreserve™.
+/// - Telemetría transparente CISS de botellas HP GT53/GT52 calculada sobre base estándar.
 public struct InkSaverCenterView: View {
     @ObservedObject var printer: PrinterManager
     @StateObject private var inkSaverService = InkSaverService()
     @State private var sliderPos: CGFloat = 0.5
-    @State private var estimatedAnnualPages: Double = 1200
 
-    // Estado del banner de retroalimentación de guardado en CUPS
+    // Estado del banner de retroalimentación al guardar en CUPS
     @State private var showSuccessBanner: Bool = false
     @State private var bannerMessage: String = ""
     @State private var bannerDismissWorkItem: DispatchWorkItem? = nil
-
-    private struct PresetCard: Identifiable {
-        let id: Int
-        let percent: Int
-        let title: String
-        let subtitle: String
-        let isRecommended: Bool
-    }
-
-    private let presetCards: [PresetCard] = [
-        PresetCard(id: 0, percent: 0, title: "0%", subtitle: "Off", isRecommended: false),
-        PresetCard(id: 1, percent: 20, title: "20%", subtitle: "Ligero", isRecommended: false),
-        PresetCard(id: 2, percent: 35, title: "35%", subtitle: "Óptimo", isRecommended: true),
-        PresetCard(id: 3, percent: 50, title: "50%", subtitle: "Eco", isRecommended: false),
-        PresetCard(id: 4, percent: 70, title: "70%", subtitle: "Borrador", isRecommended: false)
-    ]
 
     public init(printer: PrinterManager) {
         self.printer = printer
@@ -171,10 +216,10 @@ public struct InkSaverCenterView: View {
 
     public var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {
-                // MARK: - Cabecera Compacta en una sola fila (Título + Badge + Botón)
+            VStack(alignment: .leading, spacing: DesignTokens.Spacing.sm) {
+                // MARK: - Cabecera Compacta (Título + Sincronización CUPS + Botón de Aplicación)
                 HStack(alignment: .center, spacing: 10) {
-                    VStack(alignment: .leading, spacing: 1) {
+                    VStack(alignment: .leading, spacing: 2) {
                         Text("InkSaver Center")
                             .font(DesignTokens.Fonts.headline)
                         Text("Ahorro raster adaptativo con preservación de contornos tipográficos EdgePreserve™.")
@@ -259,61 +304,20 @@ public struct InkSaverCenterView: View {
                     ))
                 }
 
-                // MARK: - TARJETA 1: Selector de Nivel Compuesto InkSaver (~110pt)
-                VStack(alignment: .leading, spacing: 6) {
-                    // 1. Control segmentado unificado tipo cápsula para los 5 presets
-                    HStack(spacing: 2) {
-                        ForEach(presetCards) { card in
-                            let isSelected = inkSaverService.savingsPercent == card.percent
-                            Button(action: {
-                                withAnimation(.easeInOut(duration: 0.15)) {
-                                    inkSaverService.savingsPercent = card.percent
-                                }
-                            }) {
-                                HStack(spacing: 3) {
-                                    Text(card.title)
-                                        .font(.system(size: 11, weight: isSelected ? .bold : .semibold, design: .rounded))
-                                    Text(card.subtitle)
-                                        .font(.system(size: 10.5, weight: isSelected ? .bold : .regular))
-                                    if card.isRecommended {
-                                        Text("★")
-                                            .font(.system(size: 9, weight: .bold))
-                                            .foregroundColor(isSelected ? .green : .secondary)
-                                    }
-                                }
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 5)
-                                .background(
-                                    isSelected
-                                        ? zoneColor(for: card.percent).opacity(0.18)
-                                        : Color.clear
-                                )
-                                .foregroundColor(isSelected ? (card.percent == 0 ? .primary : zoneColor(for: card.percent)) : .secondary)
-                                .cornerRadius(6)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 6)
-                                        .stroke(
-                                            isSelected
-                                                ? zoneColor(for: card.percent).opacity(0.4)
-                                                : Color.clear,
-                                            lineWidth: 1
-                                        )
-                                )
-                            }
-                            .buttonStyle(.plain)
-                        }
+                // MARK: - TARJETA 1: Graduación Continua (La Línea Única de Porcentaje)
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
+                        Text("Graduación de Ahorro")
+                            .font(.system(size: 11, weight: .semibold))
+                        Spacer()
+                        Text("Ajuste raster continuo de 0% a 75%")
+                            .font(.system(size: 9.5))
+                            .foregroundColor(.secondary)
                     }
-                    .padding(3)
-                    .background(Color(NSColor.controlBackgroundColor))
-                    .cornerRadius(8)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(DesignTokens.Colors.borderSubtle, lineWidth: 1)
-                    )
 
-                    // 2. Fila de ajuste fino: Stepper compacto [-][+], Slider/Gauge coloreado y número destacado
-                    HStack(alignment: .center, spacing: 8) {
-                        // Stepper compacto agrupado [-] [+]
+                    // Fila de control: Steppers [-][+] + Slider de línea única + Badge Numérico
+                    HStack(alignment: .center, spacing: 10) {
+                        // Stepper de microajuste
                         HStack(spacing: 2) {
                             Button(action: {
                                 withAnimation(.easeInOut(duration: 0.12)) {
@@ -342,8 +346,8 @@ public struct InkSaverCenterView: View {
                             .disabled(inkSaverService.savingsPercent >= 75)
                         }
 
-                        // Slider central coloreado según la zona de ahorro
-                        VStack(spacing: 2) {
+                        // La línea continua del control deslizante
+                        VStack(spacing: 4) {
                             Slider(
                                 value: Binding<Double>(
                                     get: { Double(inkSaverService.savingsPercent) },
@@ -354,37 +358,27 @@ public struct InkSaverCenterView: View {
                             )
                             .accentColor(zoneColor(for: inkSaverService.savingsPercent))
 
-                            // Ticks minimalistas debajo de la barra: 0%, 20%, 35%, 50%, 70%
-                            GeometryReader { tickGeo in
-                                let tickWidth = tickGeo.size.width
-                                let ticks: [(percent: Int, label: String, isRecommended: Bool)] = [
-                                    (0, "0%", false),
-                                    (20, "20%", false),
-                                    (35, "35%", true),
-                                    (50, "50%", false),
-                                    (70, "70%", false)
-                                ]
-
-                                ZStack(alignment: .leading) {
-                                    ForEach(ticks, id: \.percent) { item in
-                                        let posX = tickWidth * CGFloat(item.percent) / 75.0
-                                        Text(item.label)
-                                            .font(.system(size: 8.5, weight: item.isRecommended ? .bold : .medium, design: .monospaced))
-                                            .foregroundColor(item.isRecommended ? .green : .secondary)
-                                            .position(x: min(max(posX, 10), tickWidth - 10), y: 5)
-                                    }
-                                }
+                            // Marcadores textuales claros debajo de la línea
+                            HStack {
+                                markerButton(label: "0% Apagado", targetPercent: 0)
+                                Spacer()
+                                markerButton(label: "20% Ligero", targetPercent: 20)
+                                Spacer()
+                                markerButton(label: "35% Óptimo ★", targetPercent: 35, isRecommended: true)
+                                Spacer()
+                                markerButton(label: "50% Económico", targetPercent: 50)
+                                Spacer()
+                                markerButton(label: "70% Borrador", targetPercent: 70)
                             }
-                            .frame(height: 10)
                         }
 
-                        // Número destacado al final (ej. "35% Equilibrado")
+                        // Indicador numérico principal destacado
                         VStack(alignment: .trailing, spacing: 1) {
                             HStack(alignment: .firstTextBaseline, spacing: 1) {
                                 Text("\(inkSaverService.savingsPercent)")
-                                    .font(.system(size: 18, weight: .bold, design: .rounded))
+                                    .font(.system(size: 20, weight: .bold, design: .rounded))
                                 Text("%")
-                                    .font(.system(size: 10, weight: .semibold, design: .rounded))
+                                    .font(.system(size: 11, weight: .semibold, design: .rounded))
                             }
                             .foregroundColor(zoneColor(for: inkSaverService.savingsPercent))
 
@@ -395,7 +389,7 @@ public struct InkSaverCenterView: View {
                         .frame(minWidth: 80, alignment: .trailing)
                     }
                 }
-                .padding(DesignTokens.Spacing.xs)
+                .padding(DesignTokens.Spacing.sm)
                 .background(DesignTokens.Colors.cardBackground)
                 .cornerRadius(DesignTokens.Radii.card)
                 .overlay(
@@ -403,13 +397,13 @@ public struct InkSaverCenterView: View {
                         .stroke(DesignTokens.Colors.borderSubtle, lineWidth: 1)
                 )
 
-                // MARK: - TARJETA 2: Comparador Visual Antes / Después + Métricas (~140pt)
+                // MARK: - TARJETA 2: Comparador Visual Antes / Después + Métricas de RIP
                 VStack(alignment: .leading, spacing: 6) {
                     HStack {
                         Text("Comparador Visual Antes / Después")
                             .font(.system(size: 11, weight: .semibold))
                         Spacer()
-                        Text("Arrastra el tirador central para contrastar la atenuación")
+                        Text("Arrastra el tirador central para contrastar la densidad")
                             .font(.system(size: 9.5))
                             .foregroundColor(.secondary)
                     }
@@ -419,20 +413,18 @@ public struct InkSaverCenterView: View {
                         savingsPercent: inkSaverService.savingsPercent
                     )
 
-                    // Fila horizontal compacta con las 3 métricas:
-                    // % Reducción: -35% | Delta Spooler: -119 KB | Nitidez: 100% K (Bordes Protegidos)
+                    // Métricas técnicas del motor de rasterización
                     HStack(spacing: 6) {
-                        // % Reducción
+                        // Reducción de cobertura
                         HStack(spacing: 3) {
                             Image(systemName: "percent")
                                 .font(.system(size: 9, weight: .bold))
                                 .foregroundColor(zoneColor(for: inkSaverService.savingsPercent))
                             (Text("Reducción: ").foregroundColor(.secondary) +
-                             Text("-\(inkSaverService.savingsPercent)%").bold())
+                             Text(inkSaverService.savingsPercent > 0 ? "-\(inkSaverService.savingsPercent)%" : "0%").bold())
                                 .font(.system(size: 9, design: .rounded))
                                 .foregroundColor(zoneColor(for: inkSaverService.savingsPercent))
                                 .lineLimit(1)
-                                .minimumScaleFactor(0.85)
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 4.5)
@@ -444,40 +436,37 @@ public struct InkSaverCenterView: View {
                                 .stroke(DesignTokens.Colors.borderSubtle, lineWidth: 1)
                         )
 
-                        // Delta Spooler
-                        let deltaKB = Int(Double(inkSaverService.savingsPercent) * 3.4)
-                        HStack(spacing: 3) {
-                            Image(systemName: "doc.fill")
-                                .font(.system(size: 9))
-                                .foregroundColor(.blue)
-                            (Text("Delta Spooler: ").foregroundColor(.secondary) +
-                             Text("-\(deltaKB) KB").bold())
-                                .font(.system(size: 9, design: .rounded))
-                                .foregroundColor(.blue)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.85)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 4.5)
-                        .padding(.horizontal, 6)
-                        .background(Color(NSColor.controlBackgroundColor))
-                        .cornerRadius(DesignTokens.Radii.small)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: DesignTokens.Radii.small)
-                                .stroke(DesignTokens.Colors.borderSubtle, lineWidth: 1)
-                        )
-
-                        // Nitidez
+                        // Algoritmo EdgePreserve
                         HStack(spacing: 3) {
                             Image(systemName: "checkmark.shield.fill")
                                 .font(.system(size: 9))
-                                .foregroundColor(inkSaverService.savingsPercent > 0 ? .green : .secondary)
-                            (Text("Nitidez: ").foregroundColor(.secondary) +
-                             Text("100% K (Bordes Protegidos)").bold())
+                                .foregroundColor(.green)
+                            (Text("Algoritmo: ").foregroundColor(.secondary) +
+                             Text("EdgePreserve™ (100% K)").bold())
                                 .font(.system(size: 8.5))
-                                .foregroundColor(inkSaverService.savingsPercent > 0 ? .primary : .secondary)
+                                .foregroundColor(.primary)
                                 .lineLimit(1)
-                                .minimumScaleFactor(0.85)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 4.5)
+                        .padding(.horizontal, 6)
+                        .background(Color(NSColor.controlBackgroundColor))
+                        .cornerRadius(DesignTokens.Radii.small)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: DesignTokens.Radii.small)
+                                .stroke(DesignTokens.Colors.borderSubtle, lineWidth: 1)
+                        )
+
+                        // Formato RIP
+                        HStack(spacing: 3) {
+                            Image(systemName: "gearshape.2.fill")
+                                .font(.system(size: 9))
+                                .foregroundColor(.blue)
+                            (Text("Filtro RIP: ").foregroundColor(.secondary) +
+                             Text("PCL3GUI Modo 10").bold())
+                                .font(.system(size: 8.5))
+                                .foregroundColor(.blue)
+                                .lineLimit(1)
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 4.5)
@@ -490,7 +479,7 @@ public struct InkSaverCenterView: View {
                         )
                     }
                 }
-                .padding(DesignTokens.Spacing.xs)
+                .padding(DesignTokens.Spacing.sm)
                 .background(DesignTokens.Colors.cardBackground)
                 .cornerRadius(DesignTokens.Radii.card)
                 .overlay(
@@ -498,34 +487,30 @@ public struct InkSaverCenterView: View {
                         .stroke(DesignTokens.Colors.borderSubtle, lineWidth: 1)
                 )
 
-                // MARK: - TARJETA 3: Calculadora de Ahorro CISS Compacta (~85pt)
+                // MARK: - TARJETA 3: Rendimiento CISS de Botellas HP GT53 y GT52
+                // Basado en cálculo ISO/IEC 24712 por cada 1.000 páginas estándar (sin sliders sintéticos)
                 VStack(alignment: .leading, spacing: 6) {
-                    HStack(spacing: 8) {
-                        Text("Volumen anual:")
+                    HStack {
+                        Text("Rendimiento CISS Proyectado")
                             .font(.system(size: 11, weight: .semibold))
-
-                        Slider(value: $estimatedAnnualPages, in: 100...10000, step: 100)
-                            .controlSize(.small)
-
-                        Text(formatPageCount(Int(estimatedAnnualPages)))
-                            .font(.system(size: 11, weight: .bold, design: .rounded))
+                        Spacer()
+                        Text("Base técnica: 1.000 páginas estándar (ISO/IEC 24712)")
+                            .font(.system(size: 9.5))
                             .foregroundColor(.secondary)
-                            .frame(minWidth: 76, alignment: .trailing)
                     }
 
-                    let savings = inkSaverService.calculateEstimatedSavings(pageCount: Int(estimatedAnnualPages))
+                    let savings = inkSaverService.calculateEstimatedSavings(pageCount: 1000)
 
                     HStack(spacing: 6) {
-                        // Negro GT51/GT53
+                        // Frasco Negro HP GT51 / GT53 (135 ml)
                         HStack(spacing: 4) {
                             Circle()
                                 .fill(Color.black)
                                 .frame(width: 6, height: 6)
-                            (Text("Negro GT51/GT53: ").foregroundColor(.secondary) +
-                             Text(String(format: "%.1f ml (%.0f%% frasco)", savings.blackMlSaved, savings.blackBottleFraction * 100.0)).bold())
+                            (Text("Negro GT53 (135ml): ").foregroundColor(.secondary) +
+                             Text(String(format: "%.1f ml", savings.blackMlSaved)).bold())
                                 .font(.system(size: 9, design: .rounded))
                                 .lineLimit(1)
-                                .minimumScaleFactor(0.85)
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.horizontal, 6)
@@ -537,18 +522,17 @@ public struct InkSaverCenterView: View {
                                 .stroke(DesignTokens.Colors.borderSubtle, lineWidth: 1)
                         )
 
-                        // Color GT52
+                        // Frascos Color HP GT52 (3 x 70 ml)
                         HStack(spacing: 4) {
                             HStack(spacing: 1.5) {
                                 Circle().fill(DesignTokens.Colors.inkCyan).frame(width: 3.5, height: 3.5)
                                 Circle().fill(DesignTokens.Colors.inkMagenta).frame(width: 3.5, height: 3.5)
                                 Circle().fill(DesignTokens.Colors.inkYellow).frame(width: 3.5, height: 3.5)
                             }
-                            (Text("Color GT52: ").foregroundColor(.secondary) +
-                             Text(String(format: "%.1f ml (%.0f%% frascos)", savings.colorMlSaved, savings.colorBottleFraction * 100.0)).bold())
+                            (Text("Color GT52 (70ml): ").foregroundColor(.secondary) +
+                             Text(String(format: "%.1f ml", savings.colorMlSaved)).bold())
                                 .font(.system(size: 9, design: .rounded))
                                 .lineLimit(1)
-                                .minimumScaleFactor(0.85)
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.horizontal, 6)
@@ -560,17 +544,16 @@ public struct InkSaverCenterView: View {
                                 .stroke(DesignTokens.Colors.borderSubtle, lineWidth: 1)
                         )
 
-                        // Ahorro Estimado USD
+                        // Ahorro Estimado en USD
                         HStack(spacing: 4) {
                             Image(systemName: "dollarsign.circle.fill")
                                 .foregroundColor(.green)
                                 .font(.system(size: 10.5))
-                            (Text("Ahorro Estimado: ").foregroundColor(.secondary) +
+                            (Text("Ahorro / 1.000 pág: ").foregroundColor(.secondary) +
                              Text(String(format: "$%.2f USD", savings.dollarsSaved)).bold())
                                 .font(.system(size: 9, design: .rounded))
                                 .foregroundColor(.green)
                                 .lineLimit(1)
-                                .minimumScaleFactor(0.85)
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.horizontal, 6)
@@ -583,7 +566,7 @@ public struct InkSaverCenterView: View {
                         )
                     }
                 }
-                .padding(DesignTokens.Spacing.xs)
+                .padding(DesignTokens.Spacing.sm)
                 .background(DesignTokens.Colors.cardBackground)
                 .cornerRadius(DesignTokens.Radii.card)
                 .overlay(
@@ -591,19 +574,19 @@ public struct InkSaverCenterView: View {
                         .stroke(DesignTokens.Colors.borderSubtle, lineWidth: 1)
                 )
 
-                // Nota técnica al pie
+                // Nota técnica transparente al pie
                 HStack(alignment: .center, spacing: 5) {
                     Image(systemName: "info.circle")
                         .foregroundColor(.secondary)
                         .font(.system(size: 9))
-                    Text("Estimación de cobertura de píxeles generada por software en buffer raster previo a compresión PCL3GUI Mode 10 en CUPS.")
+                    Text("Atenuación calculada en buffer raster RGB por el filtro CUPS rastertopcl3gui preservando bordes tipográficos.")
                         .font(.system(size: 9))
                         .foregroundColor(.secondary)
                 }
                 .padding(.horizontal, 4)
                 .padding(.top, 1)
             }
-            .padding(DesignTokens.Spacing.sm)
+            .padding(DesignTokens.Spacing.md)
         }
         .onAppear {
             inkSaverService.queryCupsSetting()
@@ -612,12 +595,19 @@ public struct InkSaverCenterView: View {
 
     // MARK: - Componentes y Métodos Auxiliares
 
-    private func formatPageCount(_ pages: Int) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.groupingSeparator = "."
-        let formatted = formatter.string(from: NSNumber(value: pages)) ?? "\(pages)"
-        return "\(formatted) pág/año"
+    private func markerButton(label: String, targetPercent: Int, isRecommended: Bool = false) -> some View {
+        let isCurrent = inkSaverService.savingsPercent == targetPercent
+        return Button(action: {
+            withAnimation(.easeInOut(duration: 0.15)) {
+                inkSaverService.savingsPercent = targetPercent
+            }
+        }) {
+            Text(label)
+                .font(.system(size: 8.5, weight: isCurrent ? .bold : (isRecommended ? .semibold : .regular), design: .rounded))
+                .foregroundColor(isCurrent ? zoneColor(for: targetPercent) : (isRecommended ? .green : .secondary))
+                .underline(isCurrent)
+        }
+        .buttonStyle(.plain)
     }
 
     private func applyCupsDefault() {
