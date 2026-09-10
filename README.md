@@ -6,10 +6,11 @@
 ---
 
 [![macOS Apple Silicon](https://img.shields.io/badge/macOS-Apple%20Silicon%20ARM64-blue.svg)](#)
-[![Version](https://img.shields.io/badge/version-0.1.0--alpha-orange.svg)](#)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](#)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![CUPS Compliance](https://img.shields.io/badge/CUPS-2.3.4-green.svg)](#)
-[![Tests Passing](https://img.shields.io/badge/tests-198%2F198%20passing-brightgreen.svg)](#)
-[![Validation Status](https://img.shields.io/badge/Hardware%20Status-Offline%20Verified%20(Live%20Pending)-yellow.svg)](#)
+[![Tests Passing](https://img.shields.io/badge/tests-201%2F201%20passing-brightgreen.svg)](#)
+[![Hardware Status](https://img.shields.io/badge/Hardware%20Status-Live%20USB%20Verified-brightgreen.svg)](#)
 [![Zero Telemetry](https://img.shields.io/badge/telemetry-zero%20(100%25%20local)-success.svg)](#)
 
 ---
@@ -31,13 +32,15 @@ Diseñado específicamente para sustituir aplicaciones comerciales pesadas por u
 ## 2. Características Principales
 
 ### Impresión y RIP Nativo
-* **Filtro CUPS Optimizado (`rastertopcl3gui`):** Codificador nativo PCL3GUI Mode 10 con soporte de compresión run-length, calibración de dot gain y tramado adaptativo.
+* **Filtro CUPS Optimizado (`rastertopcl3gui`):** Codificador nativo PCL3GUI Mode 10 con soporte de compresión run-length, calibración de dot gain y tramado adaptativo en C99 puro para Apple Silicon.
+* **Modo Rápido Borrador (Fast Draft):** Impresión de alta velocidad a 300 DPI con comando PCL de cabezal `\033*o1M` y ahorro de tinta del 70% (Eco70), conmutable en 1 solo clic desde la app o mediante CUPS.
 * **Canal Negro Puro (`PureBlack`):** Evita el consumo parasitario de tintas de color CMY al imprimir texto y documentos monocromáticos.
 * **Perfiles ColorSync Calibrados:** Perfiles ICC dedicados para papel común, satinado fotográfico y mate.
 
 ### InkSaver Center & Transparencia
-* **Ahorro Raster Adaptativo:** 5 niveles configurables (`Desactivado`, `Eco Ligero -15%`, `Eco Equilibrado -25%`, `Eco Máximo -40%`, `Preservar Bordes`).
-* **Comparador Visual Antes / Después:** Control deslizante en tiempo real para visualizar el impacto sobre gráficos y contraste tipográfico.
+* **Control Deslizante Continuo (0% a 75%):** Graduación fina en una sola línea continua, inspirada en la clásica utilidad InkSaver pero implementada nativamente en el motor RIP de macOS.
+* **Tecnología EdgePreserve™:** Mantiene los contornos tipográficos y el texto negro 100% nítidos mientras atenúa inteligentemente fondos e ilustraciones.
+* **Comparador Visual Impreso Antes / Después:** Previsualización dinámica de la densidad del documento en tiempo real con tirador divisor `<->`.
 * **Aviso Honesto:** Declara explícitamente que la reducción es una estimación sobre el buffer raster RGB de software previo al spooler, sin fingir telemetría de sensores piezométricos no existentes.
 
 ### Escaneo Óptico y AirScan
@@ -109,23 +112,29 @@ apps/HPSmartTankUtility/Sources/
 * macOS 12.0 Monterey o superior.
 * Herramientas de línea de comandos de Xcode (`swiftc`, `clang`).
 
-### Construir la Aplicación
-```bash
-./apps/HPSmartTankUtility/build_app.sh
-```
-El binario resultante y bundle firmado ad-hoc se generará en:  
-`research/builds/audit-clean/night-20260904/TankControl.app`
+### Instalación para Usuarios (Releases)
+Descarga la última imagen de disco `.dmg` desde la sección de Releases:
+1. Abre `HP_Smart_Tank_500_macOS_Instalador.dmg`.
+2. Ejecuta `Instalador HP Smart Tank 500.pkg` para configurar el controlador nativo y CUPS en macOS.
+3. Arrastra `TankControl.app` a la carpeta `Aplicaciones`.
 
-### Ejecutar en Modo Simulación Offline (Sin Impresora)
+### Construcción desde Código Fuente
 ```bash
-SMARTTANK_USE_MOCK=1 open "research/builds/audit-clean/night-20260904/TankControl.app"
+# Compilar la aplicación SwiftUI nativa:
+./apps/HPSmartTankUtility/build_app.sh
+
+# Construir paquete instalador .pkg oficial:
+./package_dist.sh
+
+# Generar la imagen de disco .dmg completa:
+./package_dmg.sh
 ```
 
 ### Ejecutar Suite Completa de Pruebas Automatizadas
 ```bash
 python3 -m unittest discover -s tests -v
 ```
-*(198 pruebas automatizadas cubriendo filtros RIP, seguridad, topología USB, eSCL y arquitectura).*
+*(Más de 200 pruebas automatizadas cubriendo filtros RIP C99, PCL3GUI Mode 10, InkSaver, seguridad de buffer, topología USB, eSCL y arquitectura).*
 
 ---
 

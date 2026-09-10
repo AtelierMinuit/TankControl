@@ -151,6 +151,17 @@ class TestInkSaverRIPEngine(unittest.TestCase):
         proc_low = subprocess.run(cmd_low, capture_output=True, check=True)
         self.assertEqual(proc_low.returncode, 0)
 
+    @unittest.skipUnless(SAMPLE_RASTER.exists(), "Requiere scratch/05-black-square.rgb.raster")
+    def test_output_mode_draft_and_normal_quality(self):
+        """Verifica que OutputMode=Draft emita comando PCL \033*o1M y OutputMode=Normal emita \033*o2M."""
+        cmd_draft = [str(FILTER_PATH), "1", "user", "doc", "1", "OutputMode=Draft", str(SAMPLE_RASTER)]
+        proc_draft = subprocess.run(cmd_draft, capture_output=True, check=True)
+        self.assertIn(b"\x1b*o1M", proc_draft.stdout)
+
+        cmd_normal = [str(FILTER_PATH), "1", "user", "doc", "1", "OutputMode=Normal", str(SAMPLE_RASTER)]
+        proc_normal = subprocess.run(cmd_normal, capture_output=True, check=True)
+        self.assertIn(b"\x1b*o2M", proc_normal.stdout)
+
 
 class TestAccountingAndSavings(unittest.TestCase):
     """Verifica el registro contable y financiero de ahorro de tinta."""

@@ -1,0 +1,38 @@
+name: TankControl CI
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  build-and-test:
+    name: Build & Test (macOS ARM64)
+    runs-on: macos-14
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install System Dependencies
+        run: |
+          brew install libusb
+
+      - name: Compile C RIP Filter (rastertopcl3gui)
+        run: |
+          clang -Wall -Wextra -O2 tools/rastertopcl3gui.c -lcups -o tools/rastertopcl3gui
+          chmod +x tools/rastertopcl3gui
+
+      - name: Run Python Automated Test Suite
+        run: |
+          python3 -m unittest discover -s tests
+
+      - name: Build TankControl macOS App
+        run: |
+          ./apps/HPSmartTankUtility/build_app.sh

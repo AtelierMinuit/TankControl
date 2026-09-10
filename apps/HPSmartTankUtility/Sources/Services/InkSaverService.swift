@@ -74,6 +74,10 @@ public final class InkSaverService: ObservableObject {
 
     @Published public var activeLevel: InkSaverLevel = .eco50
 
+    // Modo Rápido Borrador (Fast Draft: 300 DPI + PCL calidad 1 + Eco70)
+    @Published public var isFastDraftActive: Bool = false
+    @Published public var currentOutputMode: String = "Normal"
+
     // Telemetría y estado de sincronización CUPS
     @Published public var isApplying: Bool = false
     @Published public var isQuerying: Bool = false
@@ -167,11 +171,29 @@ public final class InkSaverService: ObservableObject {
             )
 
             var parsedPercent: Int? = nil
+            var parsedOutputMode: String? = nil
 
             if result.isSuccess {
                 let lines = result.stdout.components(separatedBy: .newlines)
                 for line in lines {
                     let trimmed = line.trimmingCharacters(in: .whitespaces)
+
+                    // Parsear OutputMode (Draft, Normal, Best, Photo)
+                    if trimmed.hasPrefix("OutputMode/") || trimmed.hasPrefix("*OutputMode/") || trimmed.contains("OutputMode") {
+                        if let colonIndex = trimmed.firstIndex(of: ":") {
+                            let optionsPart = trimmed[trimmed.index(after: colonIndex)...]
+                            let tokens = optionsPart.split(separator: " ")
+                            for token in tokens {
+                                if token.hasPrefix("*") {
+                                    let modeVal = String(token.dropFirst())
+                                    parsedOutputMode = modeVal
+                                    break
+                                }
+                            }
+                        }
+                    }
+
+                    // Parsear HPInkSaver
                     if trimmed.hasPrefix("HPInkSaver/") || trimmed.hasPrefix("*HPInkSaver/") || trimmed.contains("HPInkSaver") {
                         if let colonIndex = trimmed.firstIndex(of: ":") {
                             let optionsPart = trimmed[trimmed.index(after: colonIndex)...]
@@ -184,13 +206,12 @@ public final class InkSaverService: ObservableObject {
                                 }
                             }
                         }
-                        if parsedPercent != nil { break }
                     }
                 }
             }
 
             // 2. Si no se halló en -l, consultar opciones persistentes del usuario (lpoptions -p queueName)
-            if parsedPercent == nil {
+            if parsedPercent == nil || parsedOutputMode == nil {
                 let userResult = ProcessRunner.shared.run(
                     executableURL: lpoptionsURL,
                     arguments: ["-p", queueName],
@@ -199,10 +220,12 @@ public final class InkSaverService: ObservableObject {
                 if userResult.isSuccess {
                     let tokens = userResult.stdout.components(separatedBy: .whitespacesAndNewlines)
                     for token in tokens {
-                        if token.hasPrefix("HPInkSaver=") {
+                        if parsedOutputMode == nil && token.hasPrefix("OutputMode=") {
+                            parsedOutputMode = String(token.dropFirst("OutputMode=".count))
+                        }
+                        if parsedPercent == nil && token.hasPrefix("HPInkSaver=") {
                             let value = String(token.dropFirst("HPInkSaver=".count))
                             parsedPercent = self.parseOptionValue(value)
-                            break
                         }
                     }
                 }
@@ -210,12 +233,16 @@ public final class InkSaverService: ObservableObject {
 
             DispatchQueue.main.async {
                 self.isQuerying = false
+                if let mode = parsedOutputMode {
+                    self.currentOutputMode = mode
+                    self.isFastDraftActive = (mode.caseInsensitiveCompare("Draft") == .orderedSame)
+                }
                 if let percent = parsedPercent {
                     self.savingsPercent = percent
                     self.isCupsSynced = true
                     let opt = self.cupsOptionValue(for: percent)
                     self.lastAppliedOption = opt
-                    self.cupsStatusMessage = "Ajuste actual de CUPS: HPInkSaver=\(opt) (\(percent)%)"
+                    self.cupsStatusMessage = "Ajuste actual de CUPS: \(self.isFastDraftActive ? "Borrador Rápido" : "Calidad \(self.currentOutputMode)"), InkSaver=\(opt) (\(percent)%)"
                 }
                 completion?(parsedPercent)
             }
@@ -280,6 +307,68 @@ public final class InkSaverService: ObservableObject {
     public func applyCupsSettingAsync(queueName: String = "HP_Smart_Tank_500") async throws -> String {
         try await withCheckedThrowingContinuation { continuation in
             applyCupsSetting(queueName: queueName) { result in
+                switch result {
+                case .success(let msg):
+                    continuation.resume(returning: msg)
+                case .failure(let err):
+                    continuation.resume(throwing: err)
+                }
+            }
+        }
+    }
+
+    // MARK: - Modo Rápido Borrador (Fast Draft)
+
+    /// Activa o desactiva el Modo Rápido Borrador (OutputMode=Draft + Eco70) de forma persistente en CUPS
+    public func setFastDraftMode(
+        enabled: Bool,
+        queueName: String = "HP_Smart_Tank_500",
+        completion: ((Result<String, Error>) -> Void)? = nil
+    ) {
+        self.isApplying = true
+        let outputMode = enabled ? "Draft" : "Normal"
+        let inkSaverVal = enabled ? "Eco70" : cupsOptionValue(for: self.savingsPercent > 0 ? self.savingsPercent : 35)
+
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self = self else { return }
+            let lpoptionsURL = URL(fileURLWithPath: "/usr/bin/lpoptions")
+            let result = ProcessRunner.shared.run(
+                executableURL: lpoptionsURL,
+                arguments: ["-p", queueName, "-o", "OutputMode=\(outputMode)", "-o", "HPInkSaver=\(inkSaverVal)"],
+                timeoutSeconds: 8.0
+            )
+
+            DispatchQueue.main.async {
+                self.isApplying = false
+                if result.isSuccess {
+                    self.isFastDraftActive = enabled
+                    self.currentOutputMode = outputMode
+                    if enabled {
+                        self.savingsPercent = 70
+                    }
+                    self.isCupsSynced = true
+                    let msg = enabled ? "Modo Rápido Borrador activado (300 DPI • Eco70)" : "Modo Normal activado (600 DPI)"
+                    self.cupsStatusMessage = msg
+                    completion?(.success(msg))
+                } else {
+                    let errDesc = result.stderr.isEmpty ? "Error ejecutando lpoptions (código \(result.exitCode))" : result.stderr
+                    let error = NSError(
+                        domain: "InkSaverService",
+                        code: Int(result.exitCode),
+                        userInfo: [NSLocalizedDescriptionKey: errDesc]
+                    )
+                    self.cupsStatusMessage = "Error al configurar modo: \(errDesc)"
+                    completion?(.failure(error))
+                }
+            }
+        }
+    }
+
+    /// Variante async/await de setFastDraftMode
+    @discardableResult
+    public func setFastDraftModeAsync(enabled: Bool, queueName: String = "HP_Smart_Tank_500") async throws -> String {
+        try await withCheckedThrowingContinuation { continuation in
+            setFastDraftMode(enabled: enabled, queueName: queueName) { result in
                 switch result {
                 case .success(let msg):
                     continuation.resume(returning: msg)

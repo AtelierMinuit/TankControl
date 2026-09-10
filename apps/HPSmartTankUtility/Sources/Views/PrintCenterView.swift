@@ -3,6 +3,7 @@ import SwiftUI
 public struct PrintCenterView: View {
     @ObservedObject var printer: PrinterManager
     @StateObject private var service = PrinterService()
+    @StateObject private var inkSaverService = InkSaverService()
     @State private var message = ""
     @State private var showingResult = false
 
@@ -100,6 +101,84 @@ public struct PrintCenterView: View {
                     )
                 }
 
+                // MARK: - Modo Rápido Borrador (Fast Draft)
+                VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {
+                    HStack {
+                        Label("Modo Rápido Borrador", systemImage: "bolt.fill")
+                            .font(DesignTokens.Fonts.sectionHeader)
+                            .foregroundColor(inkSaverService.isFastDraftActive ? .orange : .primary)
+
+                        Spacer()
+
+                        if inkSaverService.isApplying {
+                            ProgressView()
+                                .controlSize(.small)
+                        } else {
+                            Text(inkSaverService.isFastDraftActive ? "● BORRADOR ACTIVO" : "○ MODO NORMAL")
+                                .font(.system(size: 10.5, weight: .bold))
+                                .foregroundColor(inkSaverService.isFastDraftActive ? .orange : .secondary)
+                                .padding(.horizontal, 7)
+                                .padding(.vertical, 2)
+                                .background(inkSaverService.isFastDraftActive ? Color.orange.opacity(0.14) : Color.secondary.opacity(0.10))
+                                .cornerRadius(DesignTokens.Radii.small)
+                        }
+                    }
+
+                    VStack(alignment: .leading, spacing: DesignTokens.Spacing.sm) {
+                        HStack(spacing: 12) {
+                            Image(systemName: inkSaverService.isFastDraftActive ? "hare.fill" : "doc.text.fill")
+                                .font(.system(size: 22))
+                                .foregroundColor(inkSaverService.isFastDraftActive ? .orange : .secondary)
+                                .frame(width: 40, height: 40)
+                                .background((inkSaverService.isFastDraftActive ? Color.orange : Color.secondary).opacity(0.12))
+                                .cornerRadius(DesignTokens.Radii.small)
+
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(inkSaverService.isFastDraftActive ? "Impresión de Alta Velocidad (300 DPI • Eco70)" : "Impresión de Calidad Estándar (600 DPI)")
+                                    .font(DesignTokens.Fonts.headline)
+
+                                Text(inkSaverService.isFastDraftActive
+                                     ? "El cabezal PCL opera en barrido rápido (Draft) con 70% de ahorro de tinta. Ideal para apuntes, textos y borradores inmediatos."
+                                     : "Resolución normal a 600 DPI para presentaciones y documentos formales. Activa el modo borrador para máxima velocidad.")
+                                    .font(DesignTokens.Fonts.caption)
+                                    .foregroundColor(.secondary)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                        }
+
+                        Divider()
+
+                        HStack(spacing: 10) {
+                            Button(action: {
+                                inkSaverService.setFastDraftMode(enabled: !inkSaverService.isFastDraftActive)
+                            }) {
+                                HStack(spacing: 6) {
+                                    Image(systemName: inkSaverService.isFastDraftActive ? "arrow.uturn.backward" : "bolt.fill")
+                                    Text(inkSaverService.isFastDraftActive ? "Volver a Calidad Normal" : "Activar Modo Rápido Borrador")
+                                }
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .tint(inkSaverService.isFastDraftActive ? .gray : .orange)
+                            .controlSize(.regular)
+                            .disabled(inkSaverService.isApplying)
+
+                            if !inkSaverService.cupsStatusMessage.isEmpty {
+                                Text(inkSaverService.cupsStatusMessage)
+                                    .font(DesignTokens.Fonts.caption)
+                                    .foregroundColor(.secondary)
+                                    .lineLimit(1)
+                            }
+                        }
+                    }
+                    .padding(DesignTokens.Spacing.md)
+                    .background(DesignTokens.Colors.surfaceGrouped)
+                    .cornerRadius(DesignTokens.Radii.small)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: DesignTokens.Radii.small)
+                            .stroke(inkSaverService.isFastDraftActive ? Color.orange.opacity(0.35) : DesignTokens.Colors.border, lineWidth: 1)
+                    )
+                }
+
                 // MARK: - Opciones de Controlador y Perfiles
                 VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {
                     Text("Configuración de Calidad y Medios")
@@ -165,6 +244,9 @@ public struct PrintCenterView: View {
             Button("Aceptar", role: .cancel) {}
         } message: {
             Text(message)
+        }
+        .onAppear {
+            inkSaverService.queryCupsSetting()
         }
     }
 

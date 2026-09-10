@@ -61,3 +61,12 @@ tmp/
 *.swp
 *~
 *.raster
+
+# Local non-repository folders and archives
+FUENTE_TECNICA*
+HP - *
+HP Smart Tank 500 - *
+HP-SmartTank-Audit*
+research/ui-review/round-3/
+research/ui-review/pure-hardware-20260906/
+research/ui-review/*.png

@@ -265,16 +265,22 @@ if [ -x /usr/libexec/cups/backend/smarttank ]; then
     DEVICE_URI="smarttank://HP/Smart%20Tank%20500%20series"
 fi
 
-# Registrar cola en CUPS sólo si no existe; no mutar una cola ajena silenciosamente.
+# Registrar o actualizar cola en CUPS con el PPD nativo Apple Silicon
 if lpstat -p "HP_Smart_Tank_500" >/dev/null 2>&1; then
-    echo "La cola HP_Smart_Tank_500 ya existe; se preserva y no se sobrescribe."
+    echo "Actualizando PPD de la cola HP_Smart_Tank_500 al driver nativo Apple Silicon..."
+    lpadmin -p "HP_Smart_Tank_500" \
+        -P "$PPD" \
+        -D "HP Smart Tank 500 (Nativo Apple Silicon)" \
+        -L "Local USB" \
+        -E || true
 else
+    echo "Creando cola HP_Smart_Tank_500..."
     lpadmin -p "HP_Smart_Tank_500" \
         -v "$DEVICE_URI" \
         -P "$PPD" \
         -D "HP Smart Tank 500 (Nativo Apple Silicon)" \
         -L "Local USB" \
-        -E
+        -E || true
 fi
 
 # Cargar LaunchAgents de AirScan local y AirPrint LAN para el usuario activo.

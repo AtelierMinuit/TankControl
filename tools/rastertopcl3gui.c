@@ -515,6 +515,12 @@ int main(int argc, char *argv[]) {
     else if (strstr(options, "HPWatermark=Copy") || strstr(options, "watermark=copy")) watermark_text = "COPIA";
     else if (strstr(options, "HPWatermark=Sample") || strstr(options, "watermark=sample")) watermark_text = "MUESTRA";
 
+    int cli_output_mode = -1; /* -1 = auto de raster header; 1 = Draft, 2 = Normal, 3 = Best, 4 = Photo */
+    if (strstr(options, "OutputMode=Draft") || strstr(options, "outputmode=draft") || strstr(options, "quality=draft")) cli_output_mode = 1;
+    else if (strstr(options, "OutputMode=Normal") || strstr(options, "outputmode=normal")) cli_output_mode = 2;
+    else if (strstr(options, "OutputMode=Best") || strstr(options, "outputmode=best")) cli_output_mode = 3;
+    else if (strstr(options, "OutputMode=Photo") || strstr(options, "outputmode=photo")) cli_output_mode = 4;
+
     int ink_saver_mode = 0;
     int ink_saver_percent = 0;
     char ink_saver_label[32] = "Off";
@@ -708,7 +714,11 @@ int main(int argc, char *argv[]) {
 
         /* 2. Determinar calidad de impresión PCL (Draft=1, Normal=2, Best=3, Photo=4) */
         int quality_cmd = 2; /* Normal */
-        if (header.OutputType[0] == '1') {
+        if (cli_output_mode > 0) {
+            quality_cmd = cli_output_mode;
+        } else if (header.OutputType[0] == '3' || dpi <= 300) {
+            quality_cmd = 1; /* Draft / Borrador Rápido */
+        } else if (header.OutputType[0] == '1') {
             quality_cmd = 3; /* Best */
         } else if (header.OutputType[0] == '2' || dpi >= 1200 || header.cupsMediaType == 5 || header.cupsMediaType == 8) {
             quality_cmd = 4; /* Photo */
