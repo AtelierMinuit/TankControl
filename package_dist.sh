@@ -320,7 +320,7 @@ pkgbuild \
     --filter '(^|/)\.DS_Store$' \
     --filter '(^|/)(\.svn|CVS)(/|$)' \
     --identifier "com.hp.smarttank500.driver.applesilicon" \
-    --version "0.1.0-alpha" \
+    --version "1.1.0" \
     --install-location "/" \
     "${OUT_PKG}"
 

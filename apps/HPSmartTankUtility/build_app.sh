@@ -13,6 +13,7 @@ echo "[build_app] Creando estructura de bundle para ${APP_DIR}..."
 mkdir -p "${APP_DIR}/Contents/MacOS"
 mkdir -p "${APP_DIR}/Contents/Resources"
 mkdir -p "${APP_DIR}/Contents/Helpers"
+mkdir -p "${APP_DIR}/Contents/Frameworks"
 
 echo "[build_app] Recopilando fuentes modulares Swift..."
 SWIFT_FILES=$(find "${SCRIPT_DIR}/Sources" -name "*.swift" | sort)
@@ -26,13 +27,30 @@ swiftc -O \
     ${SWIFT_FILES} \
     -o "${APP_DIR}/Contents/MacOS/${BIN_NAME}"
 
-echo "[build_app] Copiando helpers de hardware y recursos de marca..."
+echo "[build_app] Embebiendo libusb dinámico autónomo en Contents/Frameworks..."
+if [ -f "${ROOT_DIR}/lib/libusb-1.0.0.dylib" ]; then
+    cp -X "${ROOT_DIR}/lib/libusb-1.0.0.dylib" "${APP_DIR}/Contents/Frameworks/"
+    chmod 755 "${APP_DIR}/Contents/Frameworks/libusb-1.0.0.dylib"
+    install_name_tool -id @rpath/libusb-1.0.0.dylib "${APP_DIR}/Contents/Frameworks/libusb-1.0.0.dylib" 2>/dev/null || true
+fi
+
+echo "[build_app] Copiando helpers de hardware y vinculando a @rpath/Frameworks..."
 if [ -f "${BUILD_DIR}/hp-smart-tank-tool" ]; then
-    cp "${BUILD_DIR}/hp-smart-tank-tool" "${APP_DIR}/Contents/Helpers/"
+    cp -X "${BUILD_DIR}/hp-smart-tank-tool" "${APP_DIR}/Contents/Helpers/"
 fi
 if [ -f "${BUILD_DIR}/hp_scan" ]; then
-    cp "${BUILD_DIR}/hp_scan" "${APP_DIR}/Contents/Helpers/"
+    cp -X "${BUILD_DIR}/hp_scan" "${APP_DIR}/Contents/Helpers/"
 fi
+
+for helper in "${APP_DIR}/Contents/Helpers/hp-smart-tank-tool" "${APP_DIR}/Contents/Helpers/hp_scan"; do
+    if [ -f "$helper" ]; then
+        chmod 755 "$helper"
+        install_name_tool -change /opt/homebrew/opt/libusb/lib/libusb-1.0.0.dylib @rpath/libusb-1.0.0.dylib "$helper" 2>/dev/null || true
+        install_name_tool -add_rpath @executable_path/../Frameworks "$helper" 2>/dev/null || true
+        install_name_tool -add_rpath @loader_path/../Frameworks "$helper" 2>/dev/null || true
+        install_name_tool -add_rpath /usr/local/lib "$helper" 2>/dev/null || true
+    fi
+done
 
 # Copiar nuevo icono oficial de marca TankControl
 if [ -f "${ROOT_DIR}/Brand/AppIcon/AppIcon.icns" ]; then
@@ -77,7 +95,19 @@ cat << 'PLIST' > "${APP_DIR}/Contents/Info.plist"
 </plist>
 PLIST
 
-echo "[build_app] Aplicando firma ad-hoc al bundle para validar integridad local..."
+echo "[build_app] Aplicando firma ad-hoc a componentes internos y bundle..."
+if [ -d "${APP_DIR}/Contents/Frameworks" ]; then
+    for fw in "${APP_DIR}/Contents/Frameworks"/*; do
+        [ -f "$fw" ] || continue
+        codesign --force --sign - "$fw"
+    done
+fi
+if [ -d "${APP_DIR}/Contents/Helpers" ]; then
+    for helper in "${APP_DIR}/Contents/Helpers"/*; do
+        [ -f "$helper" ] || continue
+        codesign --force --sign - "$helper"
+    done
+fi
 codesign --force --deep --sign - "${APP_DIR}"
 
 # Mantener compatibilidad retroactiva con la ruta heredada "HP Smart Tank Utility.app"

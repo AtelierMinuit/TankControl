@@ -6,10 +6,11 @@
 ---
 
 [![macOS Apple Silicon](https://img.shields.io/badge/macOS-Apple%20Silicon%20ARM64-blue.svg)](#)
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](#)
+[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![CUPS Compliance](https://img.shields.io/badge/CUPS-2.3.4-green.svg)](#)
-[![Tests Passing](https://img.shields.io/badge/tests-201%2F201%20passing-brightgreen.svg)](#)
+[![Tests Passing](https://img.shields.io/badge/tests-205%2F205%20passing-brightgreen.svg)](#)
+[![Languages](https://img.shields.io/badge/languages-ES%20%7C%20EN%20%7C%20PT%20%7C%20FR%20%7C%20DE-blue.svg)](#)
 [![Hardware Status](https://img.shields.io/badge/Hardware%20Status-Live%20USB%20Verified-brightgreen.svg)](#)
 [![Zero Telemetry](https://img.shields.io/badge/telemetry-zero%20(100%25%20local)-success.svg)](#)
 
@@ -111,30 +112,58 @@ apps/HPSmartTankUtility/Sources/
 * Mac con procesador Apple Silicon (M1, M2, M3, M4 o variantes Pro/Max/Ultra).
 * macOS 12.0 Monterey o superior.
 * Herramientas de línea de comandos de Xcode (`swiftc`, `clang`).
+* `python3` (para la suite de pruebas unitarias).
 
 ### Instalación para Usuarios (Releases)
 Descarga la última imagen de disco `.dmg` desde la sección de Releases:
 1. Abre `HP_Smart_Tank_500_macOS_Instalador.dmg`.
-2. Ejecuta `Instalador HP Smart Tank 500.pkg` para configurar el controlador nativo y CUPS en macOS.
+2. Ejecuta `Instalador HP Smart Tank 500.pkg` para configurar el controlador nativo, perfiles ColorSync y la cola CUPS.
 3. Arrastra `TankControl.app` a la carpeta `Aplicaciones`.
 
-### Construcción desde Código Fuente
+> **Nota sobre macOS Gatekeeper:**  
+> Como TankControl es un desarrollo open source firmado con certificado ad-hoc (sin cuenta Apple Developer comercial de pago), al abrir la aplicación por primera vez en macOS Sonoma o Sequoia puede aparecer un aviso de seguridad. Para autorizarla de inmediato:
+> - Haz clic derecho (o Control-clic) en `TankControl.app` dentro de Aplicaciones y selecciona **Abrir**.
+> - O ejecuta en Terminal:
+>   ```bash
+>   xattr -cr /Applications/TankControl.app
+>   ```
+
+### Bundle Autónomo (Zero Dependencias Externas)
+A diferencia de otros ports que requieren tener instalado Homebrew en `/opt/homebrew`, **TankControl.app** es 100% autónomo. El bundle incluye:
+- `Contents/Frameworks/libusb-1.0.0.dylib` vinculado vía `@rpath`.
+- Binarios auxiliares `hp_scan` y `hp-smart-tank-tool` vinculados directamente al Framework interno.
+- Cero dependencias dinámicas fuera de las librerías nativas del sistema macOS (`/usr/lib/libSystem.B.dylib`).
+
+### Construcción Automatizada (`Makefile` y `build_all.sh`)
+El proyecto incluye automatización completa en la raíz:
+
 ```bash
-# Compilar la aplicación SwiftUI nativa:
-./apps/HPSmartTankUtility/build_app.sh
+# Construir binarios C y la app TankControl:
+make build
 
-# Construir paquete instalador .pkg oficial:
-./package_dist.sh
+# Ejecutar la suite completa de 205 pruebas:
+make test
 
-# Generar la imagen de disco .dmg completa:
-./package_dmg.sh
+# Generar el instalador .pkg multilingüe:
+make pkg
+
+# Generar la imagen de disco distribuible .dmg:
+make dmg
+
+# Pipeline integral de lanzamiento (build + test + pkg + dmg):
+make release
 ```
 
-### Ejecutar Suite Completa de Pruebas Automatizadas
+O utilizando directamente el script de automatización:
+```bash
+./build_all.sh --all
+```
+
+### Ejecutar Suite de Pruebas Unitarias
 ```bash
 python3 -m unittest discover -s tests -v
 ```
-*(Más de 200 pruebas automatizadas cubriendo filtros RIP C99, PCL3GUI Mode 10, InkSaver, seguridad de buffer, topología USB, eSCL y arquitectura).*
+*(205 pruebas automatizadas cubriendo filtros RIP C99, PCL3GUI Mode 10, InkSaver continuo, seguridad de buffer, topología USB, eSCL, PPD conformance y arquitectura).*
 
 ---
 

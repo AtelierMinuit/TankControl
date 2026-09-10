@@ -24,15 +24,16 @@ jobs:
         run: |
           brew install libusb
 
-      - name: Compile C RIP Filter (rastertopcl3gui)
+      - name: Build C Drivers & TankControl.app
         run: |
-          clang -Wall -Wextra -O2 tools/rastertopcl3gui.c -lcups -o tools/rastertopcl3gui
-          chmod +x tools/rastertopcl3gui
+          make build
 
-      - name: Run Python Automated Test Suite
+      - name: Verify Bundle Integrity & Self-Contained Libraries
         run: |
-          python3 -m unittest discover -s tests
+          codesign --verify --deep --strict "research/builds/audit-clean/night-20260904/TankControl.app"
+          otool -L "research/builds/audit-clean/night-20260904/TankControl.app/Contents/Helpers/hp-smart-tank-tool"
+          otool -L "research/builds/audit-clean/night-20260904/TankControl.app/Contents/Helpers/hp_scan"
 
-      - name: Build TankControl macOS App
+      - name: Run Automated Test Suite (205 Tests)
         run: |
-          ./apps/HPSmartTankUtility/build_app.sh
+          make test

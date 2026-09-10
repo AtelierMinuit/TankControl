@@ -12,33 +12,38 @@ Requirements:
 
 ## Building
 
-To build the native SwiftUI application and helper tools:
+You can build all C drivers and the SwiftUI app in one command:
 ```bash
-./apps/HPSmartTankUtility/build_app.sh
-```
-
-To compile the C RIP filter:
-```bash
-clang -Wall -Wextra -O2 tools/rastertopcl3gui.c -lcups -o tools/rastertopcl3gui
+make build
+# or: ./build_all.sh --binaries --app
 ```
 
 ## Running Tests
 
-Run the comprehensive test suite:
+Run the comprehensive 205-test suite:
 ```bash
-python3 -m unittest discover -s tests
+make test
+# or: python3 -m unittest discover -s tests
 ```
 
 ## Creating Installable Packages
 
-- Official Installer Package (.pkg):
+- Official Multi-Language Installer Package (.pkg):
   ```bash
-  ./package_dist.sh
+  make pkg
+  # or: ./package_dist.sh
   ```
 
-- Disk Image (.dmg):
+- Official Disk Image (.dmg):
   ```bash
-  ./package_dmg.sh
+  make dmg
+  # or: ./package_dmg.sh
+  ```
+
+- Complete Release Pipeline:
+  ```bash
+  make release
+  # or: ./build_all.sh --all
   ```
 
 ## Code Guidelines
