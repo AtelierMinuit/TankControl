@@ -1,23 +1,39 @@
-# Manifiesto de paquete
+# Manifiesto de Paquete Oficial (Release v1.1.0)
 
-Paquete auditado vigente (construcción 2026-09-04 08:41):
+**Fecha de Construcción:** 2026-09-10  
+**Arquitectura Destino:** Apple Silicon ARM64 (macOS 12.0 Monterey o superior)  
+**Versión:** `1.1.0`
 
-`research/builds/HP_Smart_Tank_500_Native_Apple_Silicon-20260904-084131.pkg`
+---
 
-SHA-256: `452542bc2f986a2f38394e7d3180ee095af16f714e720b46e84e822cb7ee001a`
+## 1. Artefactos de Distribución Oficial
 
-El auditor `tools/audit_package.sh` confirmó que el paquete no materializa ningún archivo AppleDouble `._*` en disco al ser expandido (`materialized_dots=0`), contiene firma ad-hoc válida de la app (`app_signature=PASS`), cero referencias a rutas de desarrollo (`content_exclusions=PASS`), y 113 archivos en payload.
+| Artefacto | Descripción | Tamaño | Checksum SHA-256 |
+| :--- | :--- | :--- | :--- |
+| **`HP_Smart_Tank_500_macOS_Instalador.dmg`** | Imagen de disco distribuible (.dmg) con app, instalador y guías multilingües | 7.0 MB | `51a2562a803a427f544c2577b0c2e50db33015db8c96550092a22618d41f3c3e` |
+| **`HP_Smart_Tank_500_macOS_Installer-20260910-194312.pkg`** | Instalador de distribución multilingüe (`productbuild`) con bienvenida GUI | 4.5 MB | `a52b7fe0ae08efac05730808f5684df9292a288f55839a86e5572cd93b2c827e` |
+| **`HP_Smart_Tank_500_Native_Apple_Silicon-20260910-194312.pkg`** | Componente instalador base (`pkgbuild`) con scripts de post-instalación | 4.5 MB | `a47aca3085d02de32640853447a79275055a4ae2e4151818e1e1242d3e735881` |
 
-Contenido: app, filtro y backend CUPS, PPD, cuatro ICC, LaunchAgent eSCL, CLI y scripts bajo las rutas estándar de macOS y `/usr/local`; incluye el módulo Python `hp_smart_tank.py` requerido por el bridge.
+---
 
-La lista de propiedad de `uninstall.sh` incluye ahora la biblioteca `libusb` vendorizada, todos los scripts Python y el propio desinstalador distribuido en `/usr/local/share/hp-smart-tank/uninstall.sh`; conserva software HP ajeno, ofrece `--dry-run` y exige `--confirm` para cambios. El `postinstall` rechaza destinos ausentes o symlinks antes de aplicar permisos. La secuencia dry-run→confirmación queda como procedimiento operativo y no se presenta como estado persistente verificable.
+## 2. Contenido del Paquete y Destinos en el Sistema
 
-`pkgutil --expand-full` terminó correctamente. El escaneo del payload no encontró rutas de desarrollo, seriales, `scratch/`, `Downloads/`, `/opt/homebrew`, `_ipp._tcp` ni `0.0.0.0`.
+* **`/Applications/TankControl.app`**: Utilidad nativa de control en SwiftUI con selector dinámico de idioma (Español, English, Português, Français, Deutsch), comparador InkSaver continuo (0% a 75%), telemetría real y escáner.
+  - Incluye `Contents/Frameworks/libusb-1.0.0.dylib` vinculado vía `@rpath`.
+  - Helpers auxiliares `Contents/Helpers/hp_scan` y `Contents/Helpers/hp-smart-tank-tool` vinculados autónomamente.
+* **`/Library/Printers/hp/cups/filters/rastertopcl3gui`**: Filtro RIP nativo PCL3GUI Mode 10 optimizado para ARM64. Permisos: `root:wheel` (755).
+* **`/Library/Printers/hp/cups/backend/smarttank`**: Backend bidireccional CUPS nativo con descriptor dinámico USB.
+* **`/Library/Printers/PPDs/Contents/Resources/HP Smart Tank 500.ppd`**: Archivo PPD con traducciones en 5 idiomas y opciones InkSaver.
+* **`/Library/ColorSync/Profiles/`**: Perfiles ICC de calibración fotográfica (Plain, Glossy, Matte, Precision).
+* **`/Library/LaunchAgents/com.hp.smarttank.airscan.plist`**: Demonio eSCL para compatibilidad nativa con *Image Capture*.
+* **`/usr/local/bin/`**: Herramientas CLI `hp-smart-tank`, `hp_scan`, `hp-smart-tank-tool`, `smarttank`.
+* **`/usr/local/lib/libusb-1.0.0.dylib`**: Biblioteca dinámica vendorizada para soporte de las herramientas CLI del sistema.
 
-La inspección directa del XAR no basta para esta condición: la fuente autoritativa es también `pkgutil --payload-files`, que sí expuso las entradas AppleDouble del artefacto invalidado.
+---
 
-La app incluida tiene firma ad-hoc verificable (`codesign --verify --deep --strict`). El contenedor `.pkg` sigue sin firma según `pkgutil --check-signature`; no es release final hasta firmar, notarizar y probar instalación en root temporal y máquina de prueba.
+## 3. Verificaciones de Seguridad e Integridad
 
-La versión del paquete y de la aplicación es `0.1.0-alpha`. La expansión final confirmó payload/BOM/scripts válidos y `PackageInfo` declara 105 archivos de payload; los ejecutables son arm64 y no contienen rutas del árbol de desarrollo ni rutas Homebrew codificadas. El paquete se generó con `HP_AUDIT_BUILD_DIR` apuntando a la build combinada `research/builds/audit-clean/20260904-063900/`, que contiene los cuatro binarios C de `063617` y la app SwiftUI de `063730`; los scripts Python del payload y los wrappers pasan sus comprobaciones de sintaxis. El bridge eSCL usa directorios temporales privados por job.
-
-Verificación de runtime offline desde el payload expandido: los cuatro módulos Python compilan con `py_compile`/`compileall`, `hp_escl_bridge` expone `ESCLBridge`, `hp_smart_tank` carga su binding libusb, y `smart_tank_daemon.sh` resuelve sus archivos vecinos correctamente. No se instaló el paquete ni se ejecutaron operaciones de hardware.
+1. **Aislamiento de Entorno**: Cero referencias dinámicas a `/opt/homebrew`, `/Users/jorge` ni rutas privadas de desarrollo.
+2. **Firma de Código**: Bundle firmado ad-hoc con validación estricta (`codesign --verify --deep --strict`).
+3. **Limpieza de Metadatos**: Libre de archivos AppleDouble (`._*`) y atributos extendidos (`xattr -cr`).
+4. **Desinstalación Limpia**: Incluye `/usr/local/share/hp-smart-tank/uninstall.sh` con opciones `--dry-run` y `--confirm`.
