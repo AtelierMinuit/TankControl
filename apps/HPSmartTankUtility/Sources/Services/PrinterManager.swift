@@ -30,6 +30,21 @@ public enum SidebarSection: String, CaseIterable, Identifiable {
         case .about: return "info.circle"
         }
     }
+
+    public var localizedTitle: String {
+        switch self {
+        case .general: return LocalizationService.shared.t("section_general")
+        case .printing: return LocalizationService.shared.t("section_print")
+        case .scanner: return LocalizationService.shared.t("section_scan")
+        case .ink: return LocalizationService.shared.t("section_ink")
+        case .inkSaver: return LocalizationService.shared.t("section_inksaver")
+        case .maintenance: return LocalizationService.shared.t("section_maintenance")
+        case .activity: return LocalizationService.shared.t("section_activity")
+        case .developer: return LocalizationService.shared.t("section_developer")
+        case .settings: return LocalizationService.shared.t("section_settings")
+        case .about: return LocalizationService.shared.t("section_about")
+        }
+    }
 }
 
 /// Gestor central observable de la aplicación TankControl / HP Smart Tank Utility.

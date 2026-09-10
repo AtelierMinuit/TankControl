@@ -2,6 +2,7 @@ import SwiftUI
 
 public struct SettingsView: View {
     @ObservedObject var printer: PrinterManager
+    @ObservedObject private var loc = LocalizationService.shared
     @State private var showingDeveloperModeConfirmation = false
 
     public var body: some View {
@@ -17,6 +18,42 @@ public struct SettingsView: View {
                 }
 
                 Divider()
+
+                // Grupo 0: Idioma de la Aplicación / Application Language
+                VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {
+                    Text(loc.t("settings_language_header"))
+                        .font(DesignTokens.Fonts.sectionHeader)
+
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Image(systemName: "globe")
+                                .foregroundColor(.accentColor)
+                                .font(.system(size: 16))
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(loc.t("settings_language_header"))
+                                    .font(DesignTokens.Fonts.bodyMedium)
+                                Text(loc.t("settings_language_desc"))
+                                    .font(DesignTokens.Fonts.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                            Spacer()
+                            Picker("", selection: $loc.language) {
+                                ForEach(AppLanguage.allCases) { lang in
+                                    Text(lang.displayName).tag(lang)
+                                }
+                            }
+                            .pickerStyle(.menu)
+                            .frame(width: 200)
+                        }
+                    }
+                    .padding(DesignTokens.Spacing.sm)
+                    .background(DesignTokens.Colors.surfaceGrouped)
+                    .cornerRadius(DesignTokens.Radii.small)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: DesignTokens.Radii.small)
+                            .stroke(DesignTokens.Colors.border, lineWidth: 1)
+                    )
+                }
 
                 // Grupo 1: Preferencias del Sistema
                 VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {

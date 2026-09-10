@@ -135,6 +135,7 @@ class TestSourceCodeSecurityAndArchitecture(unittest.TestCase):
             "Services/PrinterManager.swift",
             "Services/InkSaverService.swift",
             "Services/ScannerService.swift",
+            "Services/LocalizationService.swift",
             "Views/MainSplitView.swift",
             "Views/DashboardView.swift",
             "Views/PrintCenterView.swift",
@@ -150,6 +151,36 @@ class TestSourceCodeSecurityAndArchitecture(unittest.TestCase):
         for rel_path in expected_modules:
             full_path = os.path.join(SOURCES_DIR, rel_path)
             self.assertTrue(os.path.isfile(full_path), f"Módulo Swift faltante: {rel_path}")
+
+
+class TestLocalizationAndPackaging(unittest.TestCase):
+    """Verifica la infraestructura de internacionalización y empaquetado multilingüe."""
+
+    def test_localization_service_supported_languages(self):
+        loc_path = os.path.join(SOURCES_DIR, "Services/LocalizationService.swift")
+        self.assertTrue(os.path.isfile(loc_path))
+        with open(loc_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        for lang in ["case system", "case spanish", "case english", "case portuguese", "case french", "case german"]:
+            self.assertIn(lang, content)
+
+    def test_distribution_resources_present(self):
+        dist_res = os.path.join(REPO_ROOT, "research/packaging/distribution_resources")
+        self.assertTrue(os.path.isdir(dist_res))
+        for lproj in ["es.lproj", "en.lproj", "pt.lproj", "fr.lproj", "de.lproj"]:
+            lproj_dir = os.path.join(dist_res, lproj)
+            self.assertTrue(os.path.isdir(lproj_dir), f"Falta directorio {lproj}")
+            for doc in ["welcome.html", "conclusion.html", "license.html"]:
+                self.assertTrue(os.path.isfile(os.path.join(lproj_dir, doc)), f"Falta {doc} en {lproj}")
+
+    def test_package_dmg_multilingual_guides(self):
+        dmg_script = os.path.join(REPO_ROOT, "package_dmg.sh")
+        with open(dmg_script, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        for guide in ["LEEME_ES.txt", "README_EN.txt", "LEIA_ME_PT.txt", "LISEZ_MOI_FR.txt", "LIESMICH_DE.txt", "LEEME_README.txt"]:
+            self.assertIn(guide, content)
 
 
 if __name__ == "__main__":

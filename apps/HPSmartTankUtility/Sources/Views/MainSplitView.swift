@@ -5,6 +5,7 @@ import SwiftUI
 /// Configuración está accesible vía barra de herramientas y comando estándar ⌘,.
 public struct MainSplitView: View {
     @ObservedObject var printer: PrinterManager
+    @ObservedObject private var loc = LocalizationService.shared
     @State private var showingSettingsSheet: Bool = false
 
     public init(printer: PrinterManager) {
@@ -25,13 +26,13 @@ public struct MainSplitView: View {
         NavigationView {
             // MARK: - Barra Lateral (Sidebar Canónica de 6 Secciones)
             List {
-                Section(header: Text("Impresora").font(.caption.weight(.bold))) {
+                Section(header: Text(loc.t("group_printer")).font(.caption.weight(.bold))) {
                     NavigationLink(
                         destination: DashboardView(printer: printer),
                         tag: SidebarSection.general,
                         selection: navigationSelection
                     ) {
-                        Label(SidebarSection.general.rawValue, systemImage: SidebarSection.general.icon)
+                        Label(SidebarSection.general.localizedTitle, systemImage: SidebarSection.general.icon)
                     }
 
                     NavigationLink(
@@ -39,7 +40,7 @@ public struct MainSplitView: View {
                         tag: SidebarSection.printing,
                         selection: navigationSelection
                     ) {
-                        Label(SidebarSection.printing.rawValue, systemImage: SidebarSection.printing.icon)
+                        Label(SidebarSection.printing.localizedTitle, systemImage: SidebarSection.printing.icon)
                     }
 
                     NavigationLink(
@@ -47,7 +48,7 @@ public struct MainSplitView: View {
                         tag: SidebarSection.scanner,
                         selection: navigationSelection
                     ) {
-                        Label(SidebarSection.scanner.rawValue, systemImage: SidebarSection.scanner.icon)
+                        Label(SidebarSection.scanner.localizedTitle, systemImage: SidebarSection.scanner.icon)
                     }
 
                     NavigationLink(
@@ -55,7 +56,7 @@ public struct MainSplitView: View {
                         tag: SidebarSection.ink,
                         selection: navigationSelection
                     ) {
-                        Label(SidebarSection.ink.rawValue, systemImage: SidebarSection.ink.icon)
+                        Label(SidebarSection.ink.localizedTitle, systemImage: SidebarSection.ink.icon)
                     }
 
                     NavigationLink(
@@ -63,17 +64,17 @@ public struct MainSplitView: View {
                         tag: SidebarSection.inkSaver,
                         selection: navigationSelection
                     ) {
-                        Label(SidebarSection.inkSaver.rawValue, systemImage: SidebarSection.inkSaver.icon)
+                        Label(SidebarSection.inkSaver.localizedTitle, systemImage: SidebarSection.inkSaver.icon)
                     }
                 }
 
-                Section(header: Text("Mantenimiento y Uso").font(.caption.weight(.bold))) {
+                Section(header: Text(loc.t("group_maintenance_usage")).font(.caption.weight(.bold))) {
                     NavigationLink(
                         destination: MaintenanceView(printer: printer),
                         tag: SidebarSection.maintenance,
                         selection: navigationSelection
                     ) {
-                        Label(SidebarSection.maintenance.rawValue, systemImage: SidebarSection.maintenance.icon)
+                        Label(SidebarSection.maintenance.localizedTitle, systemImage: SidebarSection.maintenance.icon)
                     }
 
                     NavigationLink(
@@ -81,19 +82,19 @@ public struct MainSplitView: View {
                         tag: SidebarSection.activity,
                         selection: navigationSelection
                     ) {
-                        Label(SidebarSection.activity.rawValue, systemImage: SidebarSection.activity.icon)
+                        Label(SidebarSection.activity.localizedTitle, systemImage: SidebarSection.activity.icon)
                     }
                 }
 
                 // MARK: - Modo Desarrollador (Condicional / Oculto por defecto)
                 if printer.developerMode {
-                    Section(header: Text("Avanzado").font(.caption.weight(.bold))) {
+                    Section(header: Text(loc.t("section_developer")).font(.caption.weight(.bold))) {
                         NavigationLink(
                             destination: DeveloperModeView(printer: printer),
                             tag: SidebarSection.developer,
                             selection: navigationSelection
                         ) {
-                            Label(SidebarSection.developer.rawValue, systemImage: SidebarSection.developer.icon)
+                            Label(SidebarSection.developer.localizedTitle, systemImage: SidebarSection.developer.icon)
                         }
                     }
                 }
@@ -105,7 +106,7 @@ public struct MainSplitView: View {
                         tag: SidebarSection.about,
                         selection: navigationSelection
                     ) {
-                        Label(SidebarSection.about.rawValue, systemImage: SidebarSection.about.icon)
+                        Label(SidebarSection.about.localizedTitle, systemImage: SidebarSection.about.icon)
                     }
                 }
 

@@ -324,9 +324,31 @@ pkgbuild \
     --install-location "/" \
     "${OUT_PKG}"
 
+# 10. Empaquetar distribución multilingüe con productbuild
+DIST_RESOURCES="${DIR}/research/packaging/distribution_resources"
+DIST_XML="${DIR}/research/packaging/Distribution.xml"
+DIST_PKG="${DIR}/research/builds/HP_Smart_Tank_500_macOS_Installer-${STAGE_TAG}.pkg"
+
+if [ -f "${DIST_XML}" ] && [ -d "${DIST_RESOURCES}" ]; then
+    echo "[pkg] Creando instalador de distribución multilingüe con /usr/bin/productbuild..."
+    PB_STAGE="${DIR}/research/staging/pb_stage-${STAGE_TAG}"
+    mkdir -p "${PB_STAGE}"
+    cp "${OUT_PKG}" "${PB_STAGE}/component.pkg"
+    productbuild \
+        --distribution "${DIST_XML}" \
+        --package-path "${PB_STAGE}" \
+        --resources "${DIST_RESOURCES}" \
+        "${DIST_PKG}"
+    rm -rf "${PB_STAGE}"
+    echo "[pkg] Distribución multilingüe creada: ${DIST_PKG}"
+fi
+
 echo ""
 echo "======================================================================"
 echo "  ¡PAQUETE INSTALADOR CREADO EXITOSAMENTE!"
-echo "  Archivo: ${OUT_PKG}"
+echo "  Archivo Componente: ${OUT_PKG}"
+if [ -f "${DIST_PKG:-}" ]; then
+    echo "  Archivo Distribución: ${DIST_PKG}"
+fi
 echo "  Tamaño: $(du -sh "${OUT_PKG}" | cut -f1)"
 echo "======================================================================"

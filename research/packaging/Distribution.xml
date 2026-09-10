@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<installer-gui-script minSpecVersion="1">
+    <title>HP Smart Tank 500 Series</title>
+    <options customize="never" require-scripts="false" hostArchitectures="x86_64,arm64"/>
+    <welcome file="welcome.html"/>
+    <license file="license.html"/>
+    <conclusion file="conclusion.html"/>
+    <choices-outline>
+        <line choice="default">
+            <line choice="com.hp.smarttank500.driver.applesilicon"/>
+        </line>
+    </choices-outline>
+    <choice id="default"/>
+    <choice id="com.hp.smarttank500.driver.applesilicon" visible="false">
+        <pkg-ref id="com.hp.smarttank500.driver.applesilicon"/>
+    </choice>
+    <pkg-ref id="com.hp.smarttank500.driver.applesilicon" version="1.0.0" onConclusion="none">component.pkg</pkg-ref>
+</installer-gui-script>
