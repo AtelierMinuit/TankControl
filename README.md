@@ -10,8 +10,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/giorgiogpt/TankControl/actions/workflows/ci.yml"><img src="https://github.com/giorgiogpt/TankControl/actions/workflows/ci.yml/badge.svg" alt="Build status"></a>
-  <a href="https://github.com/giorgiogpt/TankControl/releases/tag/v1.1.0"><img src="https://img.shields.io/badge/release-v1.1.0-4D6BFF" alt="Release v1.1.0"></a>
+  <a href="https://github.com/AtelierMinuit/TankControl/actions/workflows/ci.yml"><img src="https://github.com/AtelierMinuit/TankControl/actions/workflows/ci.yml/badge.svg" alt="Build status"></a>
+  <a href="https://github.com/AtelierMinuit/TankControl/releases/tag/v1.1.0"><img src="https://img.shields.io/badge/release-v1.1.0-4D6BFF" alt="Release v1.1.0"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-E8E5DD" alt="MIT license"></a>
   <img src="https://img.shields.io/badge/macOS-Apple%20Silicon-0B0D10" alt="macOS Apple Silicon">
 </p>
@@ -80,7 +80,7 @@ Additional screenshots and design assets are kept under [`Brand/`](Brand/).
 
 Use the published assets from the current release:
 
-**[Download TankControl v1.1.0 →](https://github.com/giorgiogpt/TankControl/releases/tag/v1.1.0)**
+**[Download TankControl v1.1.0 →](https://github.com/AtelierMinuit/TankControl/releases/tag/v1.1.0)**
 
 The current package is **unsigned/not notarized with an Apple Developer ID**. Review the release notes before installation. Avoid disabling Gatekeeper globally; use macOS's normal per-app approval flow when required.
 
