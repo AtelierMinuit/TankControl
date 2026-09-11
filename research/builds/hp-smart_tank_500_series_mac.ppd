@@ -1,0 +1,867 @@
+*PPD-Adobe: "4.3"
+*%%%% PPD file for HP Smart Tank 500 Series with CUPS.
+*%%%% Created by the CUPS PPD Compiler CUPS v2.3.1.
+*% (c) 2008 Copyright HP Development Company, LP
+*FormatVersion: "4.3"
+*FileVersion: "3.26.4"
+*LanguageVersion: English
+*LanguageEncoding: ISOLatin1
+*PCFileName: "HPSMT500.PPD"
+*Product: "(HP Smart Tank 500 Series)"
+*Manufacturer: "HP"
+*ModelName: "HP Smart Tank 500 Series"
+*ShortNickName: "HP Smart Tank 500 Series hpijs"
+*NickName: "HP Smart Tank 500 Series, hpcups 3.26.4"
+*PSVersion: "(3010.000) 0"
+*LanguageLevel: "3"
+*ColorDevice: True
+*DefaultColorSpace: RGB
+*FileSystem: False
+*Throughput: "1"
+*LandscapeOrientation: Plus90
+*TTRasterizer: Type42
+*% Driver-defined attributes...
+*RequiresPageRegion All: True
+*hpPrinterLanguage: "pcl3gui2"
+*cupsEvenDuplex: True
+*cupsBackSide: "Rotated"
+*cupsFlipDuplex: True
+*HPMechOffset: "117"
+*HPSPDClass: "1"
+*1284DeviceID: "MFG:HP;MDL:smart tank 500 series;DES:smart tank 500 series;"
+*cupsVersion: 2.3
+*cupsModelNumber: 0
+*cupsManualCopies: True
+*cupsFilter: "application/vnd.cups-raster 0 /Library/Printers/hp/cups/filters/rastertopcl3gui"
+*APPrinterIconPath: "/Library/Printers/hp/Icons/HP_Smart_Tank_500.icns"
+*cupsLanguages: "en es"
+*UIConstraints: *PageSize 4x6in *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize 4x6in
+*UIConstraints: *PageSize 2L *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize 2L
+*UIConstraints: *PageSize 5x7in *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize 5x7in
+*UIConstraints: *PageSize 8x10 *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize 8x10
+*UIConstraints: *PageSize L *MediaType Plain
+*UIConstraints: *MediaType Plain *PageSize L
+*UIConstraints: *PageSize 8.5x13 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize 8.5x13
+*UIConstraints: *PageSize A4 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize A4
+*UIConstraints: *PageSize A5 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize A5
+*UIConstraints: *PageSize JB5 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize JB5
+*UIConstraints: *PageSize B5 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize B5
+*UIConstraints: *PageSize EnvelopeC6 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize EnvelopeC6
+*UIConstraints: *PageSize JapaneseEnvelope#3 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize JapaneseEnvelope#3
+*UIConstraints: *PageSize JapaneseEnvelope#4 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize JapaneseEnvelope#4
+*UIConstraints: *PageSize EnvelopeMonarch *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize EnvelopeMonarch
+*UIConstraints: *PageSize Envelope#10 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize Envelope#10
+*UIConstraints: *PageSize EnvelopeDL *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize EnvelopeDL
+*UIConstraints: *PageSize EnvelopeC5 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize EnvelopeC5
+*UIConstraints: *PageSize EnvelopeA2 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize EnvelopeA2
+*UIConstraints: *PageSize Executive *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize Executive
+*UIConstraints: *PageSize IndexCard4x6 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize IndexCard4x6
+*UIConstraints: *PageSize IndexCard3x5 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize IndexCard3x5
+*UIConstraints: *PageSize IndexCard5x8 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize IndexCard5x8
+*UIConstraints: *PageSize IndexCardA4 *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize IndexCardA4
+*UIConstraints: *PageSize IndexCardLetter *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize IndexCardLetter
+*UIConstraints: *PageSize Letter *MediaType Glossy
+*UIConstraints: *MediaType Glossy *PageSize Letter
+*UIConstraints: *PageSize Legal *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize Legal
+*UIConstraints: *PageSize 8.5x13 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize 8.5x13
+*UIConstraints: *PageSize A4 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize A4
+*UIConstraints: *PageSize A5 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize A5
+*UIConstraints: *PageSize JB5 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize JB5
+*UIConstraints: *PageSize B5 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize B5
+*UIConstraints: *PageSize EnvelopeC6 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize EnvelopeC6
+*UIConstraints: *PageSize JapaneseEnvelope#3 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize JapaneseEnvelope#3
+*UIConstraints: *PageSize JapaneseEnvelope#4 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize JapaneseEnvelope#4
+*UIConstraints: *PageSize EnvelopeMonarch *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize EnvelopeMonarch
+*UIConstraints: *PageSize Envelope#10 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize Envelope#10
+*UIConstraints: *PageSize EnvelopeDL *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize EnvelopeDL
+*UIConstraints: *PageSize EnvelopeC5 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize EnvelopeC5
+*UIConstraints: *PageSize EnvelopeA2 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize EnvelopeA2
+*UIConstraints: *PageSize Executive *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize Executive
+*UIConstraints: *PageSize IndexCard4x6 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize IndexCard4x6
+*UIConstraints: *PageSize IndexCard3x5 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize IndexCard3x5
+*UIConstraints: *PageSize IndexCard5x8 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize IndexCard5x8
+*UIConstraints: *PageSize IndexCardA4 *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize IndexCardA4
+*UIConstraints: *PageSize IndexCardLetter *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize IndexCardLetter
+*UIConstraints: *PageSize Letter *MediaType FastGlossy
+*UIConstraints: *MediaType FastGlossy *PageSize Letter
+*UIConstraints: *PageSize Legal *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize Legal
+*UIConstraints: *PageSize 8.5x13 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize 8.5x13
+*UIConstraints: *PageSize A4 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize A4
+*UIConstraints: *PageSize A5 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize A5
+*UIConstraints: *PageSize JB5 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize JB5
+*UIConstraints: *PageSize B5 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize B5
+*UIConstraints: *PageSize EnvelopeC6 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize EnvelopeC6
+*UIConstraints: *PageSize JapaneseEnvelope#3 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize JapaneseEnvelope#3
+*UIConstraints: *PageSize JapaneseEnvelope#4 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize JapaneseEnvelope#4
+*UIConstraints: *PageSize EnvelopeMonarch *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize EnvelopeMonarch
+*UIConstraints: *PageSize Envelope#10 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize Envelope#10
+*UIConstraints: *PageSize EnvelopeDL *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize EnvelopeDL
+*UIConstraints: *PageSize EnvelopeC5 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize EnvelopeC5
+*UIConstraints: *PageSize EnvelopeA2 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize EnvelopeA2
+*UIConstraints: *PageSize Executive *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize Executive
+*UIConstraints: *PageSize IndexCard4x6 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize IndexCard4x6
+*UIConstraints: *PageSize IndexCard3x5 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize IndexCard3x5
+*UIConstraints: *PageSize IndexCard5x8 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize IndexCard5x8
+*UIConstraints: *PageSize IndexCardA4 *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize IndexCardA4
+*UIConstraints: *PageSize IndexCardLetter *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize IndexCardLetter
+*UIConstraints: *PageSize Letter *MediaType BrochureGlosy
+*UIConstraints: *MediaType BrochureGlosy *PageSize Letter
+*UIConstraints: *PageSize Legal *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize Legal
+*UIConstraints: *PageSize 8.5x13 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize 8.5x13
+*UIConstraints: *PageSize A4 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize A4
+*UIConstraints: *PageSize A5 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize A5
+*UIConstraints: *PageSize JB5 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize JB5
+*UIConstraints: *PageSize B5 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize B5
+*UIConstraints: *PageSize EnvelopeC6 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize EnvelopeC6
+*UIConstraints: *PageSize JapaneseEnvelope#3 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize JapaneseEnvelope#3
+*UIConstraints: *PageSize JapaneseEnvelope#4 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize JapaneseEnvelope#4
+*UIConstraints: *PageSize EnvelopeMonarch *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize EnvelopeMonarch
+*UIConstraints: *PageSize Envelope#10 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize Envelope#10
+*UIConstraints: *PageSize EnvelopeDL *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize EnvelopeDL
+*UIConstraints: *PageSize EnvelopeC5 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize EnvelopeC5
+*UIConstraints: *PageSize EnvelopeA2 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize EnvelopeA2
+*UIConstraints: *PageSize Executive *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize Executive
+*UIConstraints: *PageSize IndexCard4x6 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize IndexCard4x6
+*UIConstraints: *PageSize IndexCard3x5 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize IndexCard3x5
+*UIConstraints: *PageSize IndexCard5x8 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize IndexCard5x8
+*UIConstraints: *PageSize IndexCardA4 *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize IndexCardA4
+*UIConstraints: *PageSize IndexCardLetter *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize IndexCardLetter
+*UIConstraints: *PageSize Letter *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize Letter
+*UIConstraints: *PageSize Legal *MediaType Brochure
+*UIConstraints: *MediaType Brochure *PageSize Legal
+*cupsICCProfile .Plain.600dpi/HP Smart Tank Papel Comun: "/Library/ColorSync/Profiles/HP_Smart_Tank_Plain.icc"
+*cupsICCProfile .Glossy.600dpi/HP Smart Tank Fotografico: "/Library/ColorSync/Profiles/HP_Smart_Tank_Glossy.icc"
+*cupsICCProfile .Glossy.1200dpi/HP Smart Tank Fotografico Max: "/Library/ColorSync/Profiles/HP_Smart_Tank_Glossy.icc"
+*cupsICCProfile .CoatedMatte.600dpi/HP Smart Tank Papel Mate: "/Library/ColorSync/Profiles/HP_Smart_Tank_Matte.icc"
+*cupsICCProfile ../HP Smart Tank Estandar: "/Library/ColorSync/Profiles/HP_Smart_Tank_Plain.icc"
+*OpenUI *PageSize/Media Size: PickOne
+*OrderDependency: 10 AnySetup *PageSize
+*DefaultPageSize: Letter
+*PageSize 2L/2L 127x178mm: "<</cupsInteger0 126/PageSize [360 504]/ImagingBBox null>>setpagedevice"
+*PageSize L/3.5x5in, L: "<</cupsInteger0 121/PageSize[252 360]/ImagingBBox null>>setpagedevice"
+*PageSize 3x5/3x5in: "<</cupsInteger0 78/PageSize [216 360]/ImagingBBox null>>setpagedevice"
+*PageSize 4x5in/4x5in: "<</cupsInteger0 30002/PageSize [288 360]/ImagingBBox null>>setpagedevice"
+*PageSize 4x6in/4x6in (10x15cm) : "<</cupsInteger0 74/PageSize[288 432]/ImagingBBox null>>setpagedevice"
+*PageSize 4x12in/4x12in (10x30cm) : "<</cupsInteger0 30000/PageSize[288 864]/ImagingBBox null>>setpagedevice"
+*PageSize 5x7in/5x7in: "<</cupsInteger0 122/PageSize [360 504]/ImagingBBox null>>setpagedevice"
+*PageSize Envelope_No_6_75/Envelope No 6_75: "<</cupsInteger0 83/PageSize [260.88 468]/ImagingBBox null>>setpagedevice"
+*PageSize 8.5x13/8.5x13in: "<</cupsInteger0 10/PageSize [612 936]/ImagingBBox null>>setpagedevice"
+*PageSize 8x10/8x10in: "<</cupsInteger0 7/PageSize [576 720]/ImagingBBox null>>setpagedevice"
+*PageSize A4/A4: "<</cupsInteger0 26/PageSize [595.44 841.68]/ImagingBBox null>>setpagedevice"
+*PageSize A5/A5: "<</cupsInteger0 25/PageSize [419.76 595.44]/ImagingBBox null>>setpagedevice"
+*PageSize A6/A6: "<</cupsInteger0 24/PageSize [297.84 419.52]/ImagingBBox null>>setpagedevice"
+*PageSize B5/B5: "<</cupsInteger0 65/PageSize [498.72 708.48]/ImagingBBox null>>setpagedevice"
+*PageSize JB5/JB5: "<</cupsInteger0 45/PageSize [515.76 728.4]/ImagingBBox null>>setpagedevice"
+*PageSize Envelope#10/Envelope #10: "<</cupsInteger0 81/PageSize [296.88 684]/ImagingBBox null>>setpagedevice"
+*PageSize EnvelopeA2/Envelope A2: "<</cupsInteger0 109/PageSize [314.88 414]/ImagingBBox null>>setpagedevice"
+*PageSize EnvelopeC5/Envelope C5: "<</cupsInteger0 91/PageSize [459.12 648.96]/ImagingBBox null>>setpagedevice"
+*PageSize EnvelopeC6/Envelope C6: "<</cupsInteger0 92/PageSize [323.04 459.12]/ImagingBBox null>>setpagedevice"
+*PageSize EnvelopeDL/Envelope DL: "<</cupsInteger0 90/PageSize [311.76 623.52]/ImagingBBox null>>setpagedevice"
+*PageSize EnvelopeMonarch/Envelope Monarch: "<</cupsInteger0 80/PageSize [278.88 540]/ImagingBBox null>>setpagedevice"
+*PageSize Executive/Executive: "<</cupsInteger0 1/PageSize [522 756]/ImagingBBox null>>setpagedevice"
+*PageSize IndexCard3x5/Index Card 3x5in: "<</cupsInteger0 78/PageSize [216 360]/ImagingBBox null>>setpagedevice"
+*PageSize IndexCard4x6/Index Card 4x6in: "<</cupsInteger0 74/PageSize [288 432]/ImagingBBox null>>setpagedevice"
+*PageSize IndexCard5x8/Index Card 5x8in: "<</cupsInteger0 75/PageSize [360 576]/ImagingBBox null>>setpagedevice"
+*PageSize IndexCardA4/Index Card A4: "<</cupsInteger0 26/PageSize [595.44 841.68]/ImagingBBox null>>setpagedevice"
+*PageSize IndexCardLetter/Index Card Letter: "<</cupsInteger0 2/PageSize [612 792]/ImagingBBox null>>setpagedevice"
+*PageSize JapaneseEnvelope#3/Japanese Envelope #3: "<</cupsInteger0 110/PageSize [339.84 666]/ImagingBBox null>>setpagedevice"
+*PageSize JapaneseEnvelope#4/Japanese Envelope #4: "<</cupsInteger0 111/PageSize [254.88 581.04]/ImagingBBox null>>setpagedevice"
+*PageSize Legal/Legal: "<</cupsInteger0 3/PageSize [612 1008]/ImagingBBox null>>setpagedevice"
+*PageSize Letter/Letter: "<</cupsInteger0 2/PageSize [612 792]/ImagingBBox null>>setpagedevice"
+*PageSize OfukuHagaki/Ofuku Hagaki: "<</cupsInteger0 72/PageSize [566.64 428.16]/ImagingBBox null>>setpagedevice"
+*PageSize Statement/Statement: "<</cupsInteger0 15/PageSize [396 612]/ImagingBBox null>>setpagedevice"
+*PageSize 2L.FB/2L Borderless 127x178mm: "<</cupsInteger0 126/PageSize [360 504]/ImagingBBox null>>setpagedevice"
+*PageSize L.FB/3.5x5in Borderless, L: "<</cupsInteger0 121/PageSize[252 360]/ImagingBBox null>>setpagedevice"
+*PageSize 3x5.FB/3x5in Borderless: "<</cupsInteger0 78/PageSize [216 360]/ImagingBBox null>>setpagedevice"
+*PageSize 4x12in.FB/4x12in Borderless (10x30cm) : "<</cupsInteger0 30000/PageSize[288 864]/ImagingBBox null>>setpagedevice"
+*PageSize 4x5in.FB/4x5in Borderless: "<</cupsInteger0 30002/PageSize [288 360]/ImagingBBox null>>setpagedevice"
+*PageSize 4x6in.FB/4x6in(10x15cm) Borderless: "<</cupsInteger0 74/PageSize[288 432]/ImagingBBox null>>setpagedevice"
+*PageSize 5x7in.FB/5x7in Borderless: "<</cupsInteger0 122/PageSize [360 504]/ImagingBBox null>>setpagedevice"
+*PageSize 8x10.FB/8x10in Borderless: "<</cupsInteger0 7/PageSize [576 720]/ImagingBBox null>>setpagedevice"
+*PageSize A4.FB/A4 Borderless: "<</cupsInteger0 26/PageSize [595.44 841.68]/ImagingBBox null>>setpagedevice"
+*PageSize A5.FB/A5 Borderless: "<</cupsInteger0 25/PageSize [419.76 595.44]/ImagingBBox null>>setpagedevice"
+*PageSize A6.FB/A6 Borderless: "<</cupsInteger0 24/PageSize [297.84 419.52]/ImagingBBox null>>setpagedevice"
+*PageSize JB5.FB/JB5 Borderless: "<</cupsInteger0 45/PageSize [515.76 728.4]/ImagingBBox null>>setpagedevice"
+*PageSize IndexCard3x5.FB/Index Card 3x5in Borderless: "<</cupsInteger0 78/PageSize [216 360]/ImagingBBox null>>setpagedevice"
+*PageSize IndexCard4x6.FB/Index Card 4x6in Borderless: "<</cupsInteger0 74/PageSize [288 432]/ImagingBBox null>>setpagedevice"
+*PageSize IndexCard5x8.FB/Index Card 5x8in Borderless: "<</cupsInteger0 75/PageSize [360 576]/ImagingBBox null>>setpagedevice"
+*PageSize IndexCardA4.FB/Index Card A4 Borderless: "<</cupsInteger0 26/PageSize [595.44 841.68]/ImagingBBox null>>setpagedevice"
+*PageSize IndexCardLetter.FB/Index Card Letter Borderless: "<</cupsInteger0 2/PageSize [612 792]/ImagingBBox null>>setpagedevice"
+*PageSize JapanesePostcard.FB/Japanese Postcard Borderless: "<</cupsInteger0 71/PageSize[284.16 419.52]/ImagingBBox null>>setpagedevice"
+*PageSize Letter.FB/Letter Borderless: "<</cupsInteger0 2/PageSize [612 792]/ImagingBBox null>>setpagedevice"
+*PageSize OfukuHagaki.FB/Ofuku Hagaki Borderless: "<</cupsInteger0 72/PageSize [566.64 428.16]/ImagingBBox null>>setpagedevice"
+*CloseUI: *PageSize
+*OpenUI *PageRegion/Media Size: PickOne
+*OrderDependency: 10 AnySetup *PageRegion
+*DefaultPageRegion: Letter
+*PageRegion 2L/2L 127x178mm: "<</cupsInteger0 126/PageSize[360 504]/ImagingBBox null>>setpagedevice"
+*PageRegion L/3.5x5in, L: "<</cupsInteger0 121/PageSize[252 360]/ImagingBBox null>>setpagedevice"
+*PageRegion 3x5/3x5in: "<</cupsInteger0 78/PageSize[216 360]/ImagingBBox null>>setpagedevice"
+*PageRegion 4x5in/4x5in: "<</cupsInteger0 30002/PageSize[288 360]/ImagingBBox null>>setpagedevice"
+*PageRegion 4x6in/4x6in (10x15cm) : "<</cupsInteger0 74/PageSize[288 432]/ImagingBBox null>>setpagedevice"
+*PageRegion 4x12in/4x12in (10x30cm) : "<</cupsInteger0 30000/PageSize[288 864]/ImagingBBox null>>setpagedevice"
+*PageRegion 5x7in/5x7in: "<</cupsInteger0 122/PageSize[360 504]/ImagingBBox null>>setpagedevice"
+*PageRegion Envelope_No_6_75/Envelope No 6_75: "<</cupsInteger0 83/PageSize[260.88 468]/ImagingBBox null>>setpagedevice"
+*PageRegion 8.5x13/8.5x13in: "<</cupsInteger0 10/PageSize[612 936]/ImagingBBox null>>setpagedevice"
+*PageRegion 8x10/8x10in: "<</cupsInteger0 7/PageSize[576 720]/ImagingBBox null>>setpagedevice"
+*PageRegion A4/A4: "<</cupsInteger0 26/PageSize[595.44 841.68]/ImagingBBox null>>setpagedevice"
+*PageRegion A5/A5: "<</cupsInteger0 25/PageSize[419.76 595.44]/ImagingBBox null>>setpagedevice"
+*PageRegion A6/A6: "<</cupsInteger0 24/PageSize[297.84 419.52]/ImagingBBox null>>setpagedevice"
+*PageRegion B5/B5: "<</cupsInteger0 65/PageSize[498.72 708.48]/ImagingBBox null>>setpagedevice"
+*PageRegion JB5/JB5: "<</cupsInteger0 45/PageSize[515.76 728.4]/ImagingBBox null>>setpagedevice"
+*PageRegion Envelope#10/Envelope #10: "<</cupsInteger0 81/PageSize[296.88 684]/ImagingBBox null>>setpagedevice"
+*PageRegion EnvelopeA2/Envelope A2: "<</cupsInteger0 109/PageSize[314.88 414]/ImagingBBox null>>setpagedevice"
+*PageRegion EnvelopeC5/Envelope C5: "<</cupsInteger0 91/PageSize[459.12 648.96]/ImagingBBox null>>setpagedevice"
+*PageRegion EnvelopeC6/Envelope C6: "<</cupsInteger0 92/PageSize[323.04 459.12]/ImagingBBox null>>setpagedevice"
+*PageRegion EnvelopeDL/Envelope DL: "<</cupsInteger0 90/PageSize[311.76 623.52]/ImagingBBox null>>setpagedevice"
+*PageRegion EnvelopeMonarch/Envelope Monarch: "<</cupsInteger0 80/PageSize[278.88 540]/ImagingBBox null>>setpagedevice"
+*PageRegion Executive/Executive: "<</cupsInteger0 1/PageSize[522 756]/ImagingBBox null>>setpagedevice"
+*PageRegion IndexCard3x5/Index Card 3x5in: "<</cupsInteger0 78/PageSize[216 360]/ImagingBBox null>>setpagedevice"
+*PageRegion IndexCard4x6/Index Card 4x6in: "<</cupsInteger0 74/PageSize[288 432]/ImagingBBox null>>setpagedevice"
+*PageRegion IndexCard5x8/Index Card 5x8in: "<</cupsInteger0 75/PageSize[360 576]/ImagingBBox null>>setpagedevice"
+*PageRegion IndexCardA4/Index Card A4: "<</cupsInteger0 26/PageSize[595.44 841.68]/ImagingBBox null>>setpagedevice"
+*PageRegion IndexCardLetter/Index Card Letter: "<</cupsInteger0 2/PageSize[612 792]/ImagingBBox null>>setpagedevice"
+*PageRegion JapaneseEnvelope#3/Japanese Envelope #3: "<</cupsInteger0 110/PageSize[339.84 666]/ImagingBBox null>>setpagedevice"
+*PageRegion JapaneseEnvelope#4/Japanese Envelope #4: "<</cupsInteger0 111/PageSize[254.88 581.04]/ImagingBBox null>>setpagedevice"
+*PageRegion Legal/Legal: "<</cupsInteger0 3/PageSize[612 1008]/ImagingBBox null>>setpagedevice"
+*PageRegion Letter/Letter: "<</cupsInteger0 2/PageSize[612 792]/ImagingBBox null>>setpagedevice"
+*PageRegion OfukuHagaki/Ofuku Hagaki: "<</cupsInteger0 72/PageSize[566.64 428.16]/ImagingBBox null>>setpagedevice"
+*PageRegion Statement/Statement: "<</cupsInteger0 15/PageSize[396 612]/ImagingBBox null>>setpagedevice"
+*PageRegion 2L.FB/2L Borderless 127x178mm: "<</cupsInteger0 126/PageSize[360 504]/ImagingBBox null>>setpagedevice"
+*PageRegion L.FB/3.5x5in Borderless, L: "<</cupsInteger0 121/cupsReal0 0/cupsReal1 0/PageSize[252 360]/ImagingBBox null>>setpagedevice"
+*PageRegion 3x5.FB/3x5in Borderless: "<</cupsInteger0 78/cupsReal0 0/cupsReal1 0/PageSize[216 360]/ImagingBBox null>>setpagedevice"
+*PageRegion 4x12in.FB/4x12in Borderless (10x30cm) : "<</cupsInteger0 30000/cupsReal0 0/cupsReal1 0/PageSize[288 864]/ImagingBBox null>>setpagedevice"
+*PageRegion 4x5in.FB/4x5in Borderless: "<</cupsInteger0 30002/cupsReal0 0/cupsReal1 0/PageSize[288 360]/ImagingBBox null>>setpagedevice"
+*PageRegion 4x6in.FB/4x6in(10x15cm) Borderless: "<</cupsInteger0 74/cupsReal0 0/cupsReal1 0/PageSize[288 432]/ImagingBBox null>>setpagedevice"
+*PageRegion 5x7in.FB/5x7in Borderless: "<</cupsInteger0 122/cupsReal0 0/cupsReal1 0/PageSize[360 504]/ImagingBBox null>>setpagedevice"
+*PageRegion 8x10.FB/8x10in Borderless: "<</cupsInteger0 7/cupsReal0 0/cupsReal1 0/PageSize[576 720]/ImagingBBox null>>setpagedevice"
+*PageRegion A4.FB/A4 Borderless: "<</cupsInteger0 26/cupsReal0 0/cupsReal1 0/PageSize[595.44 841.68]/ImagingBBox null>>setpagedevice"
+*PageRegion A5.FB/A5 Borderless: "<</cupsInteger0 25/cupsReal0 0/cupsReal1 0/PageSize[419.76 595.44]/ImagingBBox null>>setpagedevice"
+*PageRegion A6.FB/A6 Borderless: "<</cupsInteger0 24/cupsReal0 0/cupsReal1 0/PageSize[297.84 419.52]/ImagingBBox null>>setpagedevice"
+*PageRegion JB5.FB/JB5 Borderless: "<</cupsInteger0 45/cupsReal0 0/cupsReal1 0/PageSize[515.76 728.4]/ImagingBBox null>>setpagedevice"
+*PageRegion IndexCard3x5.FB/Index Card 3x5in Borderless: "<</cupsInteger0 78/cupsReal0 0/cupsReal1 0/PageSize[216 360]/ImagingBBox null>>setpagedevice"
+*PageRegion IndexCard4x6.FB/Index Card 4x6in Borderless: "<</cupsInteger0 74/cupsReal0 0/cupsReal1 0/PageSize[288 432]/ImagingBBox null>>setpagedevice"
+*PageRegion IndexCard5x8.FB/Index Card 5x8in Borderless: "<</cupsInteger0 75/cupsReal0 0/cupsReal1 0/PageSize[360 576]/ImagingBBox null>>setpagedevice"
+*PageRegion IndexCardA4.FB/Index Card A4 Borderless: "<</cupsInteger0 26/cupsReal0 0/cupsReal1 0/PageSize[595.44 841.68]/ImagingBBox null>>setpagedevice"
+*PageRegion IndexCardLetter.FB/Index Card Letter Borderless: "<</cupsInteger0 2/cupsReal0 0/cupsReal1 0/PageSize[612 792]/ImagingBBox null>>setpagedevice"
+*PageRegion JapanesePostcard.FB/Japanese Postcard Borderless: "<</cupsInteger0 71/cupsReal0 0/cupsReal1 0/PageSize[284.16 419.52]/ImagingBBox null>>setpagedevice"
+*PageRegion Letter.FB/Letter Borderless: "<</cupsInteger0 2/cupsReal0 0/cupsReal1 0/PageSize[612 792]/ImagingBBox null>>setpagedevice"
+*PageRegion OfukuHagaki.FB/Ofuku Hagaki Borderless: "<</cupsInteger0 72/cupsReal0 0/cupsReal1 0/PageSize[566.64 428.16]/ImagingBBox null>>setpagedevice"
+*CloseUI: *PageRegion
+*DefaultImageableArea: Letter
+*ImageableArea 2L/2L 127x178mm: "8.39999961853 8.39999961853 351.600006103516 495.600006103516"
+*ImageableArea L/3.5x5in, L: "8.39999961853 8.39999961853 243.600006103516 351.600006103516"
+*ImageableArea 3x5/3x5in: "8.39999961853 8.39999961853 207.600006103516 351.600006103516"
+*ImageableArea 4x5in/4x5in: "8.39999961853 8.39999961853 279.600006103516 351.600006103516"
+*ImageableArea 4x6in/4x6in (10x15cm) : "8.39999961853 8.39999961853 279.600006103516 423.600006103516"
+*ImageableArea 4x12in/4x12in (10x30cm) : "8.39999961853 8.39999961853 279.600006103516 855.599975585938"
+*ImageableArea 5x7in/5x7in: "8.39999961853 8.39999961853 351.600006103516 495.600006103516"
+*ImageableArea Envelope_No_6_75/Envelope No 6_75: "8.39999961853 8.39999961853 252.480010986328 459.600006103516"
+*ImageableArea 8.5x13/8.5x13in: "8.39999961853 8.39999961853 603.599975585938 927.599975585938"
+*ImageableArea 8x10/8x10in: "8.39999961853 8.39999961853 567.599975585938 711.599975585938"
+*ImageableArea A4/A4: "8.39999961853 8.39999961853 587.039978027344 833.279968261719"
+*ImageableArea A5/A5: "8.39999961853 8.39999961853 411.360015869141 587.039978027344"
+*ImageableArea A6/A6: "8.39999961853 8.39999961853 289.440002441406 411.119995117188"
+*ImageableArea B5/B5: "8.39999961853 8.39999961853 490.320007324219 700.079956054688"
+*ImageableArea JB5/JB5: "8.39999961853 8.39999961853 507.360015869141 720"
+*ImageableArea Envelope#10/Envelope #10: "8.39999961853 8.39999961853 288.480010986328 675.599975585938"
+*ImageableArea EnvelopeA2/Envelope A2: "8.39999961853 8.39999961853 306.480010986328 405.600006103516"
+*ImageableArea EnvelopeC5/Envelope C5: "8.39999961853 8.39999961853 450.720001220703 640.559997558594"
+*ImageableArea EnvelopeC6/Envelope C6: "8.39999961853 8.39999961853 314.640014648438 450.720001220703"
+*ImageableArea EnvelopeDL/Envelope DL: "8.39999961853 8.39999961853 303.360015869141 615.119995117188"
+*ImageableArea EnvelopeMonarch/Envelope Monarch: "8.39999961853 8.39999961853 270.480010986328 531.599975585938"
+*ImageableArea Executive/Executive: "8.39999961853 8.39999961853 513.599975585938 747.599975585938"
+*ImageableArea IndexCard3x5/Index Card 3x5in: "8.39999961853 8.39999961853 207.600006103516 351.600006103516"
+*ImageableArea IndexCard4x6/Index Card 4x6in: "8.39999961853 8.39999961853 279.600006103516 423.600006103516"
+*ImageableArea IndexCard5x8/Index Card 5x8in: "8.39999961853 8.39999961853 351.600006103516 567.599975585938"
+*ImageableArea IndexCardA4/Index Card A4: "8.39999961853 8.39999961853 587.039978027344 833.279968261719"
+*ImageableArea IndexCardLetter/Index Card Letter: "8.39999961853 8.39999961853 603.599975585938 783.599975585938"
+*ImageableArea JapaneseEnvelope#3/Japanese Envelope #3: "8.39999961853 8.39999961853 331.440002441406 657.599975585938"
+*ImageableArea JapaneseEnvelope#4/Japanese Envelope #4: "8.39999961853 8.39999961853 246.480010986328 572.639953613281"
+*ImageableArea Legal/Legal: "8.39999961853 8.39999961853 603.599975585938 999.599975585938"
+*ImageableArea Letter/Letter: "8.39999961853 8.39999961853 603.599975585938 783.599975585938"
+*ImageableArea OfukuHagaki/Ofuku Hagaki: "8.39999961853 8.39999961853 558.239990234375 419.760009765625"
+*ImageableArea Statement/Statement: "8.39999961853 8.39999961853 387.600006103516 603.599975585938"
+*ImageableArea 2L.FB/2L Borderless 127x178mm: "0 0 360 504"
+*ImageableArea L.FB/3.5x5in Borderless, L: "0 0 252 360"
+*ImageableArea 3x5.FB/3x5in Borderless: "0 0 216 360"
+*ImageableArea 4x12in.FB/4x12in Borderless (10x30cm) : "0 0 288 864"
+*ImageableArea 4x5in.FB/4x5in Borderless: "0 0 288 360"
+*ImageableArea 4x6in.FB/4x6in(10x15cm) Borderless: "0 0 288 432"
+*ImageableArea 5x7in.FB/5x7in Borderless: "0 0 360 504"
+*ImageableArea 8x10.FB/8x10in Borderless: "0 0 576 720"
+*ImageableArea A4.FB/A4 Borderless: "0 0 595.440002441406 841.679992675781"
+*ImageableArea A5.FB/A5 Borderless: "0 0 419.760009765625 595.440002441406"
+*ImageableArea A6.FB/A6 Borderless: "0 0 297.839996337891 419.519989013672"
+*ImageableArea JB5.FB/JB5 Borderless: "0 0 515.760009765625 711.599975585938"
+*ImageableArea IndexCard3x5.FB/Index Card 3x5in Borderless: "0 0 216 360"
+*ImageableArea IndexCard4x6.FB/Index Card 4x6in Borderless: "0 0 288 432"
+*ImageableArea IndexCard5x8.FB/Index Card 5x8in Borderless: "0 0 360 576"
+*ImageableArea IndexCardA4.FB/Index Card A4 Borderless: "0 0 595.440002441406 841.679992675781"
+*ImageableArea IndexCardLetter.FB/Index Card Letter Borderless: "0 0 612 792"
+*ImageableArea JapanesePostcard.FB/Japanese Postcard Borderless: "0 0 284.160003662109 419.519989013672"
+*ImageableArea Letter.FB/Letter Borderless: "0 0 612 792"
+*ImageableArea OfukuHagaki.FB/Ofuku Hagaki Borderless: "0 0 566.640014648438 428.160003662109"
+*DefaultPaperDimension: Letter
+*PaperDimension 2L/2L 127x178mm: "360 504"
+*PaperDimension L/3.5x5in, L: "252 360"
+*PaperDimension 3x5/3x5in: "216 360"
+*PaperDimension 4x5in/4x5in: "288 360"
+*PaperDimension 4x6in/4x6in (10x15cm) : "288 432"
+*PaperDimension 4x12in/4x12in (10x30cm) : "288 864"
+*PaperDimension 5x7in/5x7in: "360 504"
+*PaperDimension Envelope_No_6_75/Envelope No 6_75: "260.880004882812 468"
+*PaperDimension 8.5x13/8.5x13in: "612 936"
+*PaperDimension 8x10/8x10in: "576 720"
+*PaperDimension A4/A4: "595.440002441406 841.679992675781"
+*PaperDimension A5/A5: "419.760009765625 595.440002441406"
+*PaperDimension A6/A6: "297.839996337891 419.519989013672"
+*PaperDimension B5/B5: "498.720001220703 708.47998046875"
+*PaperDimension JB5/JB5: "515.760009765625 728.400024414062"
+*PaperDimension Envelope#10/Envelope #10: "296.880004882812 684"
+*PaperDimension EnvelopeA2/Envelope A2: "314.880004882812 414"
+*PaperDimension EnvelopeC5/Envelope C5: "459.119995117188 648.960021972656"
+*PaperDimension EnvelopeC6/Envelope C6: "323.040008544922 459.119995117188"
+*PaperDimension EnvelopeDL/Envelope DL: "311.760009765625 623.52001953125"
+*PaperDimension EnvelopeMonarch/Envelope Monarch: "278.880004882812 540"
+*PaperDimension Executive/Executive: "522 756"
+*PaperDimension IndexCard3x5/Index Card 3x5in: "216 360"
+*PaperDimension IndexCard4x6/Index Card 4x6in: "288 432"
+*PaperDimension IndexCard5x8/Index Card 5x8in: "360 576"
+*PaperDimension IndexCardA4/Index Card A4: "595.440002441406 841.679992675781"
+*PaperDimension IndexCardLetter/Index Card Letter: "612 792"
+*PaperDimension JapaneseEnvelope#3/Japanese Envelope #3: "339.839996337891 666"
+*PaperDimension JapaneseEnvelope#4/Japanese Envelope #4: "254.880004882812 581.039978027344"
+*PaperDimension Legal/Legal: "612 1008"
+*PaperDimension Letter/Letter: "612 792"
+*PaperDimension OfukuHagaki/Ofuku Hagaki: "566.640014648438 428.160003662109"
+*PaperDimension Statement/Statement: "396 612"
+*PaperDimension 2L.FB/2L Borderless 127x178mm: "360 504"
+*PaperDimension L.FB/3.5x5in Borderless, L: "252 360"
+*PaperDimension 3x5.FB/3x5in Borderless: "216 360"
+*PaperDimension 4x12in.FB/4x12in Borderless (10x30cm) : "288 864"
+*PaperDimension 4x5in.FB/4x5in Borderless: "288 360"
+*PaperDimension 4x6in.FB/4x6in(10x15cm) Borderless: "288 432"
+*PaperDimension 5x7in.FB/5x7in Borderless: "360 504"
+*PaperDimension 8x10.FB/8x10in Borderless: "576 720"
+*PaperDimension A4.FB/A4 Borderless: "595.440002441406 841.679992675781"
+*PaperDimension A5.FB/A5 Borderless: "419.760009765625 595.440002441406"
+*PaperDimension A6.FB/A6 Borderless: "297.839996337891 419.519989013672"
+*PaperDimension JB5.FB/JB5 Borderless: "515.760009765625 720"
+*PaperDimension IndexCard3x5.FB/Index Card 3x5in Borderless: "216 360"
+*PaperDimension IndexCard4x6.FB/Index Card 4x6in Borderless: "288 432"
+*PaperDimension IndexCard5x8.FB/Index Card 5x8in Borderless: "360 576"
+*PaperDimension IndexCardA4.FB/Index Card A4 Borderless: "595.440002441406 841.679992675781"
+*PaperDimension IndexCardLetter.FB/Index Card Letter Borderless: "612 792"
+*PaperDimension JapanesePostcard.FB/Japanese Postcard Borderless: "284.160003662109 419.519989013672"
+*PaperDimension Letter.FB/Letter Borderless: "612 792"
+*PaperDimension OfukuHagaki.FB/Ofuku Hagaki Borderless: "566.640014648438 428.160003662109"
+*MaxMediaWidth: "612"
+*MaxMediaHeight: "1008"
+*HWMargins: 8.39999961853 41.040000915527 8.39999961853 8.39999961853
+*CustomPageSize True: "pop pop pop <</PageSize[5 -2 roll]/ImagingBBox null>>setpagedevice"
+*ParamCustomPageSize Width: 1 points 216 612
+*ParamCustomPageSize Height: 2 points 288 1008
+*ParamCustomPageSize WidthOffset: 3 points 0 0
+*ParamCustomPageSize HeightOffset: 4 points 0 0
+*ParamCustomPageSize Orientation: 5 int 0 0
+*OpenUI *Duplex/Double-Sided Printing: PickOne
+*OrderDependency: 10 AnySetup *Duplex
+*DefaultDuplex: None
+*Duplex DuplexNoTumble/Long Edge (Standard): "<</Duplex true/Tumble false>>setpagedevice"
+*Duplex DuplexTumble/Short Edge (Flip): "<</Duplex true/Tumble true>>setpagedevice"
+*Duplex None/Off: "<</Duplex false/Tumble false>>setpagedevice"
+*CloseUI: *Duplex
+*OpenUI *InputSlot/Media Source: PickOne
+*OrderDependency: 10 AnySetup *InputSlot
+*DefaultInputSlot: Main
+*InputSlot Main/Main Tray: "<</MediaPosition 1>>setpagedevice"
+*CloseUI: *InputSlot
+*OpenUI *ColorModel/Output Mode: PickOne
+*OrderDependency: 10 AnySetup *ColorModel
+*DefaultColorModel: RGB
+*ColorModel CMYGray/High Quality Grayscale: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 1>>setpagedevice"
+*ColorModel KGray/Black Only Grayscale: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 2>>setpagedevice"
+*ColorModel RGB/Color: "<</cupsColorSpace 1/cupsBitsPerColor 8/cupsRowStep 0>>setpagedevice"
+*CloseUI: *ColorModel
+*OpenUI *MediaType/Media Type: PickOne
+*OrderDependency: 10 AnySetup *MediaType
+*DefaultMediaType: Plain
+*MediaType Plain/Plain Paper: "<</MediaType(Plain)/cupsMediaType 0/cupsInteger6 1084>>setpagedevice"
+*MediaType Glossy/HP Photo Papers: "<</MediaType(Glossy)/cupsMediaType 5/cupsInteger6 1069>>setpagedevice"
+*MediaType CoatedBrochure/HP Matte Brochure or Professional Paper: "<</MediaType(CoatedBrochure)/cupsMediaType 2/cupsInteger6 1077>>setpagedevice"
+*MediaType CoatedMatte/HP Matte Presentation Paper: "<</MediaType(CoatedMatte)/cupsMediaType 2/cupsInteger6 1005>>setpagedevice"
+*MediaType BrochureGlosy/HP Glossy Brochure or Professional Paper: "<</MediaType(BrochureGlosy)/cupsMediaType 8/cupsInteger6 1076>>setpagedevice"
+*MediaType FastGlossy/Other photo inkjet papers: "<</MediaType(FastGlossy)/cupsMediaType 5/cupsInteger6 1045>>setpagedevice"
+*MediaType Coated/Other matte inkjet papers: "<</MediaType(Coated)/cupsMediaType 2/cupsInteger6 1077>>setpagedevice"
+*MediaType Brochure/Other glossy inkjet Papers: "<</MediaType(Brochure)/cupsMediaType 8/cupsInteger6 1054>>setpagedevice"
+*MediaType PlainPaperLight/Plain Paper, Light/Recycled: "<</MediaType(PlainPaperLight)/cupsMediaType 1/cupsInteger6 1121>>setpagedevice"
+*CloseUI: *MediaType
+*OpenUI *OutputMode/Print Quality: PickOne
+*OrderDependency: 10 AnySetup *OutputMode
+*DefaultOutputMode: Normal
+*OutputMode Draft/Fast Draft: "<</OutputType(3)/HWResolution[300 300]>>setpagedevice"
+*OutputMode Normal/Normal: "<</OutputType(0)/HWResolution[600 600]>>setpagedevice"
+*OutputMode Best/Best: "<</OutputType(1)/HWResolution[600 600]>>setpagedevice"
+*OutputMode Photo/High-Resolution Photo: "<</OutputType(2)/HWResolution[1200 1200]>>setpagedevice"
+*CloseUI: *OutputMode
+*DefaultFont: Courier
+*Font AvantGarde-Book: Standard "(1.05)" Standard ROM
+*Font AvantGarde-BookOblique: Standard "(1.05)" Standard ROM
+*Font AvantGarde-Demi: Standard "(1.05)" Standard ROM
+*Font AvantGarde-DemiOblique: Standard "(1.05)" Standard ROM
+*Font Bookman-Demi: Standard "(1.05)" Standard ROM
+*Font Bookman-DemiItalic: Standard "(1.05)" Standard ROM
+*Font Bookman-Light: Standard "(1.05)" Standard ROM
+*Font Bookman-LightItalic: Standard "(1.05)" Standard ROM
+*Font Courier: Standard "(1.05)" Standard ROM
+*Font Courier-Bold: Standard "(1.05)" Standard ROM
+*Font Courier-BoldOblique: Standard "(1.05)" Standard ROM
+*Font Courier-Oblique: Standard "(1.05)" Standard ROM
+*Font Helvetica: Standard "(1.05)" Standard ROM
+*Font Helvetica-Bold: Standard "(1.05)" Standard ROM
+*Font Helvetica-BoldOblique: Standard "(1.05)" Standard ROM
+*Font Helvetica-Narrow: Standard "(1.05)" Standard ROM
+*Font Helvetica-Narrow-Bold: Standard "(1.05)" Standard ROM
+*Font Helvetica-Narrow-BoldOblique: Standard "(1.05)" Standard ROM
+*Font Helvetica-Narrow-Oblique: Standard "(1.05)" Standard ROM
+*Font Helvetica-Oblique: Standard "(1.05)" Standard ROM
+*Font NewCenturySchlbk-Bold: Standard "(1.05)" Standard ROM
+*Font NewCenturySchlbk-BoldItalic: Standard "(1.05)" Standard ROM
+*Font NewCenturySchlbk-Italic: Standard "(1.05)" Standard ROM
+*Font NewCenturySchlbk-Roman: Standard "(1.05)" Standard ROM
+*Font Palatino-Bold: Standard "(1.05)" Standard ROM
+*Font Palatino-BoldItalic: Standard "(1.05)" Standard ROM
+*Font Palatino-Italic: Standard "(1.05)" Standard ROM
+*Font Palatino-Roman: Standard "(1.05)" Standard ROM
+*Font Symbol: Special "(001.005)" Special ROM
+*Font Times-Bold: Standard "(1.05)" Standard ROM
+*Font Times-BoldItalic: Standard "(1.05)" Standard ROM
+*Font Times-Italic: Standard "(1.05)" Standard ROM
+*Font Times-Roman: Standard "(1.05)" Standard ROM
+*Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
+*Font ZapfDingbats: Special "(001.005)" Special ROM
+*% ========== Spanish Localization (Espanol) ==========
+*es.Translation PageSize/Media Size: "Tamano del Papel"
+*es.PageSize 2L/2L 127x178mm: "2L (127x178 mm)"
+*es.PageSize L/3.5x5in, L: "3.5x5 pulg (L 89x127 mm)"
+*es.PageSize 3x5/3x5in: "Tarjeta 3x5 pulg (76x127 mm)"
+*es.PageSize 4x5in/4x5in: "Tarjeta 4x5 pulg (102x127 mm)"
+*es.PageSize 4x6in/4x6in (10x15cm): "10x15 cm (4x6 pulg)"
+*es.PageSize 4x12in/4x12in (10x30cm): "Panoramica 4x12 pulg (10x30 cm)"
+*es.PageSize 5x7in/5x7in: "13x18 cm (5x7 pulg)"
+*es.PageSize Envelope_No_6_75/Envelope No 6_75: "Sobre No 6 3/4"
+*es.PageSize 8.5x13/8.5x13in: "Oficio 8.5x13 pulg"
+*es.PageSize 8x10/8x10in: "20x25 cm (8x10 pulg)"
+*es.PageSize A4/A4: "A4 Estandar"
+*es.PageSize A5/A5: "A5 Estandar"
+*es.PageSize A6/A6: "A6 Estandar"
+*es.PageSize B5/B5: "B5 (ISO)"
+*es.PageSize JB5/JB5: "B5 (JIS)"
+*es.PageSize Envelope#10/Envelope #10: "Sobre #10 (Com-10)"
+*es.PageSize EnvelopeA2/Envelope A2: "Sobre A2"
+*es.PageSize EnvelopeC5/Envelope C5: "Sobre C5"
+*es.PageSize EnvelopeC6/Envelope C6: "Sobre C6"
+*es.PageSize EnvelopeDL/Envelope DL: "Sobre DL"
+*es.PageSize EnvelopeMonarch/Envelope Monarch: "Sobre Monarch"
+*es.PageSize Executive/Executive: "Ejecutivo"
+*es.PageSize IndexCard3x5/Index Card 3x5in: "Ficha 3x5 pulg"
+*es.PageSize IndexCard4x6/Index Card 4x6in: "Ficha 4x6 pulg"
+*es.PageSize IndexCard5x8/Index Card 5x8in: "Ficha 5x8 pulg"
+*es.PageSize IndexCardA4/Index Card A4: "Ficha A4"
+*es.PageSize IndexCardLetter/Index Card Letter: "Ficha Carta"
+*es.PageSize JapaneseEnvelope#3/Japanese Envelope #3: "Sobre japones #3"
+*es.PageSize JapaneseEnvelope#4/Japanese Envelope #4: "Sobre japones #4"
+*es.PageSize Legal/Legal: "Oficio (Legal)"
+*es.PageSize Letter/Letter: "Carta (Letter)"
+*es.PageSize OfukuHagaki/Ofuku Hagaki: "Postal Ofuku Hagaki"
+*es.PageSize Statement/Statement: "Media Carta (Statement)"
+*es.PageSize 2L.FB/2L Borderless 127x178mm: "2L Sin Bordes (127x178 mm)"
+*es.PageSize L.FB/3.5x5in Borderless, L: "3.5x5 pulg Sin Bordes (L)"
+*es.PageSize 3x5.FB/3x5in Borderless: "Tarjeta 3x5 pulg Sin Bordes"
+*es.PageSize 4x12in.FB/4x12in Borderless (10x30cm): "Panoramica 4x12 pulg Sin Bordes"
+*es.PageSize 4x5in.FB/4x5in Borderless: "Tarjeta 4x5 pulg Sin Bordes"
+*es.PageSize 4x6in.FB/4x6in(10x15cm) Borderless: "10x15 cm (4x6 pulg) Sin Bordes"
+*es.PageSize 5x7in.FB/5x7in Borderless: "13x18 cm (5x7 pulg) Sin Bordes"
+*es.PageSize 8x10.FB/8x10in Borderless: "20x25 cm (8x10 pulg) Sin Bordes"
+*es.PageSize A4.FB/A4 Borderless: "A4 Sin Bordes (Full Bleed)"
+*es.PageSize A5.FB/A5 Borderless: "A5 Sin Bordes"
+*es.PageSize A6.FB/A6 Borderless: "A6 Sin Bordes"
+*es.PageSize JB5.FB/JB5 Borderless: "B5 (JIS) Sin Bordes"
+*es.PageSize IndexCard3x5.FB/Index Card 3x5in Borderless: "Ficha 3x5 pulg Sin Bordes"
+*es.PageSize IndexCard4x6.FB/Index Card 4x6in Borderless: "Ficha 4x6 pulg Sin Bordes"
+*es.PageSize IndexCard5x8.FB/Index Card 5x8in Borderless: "Ficha 5x8 pulg Sin Bordes"
+*es.PageSize IndexCardA4.FB/Index Card A4 Borderless: "Ficha A4 Sin Bordes"
+*es.PageSize IndexCardLetter.FB/Index Card Letter Borderless: "Ficha Carta Sin Bordes"
+*es.PageSize JapanesePostcard.FB/Japanese Postcard Borderless: "Postal Japonesa Sin Bordes"
+*es.PageSize Letter.FB/Letter Borderless: "Carta Sin Bordes (Full Bleed)"
+*es.PageSize OfukuHagaki.FB/Ofuku Hagaki Borderless: "Postal Ofuku Hagaki Sin Bordes"
+*es.Translation PageRegion/Media Size: "Tamano del Papel"
+*es.PageRegion 2L/2L 127x178mm: "2L (127x178 mm)"
+*es.PageRegion L/3.5x5in, L: "3.5x5 pulg (L 89x127 mm)"
+*es.PageRegion 3x5/3x5in: "Tarjeta 3x5 pulg (76x127 mm)"
+*es.PageRegion 4x5in/4x5in: "Tarjeta 4x5 pulg (102x127 mm)"
+*es.PageRegion 4x6in/4x6in (10x15cm): "10x15 cm (4x6 pulg)"
+*es.PageRegion 4x12in/4x12in (10x30cm): "Panoramica 4x12 pulg (10x30 cm)"
+*es.PageRegion 5x7in/5x7in: "13x18 cm (5x7 pulg)"
+*es.PageRegion Envelope_No_6_75/Envelope No 6_75: "Sobre No 6 3/4"
+*es.PageRegion 8.5x13/8.5x13in: "Oficio 8.5x13 pulg"
+*es.PageRegion 8x10/8x10in: "20x25 cm (8x10 pulg)"
+*es.PageRegion A4/A4: "A4 Estandar"
+*es.PageRegion A5/A5: "A5 Estandar"
+*es.PageRegion A6/A6: "A6 Estandar"
+*es.PageRegion B5/B5: "B5 (ISO)"
+*es.PageRegion JB5/JB5: "B5 (JIS)"
+*es.PageRegion Envelope#10/Envelope #10: "Sobre #10 (Com-10)"
+*es.PageRegion EnvelopeA2/Envelope A2: "Sobre A2"
+*es.PageRegion EnvelopeC5/Envelope C5: "Sobre C5"
+*es.PageRegion EnvelopeC6/Envelope C6: "Sobre C6"
+*es.PageRegion EnvelopeDL/Envelope DL: "Sobre DL"
+*es.PageRegion EnvelopeMonarch/Envelope Monarch: "Sobre Monarch"
+*es.PageRegion Executive/Executive: "Ejecutivo"
+*es.PageRegion IndexCard3x5/Index Card 3x5in: "Ficha 3x5 pulg"
+*es.PageRegion IndexCard4x6/Index Card 4x6in: "Ficha 4x6 pulg"
+*es.PageRegion IndexCard5x8/Index Card 5x8in: "Ficha 5x8 pulg"
+*es.PageRegion IndexCardA4/Index Card A4: "Ficha A4"
+*es.PageRegion IndexCardLetter/Index Card Letter: "Ficha Carta"
+*es.PageRegion JapaneseEnvelope#3/Japanese Envelope #3: "Sobre japones #3"
+*es.PageRegion JapaneseEnvelope#4/Japanese Envelope #4: "Sobre japones #4"
+*es.PageRegion Legal/Legal: "Oficio (Legal)"
+*es.PageRegion Letter/Letter: "Carta (Letter)"
+*es.PageRegion OfukuHagaki/Ofuku Hagaki: "Postal Ofuku Hagaki"
+*es.PageRegion Statement/Statement: "Media Carta (Statement)"
+*es.PageRegion 2L.FB/2L Borderless 127x178mm: "2L Sin Bordes (127x178 mm)"
+*es.PageRegion L.FB/3.5x5in Borderless, L: "3.5x5 pulg Sin Bordes (L)"
+*es.PageRegion 3x5.FB/3x5in Borderless: "Tarjeta 3x5 pulg Sin Bordes"
+*es.PageRegion 4x12in.FB/4x12in Borderless (10x30cm): "Panoramica 4x12 pulg Sin Bordes"
+*es.PageRegion 4x5in.FB/4x5in Borderless: "Tarjeta 4x5 pulg Sin Bordes"
+*es.PageRegion 4x6in.FB/4x6in(10x15cm) Borderless: "10x15 cm (4x6 pulg) Sin Bordes"
+*es.PageRegion 5x7in.FB/5x7in Borderless: "13x18 cm (5x7 pulg) Sin Bordes"
+*es.PageRegion 8x10.FB/8x10in Borderless: "20x25 cm (8x10 pulg) Sin Bordes"
+*es.PageRegion A4.FB/A4 Borderless: "A4 Sin Bordes (Full Bleed)"
+*es.PageRegion A5.FB/A5 Borderless: "A5 Sin Bordes"
+*es.PageRegion A6.FB/A6 Borderless: "A6 Sin Bordes"
+*es.PageRegion JB5.FB/JB5 Borderless: "B5 (JIS) Sin Bordes"
+*es.PageRegion IndexCard3x5.FB/Index Card 3x5in Borderless: "Ficha 3x5 pulg Sin Bordes"
+*es.PageRegion IndexCard4x6.FB/Index Card 4x6in Borderless: "Ficha 4x6 pulg Sin Bordes"
+*es.PageRegion IndexCard5x8.FB/Index Card 5x8in Borderless: "Ficha 5x8 pulg Sin Bordes"
+*es.PageRegion IndexCardA4.FB/Index Card A4 Borderless: "Ficha A4 Sin Bordes"
+*es.PageRegion IndexCardLetter.FB/Index Card Letter Borderless: "Ficha Carta Sin Bordes"
+*es.PageRegion JapanesePostcard.FB/Japanese Postcard Borderless: "Postal Japonesa Sin Bordes"
+*es.PageRegion Letter.FB/Letter Borderless: "Carta Sin Bordes (Full Bleed)"
+*es.PageRegion OfukuHagaki.FB/Ofuku Hagaki Borderless: "Postal Ofuku Hagaki Sin Bordes"
+*es.Translation Duplex/Double-Sided Printing: "Impresion a Doble Cara"
+*es.Duplex DuplexNoTumble/Long Edge (Standard): "Borde Largo (Estandar)"
+*es.Duplex DuplexTumble/Short Edge (Flip): "Borde Corto (Giro)"
+*es.Duplex None/Off: "Desactivado"
+*es.Translation InputSlot/Media Source: "Alimentacion de Papel"
+*es.InputSlot Main/Main Tray: "Bandeja Principal"
+*es.Translation ColorModel/Output Mode: "Modo de Color"
+*es.ColorModel CMYGray/High Quality Grayscale: "Escala de Grises Fotografica (Fine-Art)"
+*es.ColorModel KGray/Black Only Grayscale: "Solo Tinta Negra (GT51 Ahorro)"
+*es.ColorModel RGB/Color: "Color Completo (sRGB)"
+
+*pt.Translation ColorModel/Output Mode: "Modo de Cor"
+*pt.ColorModel CMYGray/High Quality Grayscale: "Escala de Cinza Fotografica"
+*pt.ColorModel KGray/Black Only Grayscale: "Apenas Tinta Preta"
+*pt.ColorModel RGB/Color: "Cor Completa (sRGB)"
+
+*fr.Translation ColorModel/Output Mode: "Mode Couleur"
+*fr.ColorModel CMYGray/High Quality Grayscale: "Nuances de Gris Haute Qualite"
+*fr.ColorModel KGray/Black Only Grayscale: "Encre Noire Seulement"
+*fr.ColorModel RGB/Color: "Couleur Complete (sRGB)"
+
+*de.Translation ColorModel/Output Mode: "Farbmodus"
+*de.ColorModel CMYGray/High Quality Grayscale: "Hochwertige Graustufen"
+*de.ColorModel KGray/Black Only Grayscale: "Nur Schwarze Tinte"
+*de.ColorModel RGB/Color: "Vollfarbe (sRGB)"
+*es.Translation MediaType/Media Type: "Tipo de Papel"
+*es.MediaType Plain/Plain Paper: "Papel Normal (Comun)"
+*es.MediaType Glossy/HP Photo Papers: "Papel Fotografico HP"
+*es.MediaType CoatedBrochure/HP Matte Brochure or Professional Paper: "Folleto Mate Profesional HP"
+*es.MediaType CoatedMatte/HP Matte Presentation Paper: "Papel de Presentacion Mate HP"
+*es.MediaType BrochureGlosy/HP Glossy Brochure or Professional Paper: "Folleto Satinado Brillante HP"
+*es.MediaType FastGlossy/Other photo inkjet papers: "Otros Papeles Fotograficos"
+*es.MediaType Coated/Other matte inkjet papers: "Papel Presentacion HP Premium"
+*es.MediaType Brochure/Other glossy inkjet Papers: "Folleto HP o Papel Profesional"
+*es.MediaType PlainPaperLight/Plain Paper, Light/Recycled: "Papel Normal Ligero"
+*es.Translation OutputMode/Print Quality: "Calidad de Impresion"
+*es.OutputMode Draft/Fast Draft: "Borrador Rapido (300 DPI - Alta Velocidad)"
+*es.OutputMode Normal/Normal: "Normal (600 DPI)"
+*es.OutputMode Best/Best: "Optima (600 DPI Alta Densidad)"
+*es.OutputMode Photo/High-Resolution Photo: "Fotografica Maxima (1200 DPI)"
+
+*pt.Translation OutputMode/Print Quality: "Qualidade de Impressao"
+*pt.OutputMode Draft/Fast Draft: "Rascunho Rapido (300 DPI - Alta Velocidade)"
+*pt.OutputMode Normal/Normal: "Normal (600 DPI)"
+*pt.OutputMode Best/Best: "Otima (600 DPI Alta Densidade)"
+*pt.OutputMode Photo/High-Resolution Photo: "Foto em Alta Resolucao (1200 DPI)"
+
+*fr.Translation OutputMode/Print Quality: "Qualite d'impression"
+*fr.OutputMode Draft/Fast Draft: "Brouillon Rapide (300 DPI - Haute Vitesse)"
+*fr.OutputMode Normal/Normal: "Normale (600 DPI)"
+*fr.OutputMode Best/Best: "Optimale (600 DPI Haute Densite)"
+*fr.OutputMode Photo/High-Resolution Photo: "Photo Haute Resolution (1200 DPI)"
+
+*de.Translation OutputMode/Print Quality: "Druckqualitat"
+*de.OutputMode Draft/Fast Draft: "Schnellentwurf (300 DPI - Hohe Geschwindigkeit)"
+*de.OutputMode Normal/Normal: "Normal (600 DPI)"
+*de.OutputMode Best/Best: "Optimal (600 DPI Hohe Dichte)"
+*de.OutputMode Photo/High-Resolution Photo: "Foto Hohe Auflosung (1200 DPI)"
+
+*OpenGroup: HPAdvanced/Ajustes Avanzados
+
+*OpenUI *HPDensity/Densidad de Tinta: PickOne
+*OrderDependency: 15 AnySetup *HPDensity
+*DefaultHPDensity: Normal
+*HPDensity Economy/Raster reducido: "<</cupsReal0 0.80>>setpagedevice"
+*HPDensity Light/Raster ligero: "<</cupsReal0 0.90>>setpagedevice"
+*HPDensity Normal/Raster estandar: "<</cupsReal0 1.00>>setpagedevice"
+*HPDensity High/Raster saturado: "<</cupsReal0 1.10>>setpagedevice"
+*HPDensity VeryHigh/Raster intensificado: "<</cupsReal0 1.20>>setpagedevice"
+*HPDensity MaxTransfer/Raster maximo: "<</cupsReal0 1.30>>setpagedevice"
+*CloseUI: *HPDensity
+
+*OpenUI *HPDryTime/Tiempo de Secado: PickOne
+*OrderDependency: 15 AnySetup *HPDryTime
+*DefaultHPDryTime: None
+*HPDryTime None/Desactivado 0 seg: "<</cupsInteger7 0>>setpagedevice"
+*HPDryTime Short/Corto 5 seg: "<</cupsInteger7 5>>setpagedevice"
+*HPDryTime Medium/Medio 10 seg: "<</cupsInteger7 10>>setpagedevice"
+*HPDryTime Long/Extendido 20 seg: "<</cupsInteger7 20>>setpagedevice"
+*HPDryTime Maximum/Fotografico 40 seg: "<</cupsInteger7 40>>setpagedevice"
+*CloseUI: *HPDryTime
+
+*OpenUI *HPPureBlack/Negro Puro: PickOne
+*OrderDependency: 15 AnySetup *HPPureBlack
+*DefaultHPPureBlack: Standard
+*HPPureBlack Standard/Estandar Mezcla CMYK: ""
+*HPPureBlack TextOnly/Solo Texto GT51 Puro: ""
+*HPPureBlack AggressiveK/Separacion K con UCR: ""
+*CloseUI: *HPPureBlack
+
+*OpenUI *HPTACLimit/Limite Cobertura TAC: PickOne
+*OrderDependency: 15 AnySetup *HPTACLimit
+*DefaultHPTACLimit: None
+*HPTACLimit None/Sin Limite 300%: ""
+*HPTACLimit TAC240/240% Papel Comun 75g: ""
+*HPTACLimit TAC280/280% Presentacion Mate: ""
+*HPTACLimit TAC300/300% Fotografico: ""
+*CloseUI: *HPTACLimit
+
+*OpenUI *HPGammaCurve/Curva Tonal y Sombras: PickOne
+*OrderDependency: 15 AnySetup *HPGammaCurve
+*DefaultHPGammaCurve: Standard
+*HPGammaCurve Standard/Estandar sRGB: ""
+*HPGammaCurve ShadowBoost/Recuperacion de Sombras: ""
+*HPGammaCurve HighContrast/Alto Contraste S-Curve: ""
+*HPGammaCurve VividLandscape/Paisajes Vivos: ""
+*CloseUI: *HPGammaCurve
+
+*OpenUI *HPWatermark/Marca de Agua RIP: PickOne
+*OrderDependency: 15 AnySetup *HPWatermark
+*DefaultHPWatermark: None
+*HPWatermark None/Ninguna: ""
+*HPWatermark Draft/BORRADOR: ""
+*HPWatermark Confidential/CONFIDENCIAL: ""
+*HPWatermark Copy/COPIA: ""
+*HPWatermark Sample/MUESTRA: ""
+*CloseUI: *HPWatermark
+
+*OpenUI *HPInkSaver/Tecnologia InkSaver: PickOne
+*OrderDependency: 15 AnySetup *HPInkSaver
+*DefaultHPInkSaver: Off
+*HPInkSaver Off/Off (0%): ""
+*HPInkSaver Eco15/Eco15 (15% - Ahorro Minimo): ""
+*HPInkSaver Eco25/Eco25 (25% - Ahorro Ligero): ""
+*HPInkSaver Eco35/Eco35 (35% - Ahorro Equilibrado Recomendado): ""
+*HPInkSaver Eco50/Eco50 (50% - Ahorro Economico): ""
+*HPInkSaver Eco65/Eco65 (65% - Ahorro Alto): ""
+*HPInkSaver Eco75/Eco75 (75% - Ahorro Maximo Borrador): ""
+*HPInkSaver EdgePreserve/EdgePreserve (Preservar Bordes): ""
+*HPInkSaver DotGainGrid/DotGainGrid (Micro-Perforacion Dot Gain): ""
+*CloseUI: *HPInkSaver
+
+*OpenUI *HPEcoColorDrop/Filtro Ecologico de Color: PickOne
+*OrderDependency: 15 AnySetup *HPEcoColorDrop
+*DefaultHPEcoColorDrop: None
+*HPEcoColorDrop None/Conservar Todo el Color: ""
+*HPEcoColorDrop DropColorBg/Atenuar Fondos de Color: ""
+*HPEcoColorDrop EcoGrayscale/Escala de Grises Ecologica: ""
+*CloseUI: *HPEcoColorDrop
+
+*CloseGroup: HPAdvanced
+
+*es.Translation HPDensity/Densidad de Tinta: "Densidad de Tinta"
+*es.HPDensity Economy/Raster reducido: "Raster reducido"
+*es.HPDensity Light/Raster ligero: "Raster ligero"
+*es.HPDensity Normal/Raster estandar: "Raster estandar"
+*es.HPDensity High/Raster saturado: "Raster saturado"
+*es.HPDensity VeryHigh/Raster intensificado: "Raster intensificado"
+*es.HPDensity MaxTransfer/Raster maximo: "Raster maximo"
+
+*es.Translation HPDryTime/Tiempo de Secado: "Tiempo de Secado"
+*es.HPDryTime None/Desactivado 0 seg: "Desactivado 0 seg"
+*es.HPDryTime Short/Corto 5 seg: "Corto 5 seg"
+*es.HPDryTime Medium/Medio 10 seg: "Medio 10 seg"
+*es.HPDryTime Long/Extendido 20 seg: "Extendido 20 seg"
+*es.HPDryTime Maximum/Fotografico 40 seg: "Fotografico 40 seg"
+
+*es.Translation HPPureBlack/Negro Puro: "Negro Puro"
+*es.HPPureBlack Standard/Estandar Mezcla CMYK: "Estandar Mezcla CMYK"
+*es.HPPureBlack TextOnly/Solo Texto GT51 Puro: "Solo Texto GT51 Puro"
+*es.HPPureBlack AggressiveK/Separacion K con UCR: "Separacion K con UCR"
+
+*es.Translation HPTACLimit/Limite Cobertura TAC: "Limite Cobertura TAC"
+*es.HPTACLimit None/Sin Limite 300%: "Sin Limite 300%"
+*es.HPTACLimit TAC240/240% Papel Comun 75g: "240% Papel Comun 75g"
+*es.HPTACLimit TAC280/280% Presentacion Mate: "280% Presentacion Mate"
+*es.HPTACLimit TAC300/300% Fotografico: "300% Fotografico"
+
+*es.Translation HPGammaCurve/Curva Tonal y Sombras: "Curva Tonal y Sombras"
+*es.HPGammaCurve Standard/Estandar sRGB: "Estandar sRGB"
+*es.HPGammaCurve ShadowBoost/Recuperacion de Sombras: "Recuperacion de Sombras"
+*es.HPGammaCurve HighContrast/Alto Contraste S-Curve: "Alto Contraste S-Curve"
+*es.HPGammaCurve VividLandscape/Paisajes Vivos: "Paisajes Vivos"
+
+*es.Translation HPWatermark/Marca de Agua RIP: "Marca de Agua RIP"
+*es.HPWatermark None/Ninguna: "Ninguna"
+*es.HPWatermark Draft/BORRADOR: "BORRADOR"
+*es.HPWatermark Confidential/CONFIDENCIAL: "CONFIDENCIAL"
+*es.HPWatermark Copy/COPIA: "COPIA"
+*es.HPWatermark Sample/MUESTRA: "MUESTRA"
+
+*es.Translation HPInkSaver/Tecnologia InkSaver: "Tecnologia InkSaver"
+*es.HPInkSaver Off/Off (0%): "Off (0%)"
+*es.HPInkSaver Eco15/Eco15 (15% - Ahorro Minimo): "Eco15 (15% - Ahorro Minimo)"
+*es.HPInkSaver Eco25/Eco25 (25% - Ahorro Ligero): "Eco25 (25% - Ahorro Ligero)"
+*es.HPInkSaver Eco35/Eco35 (35% - Ahorro Equilibrado Recomendado): "Eco35 (35% - Ahorro Equilibrado Recomendado)"
+*es.HPInkSaver Eco50/Eco50 (50% - Ahorro Economico): "Eco50 (50% - Ahorro Economico)"
+*es.HPInkSaver Eco65/Eco65 (65% - Ahorro Alto): "Eco65 (65% - Ahorro Alto)"
+*es.HPInkSaver Eco75/Eco75 (75% - Ahorro Maximo Borrador): "Eco75 (75% - Ahorro Maximo Borrador)"
+*es.HPInkSaver EdgePreserve/EdgePreserve (Preservar Bordes): "EdgePreserve (Preservar Bordes)"
+*es.HPInkSaver DotGainGrid/DotGainGrid (Micro-Perforacion Dot Gain): "DotGainGrid (Micro-Perforacion Dot Gain)"
+
+*pt.Translation HPInkSaver/Tecnologia InkSaver: "Tecnologia InkSaver"
+*pt.HPInkSaver Off/Off (0%): "Desativado (0%)"
+*pt.HPInkSaver Eco15/Eco15 (15% - Ahorro Minimo): "Eco15 (15% - Economia Minima)"
+*pt.HPInkSaver Eco25/Eco25 (25% - Ahorro Ligero): "Eco25 (25% - Economia Leve)"
+*pt.HPInkSaver Eco35/Eco35 (35% - Ahorro Equilibrado Recomendado): "Eco35 (35% - Economia Equilibrada Recomendada)"
+*pt.HPInkSaver Eco50/Eco50 (50% - Ahorro Economico): "Eco50 (50% - Economia Alta)"
+*pt.HPInkSaver Eco65/Eco65 (65% - Ahorro Alto): "Eco65 (65% - Economia Avancada)"
+*pt.HPInkSaver Eco75/Eco75 (75% - Ahorro Maximo Borrador): "Eco75 (75% - Economia Maxima Rascunho)"
+*pt.HPInkSaver EdgePreserve/EdgePreserve (Preservar Bordes): "EdgePreserve (Preservar Bordas)"
+*pt.HPInkSaver DotGainGrid/DotGainGrid (Micro-Perforacion Dot Gain): "DotGainGrid (Microperfuracao Dot Gain)"
+
+*fr.Translation HPInkSaver/Tecnologia InkSaver: "Technologie InkSaver"
+*fr.HPInkSaver Off/Off (0%): "Desactive (0%)"
+*fr.HPInkSaver Eco15/Eco15 (15% - Ahorro Minimo): "Eco15 (15% - Economie Minimale)"
+*fr.HPInkSaver Eco25/Eco25 (25% - Ahorro Ligero): "Eco25 (25% - Economie Legere)"
+*fr.HPInkSaver Eco35/Eco35 (35% - Ahorro Equilibrado Recomendado): "Eco35 (35% - Economie Equilibree Recommandee)"
+*fr.HPInkSaver Eco50/Eco50 (50% - Ahorro Economico): "Eco50 (50% - Economie Importante)"
+*fr.HPInkSaver Eco65/Eco65 (65% - Ahorro Alto): "Eco65 (65% - Economie Elevee)"
+*fr.HPInkSaver Eco75/Eco75 (75% - Ahorro Maximo Borrador): "Eco75 (75% - Economie Maximale Brouillon)"
+*fr.HPInkSaver EdgePreserve/EdgePreserve (Preservar Bordes): "EdgePreserve (Preservation des Contours)"
+*fr.HPInkSaver DotGainGrid/DotGainGrid (Micro-Perforacion Dot Gain): "DotGainGrid (Microperforation Dot Gain)"
+
+*de.Translation HPInkSaver/Tecnologia InkSaver: "InkSaver-Technologie"
+*de.HPInkSaver Off/Off (0%): "Aus (0%)"
+*de.HPInkSaver Eco15/Eco15 (15% - Ahorro Minimo): "Eco15 (15% - Minimale Einsparung)"
+*de.HPInkSaver Eco25/Eco25 (25% - Ahorro Ligero): "Eco25 (25% - Leichte Einsparung)"
+*de.HPInkSaver Eco35/Eco35 (35% - Ahorro Equilibrado Recomendado): "Eco35 (35% - Ausgewogen Empfohlen)"
+*de.HPInkSaver Eco50/Eco50 (50% - Ahorro Economico): "Eco50 (50% - Hohe Einsparung)"
+*de.HPInkSaver Eco65/Eco65 (65% - Ahorro Alto): "Eco65 (65% - Sehr Hohe Einsparung)"
+*de.HPInkSaver Eco75/Eco75 (75% - Ahorro Maximo Borrador): "Eco75 (75% - Maximale Einsparung Entwurf)"
+*de.HPInkSaver EdgePreserve/EdgePreserve (Preservar Bordes): "EdgePreserve (Kantenkonturierung)"
+*de.HPInkSaver DotGainGrid/DotGainGrid (Micro-Perforacion Dot Gain): "DotGainGrid (Punktzuwachs-Rasterung)"
+
+*es.Translation HPEcoColorDrop/Filtro Ecologico de Color: "Filtro Ecologico de Color"
+*es.HPEcoColorDrop None/Conservar Todo el Color: "Conservar Todo el Color"
+*es.HPEcoColorDrop DropColorBg/Atenuar Fondos de Color: "Atenuar Fondos de Color"
+*es.HPEcoColorDrop EcoGrayscale/Escala de Grises Ecologica: "Escala de Grises Ecologica"
+
+*% End of hp-smart_tank_500_series.ppd, 36938 bytes.

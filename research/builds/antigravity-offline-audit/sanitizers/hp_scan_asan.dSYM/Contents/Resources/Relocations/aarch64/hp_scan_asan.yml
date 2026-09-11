@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     'research/builds/antigravity-offline-audit/sanitizers/hp_scan_asan'
+relocations:     []
+...

@@ -27,7 +27,11 @@ venv/
 tools/rastertopcl3gui
 
 # Build Artifacts & Staging
-research/builds/
+research/builds/*.pkg
+research/builds/*.dmg
+research/builds/*.log
+research/builds/*.stdout
+research/builds/*.stderr
 research/staging/
 research/package_root*/
 research/package_scripts*/

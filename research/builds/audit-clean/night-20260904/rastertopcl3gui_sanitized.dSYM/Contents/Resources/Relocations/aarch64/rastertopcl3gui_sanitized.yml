@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     'research/builds/audit-clean/night-20260904/rastertopcl3gui_sanitized'
+relocations:     []
+...

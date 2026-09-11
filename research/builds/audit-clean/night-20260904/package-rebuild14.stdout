@@ -1,0 +1,16 @@
+=== Construyendo Paquete Instalador .pkg Oficial ===
+[pkg] Copiando HP Smart Tank Utility.app...
+[pkg] Copiando filtro CUPS, backend smarttank, icono Retina y PPD...
+[pkg] Copiando perfiles ColorSync ICC...
+[pkg] Copiando herramientas CLI y demonio AirScan...
+[pkg] Empaquetando con /usr/bin/pkgbuild...
+pkgbuild: Inferring bundle components from contents of /Users/jorge/Downloads/Instaladores/hp/research/staging/package_root-20260904-024007
+pkgbuild: Adding component at Applications/HP Smart Tank Utility.app
+pkgbuild: Adding top-level postinstall script
+pkgbuild: Wrote package to /Users/jorge/Downloads/Instaladores/hp/research/builds/HP_Smart_Tank_500_Native_Apple_Silicon-20260904-024007.pkg
+
+======================================================================
+  ¡PAQUETE INSTALADOR CREADO EXITOSAMENTE!
+  Archivo: /Users/jorge/Downloads/Instaladores/hp/research/builds/HP_Smart_Tank_500_Native_Apple_Silicon-20260904-024007.pkg
+  Tamaño: 264K
+======================================================================
