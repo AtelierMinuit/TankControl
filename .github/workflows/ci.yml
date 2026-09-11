@@ -1,39 +1,42 @@
-name: TankControl CI
+name: TankControl Build
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [ main ]
   pull_request:
-    branches: [ master, main ]
+    branches: [ main ]
+
+permissions:
+  contents: read
 
 jobs:
-  build-and-test:
-    name: Build & Test (macOS ARM64)
+  build-and-verify:
+    name: Build & Integrity (macOS ARM64)
     runs-on: macos-14
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - name: Checkout source
+        uses: actions/checkout@v6
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
+      - name: Install build dependency
+        run: brew install libusb
 
-      - name: Install System Dependencies
+      - name: Build native drivers and TankControl.app
+        run: make build
+
+      - name: Verify bundle signature and architecture
         run: |
-          brew install libusb
+          APP="research/builds/audit-clean/night-20260904/TankControl.app"
+          TOOL="$APP/Contents/Helpers/hp-smart-tank-tool"
+          SCAN="$APP/Contents/Helpers/hp_scan"
 
-      - name: Build C Drivers & TankControl.app
-        run: |
-          make build
+          codesign --verify --deep --strict "$APP"
+          file "$TOOL" | grep -q 'arm64'
+          file "$SCAN" | grep -q 'arm64'
+          otool -L "$TOOL" | grep -q '@rpath/libusb-1.0.0.dylib'
+          otool -L "$SCAN" | grep -q '@rpath/libusb-1.0.0.dylib'
 
-      - name: Verify Bundle Integrity & Self-Contained Libraries
+      - name: CI scope note
         run: |
-          codesign --verify --deep --strict "research/builds/audit-clean/night-20260904/TankControl.app"
-          otool -L "research/builds/audit-clean/night-20260904/TankControl.app/Contents/Helpers/hp-smart-tank-tool"
-          otool -L "research/builds/audit-clean/night-20260904/TankControl.app/Contents/Helpers/hp_scan"
-
-      - name: Run Automated Test Suite (205 Tests)
-        run: |
-          make test
+          echo "Public CI validates reproducible build, bundle integrity and ARM64 linkage."
+          echo "The complete local test suite includes hardware/corpus/package fixtures that are intentionally not versioned in this public repository."
