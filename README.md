@@ -1,185 +1,163 @@
-# TankControl
+<p align="center">
+  <img src="Brand/README-header.png" alt="TankControl — HP Smart Tank 500 on macOS" width="100%" />
+</p>
 
-**Native printing, scanning & ink management for macOS (Apple Silicon ARM64)**  
-*Compatible con HP Smart Tank 500 Series (`0x03F0:0x2B54`)*
+<h1 align="center">TankControl</h1>
 
----
+<p align="center">
+  Native macOS tooling for the <strong>HP Smart Tank 500 series</strong> on Apple Silicon.<br>
+  Printing, scanning, device control and diagnostics — local-first and open source.
+</p>
 
-[![macOS Apple Silicon](https://img.shields.io/badge/macOS-Apple%20Silicon%20ARM64-blue.svg)](#)
-[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](#)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![CUPS Compliance](https://img.shields.io/badge/CUPS-2.3.4-green.svg)](#)
-[![Tests Passing](https://img.shields.io/badge/tests-205%2F205%20passing-brightgreen.svg)](#)
-[![Languages](https://img.shields.io/badge/languages-ES%20%7C%20EN%20%7C%20PT%20%7C%20FR%20%7C%20DE-blue.svg)](#)
-[![Hardware Status](https://img.shields.io/badge/Hardware%20Status-Live%20USB%20Verified-brightgreen.svg)](#)
-[![Zero Telemetry](https://img.shields.io/badge/telemetry-zero%20(100%25%20local)-success.svg)](#)
+<p align="center">
+  <a href="https://github.com/giorgiogpt/TankControl/actions/workflows/ci.yml"><img src="https://github.com/giorgiogpt/TankControl/actions/workflows/ci.yml/badge.svg" alt="Build status"></a>
+  <a href="https://github.com/giorgiogpt/TankControl/releases/tag/v1.1.0"><img src="https://img.shields.io/badge/release-v1.1.0-4D6BFF" alt="Release v1.1.0"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-E8E5DD" alt="MIT license"></a>
+  <img src="https://img.shields.io/badge/macOS-Apple%20Silicon-0B0D10" alt="macOS Apple Silicon">
+</p>
 
----
+> **Independent project.** TankControl is not affiliated with, sponsored by or endorsed by HP Inc. HP and Smart Tank are trademarks of their respective owner.
 
-## 1. Visión General
+## Overview
 
-**TankControl** es una solución integral y de código abierto para operar impresoras y escáneres multifunción de tanque continuo (CISS) en macOS moderno sobre arquitectura ARM64 (Apple Silicon M1/M2/M3/M4). 
+TankControl is an independent macOS project focused on interoperability with the HP Smart Tank 500 series (`0x03F0:0x2B54`). The repository combines native SwiftUI tooling, C/CUPS components, USB helpers and local diagnostic utilities.
 
-Diseñado específicamente para sustituir aplicaciones comerciales pesadas por un entorno nativo en SwiftUI y C puro, sin requerir cuentas de usuario, sin servicios en la nube y con estricta transparencia técnica.
+The project is designed around three principles:
 
-### Vistas Principales
+- **local-first operation** — no cloud account is required for the core tooling;
+- **technical transparency** — capabilities and limitations should be inspectable in source;
+- **hardware caution** — maintenance operations that can consume ink or affect the device must remain explicit and user-confirmed.
 
-| Panel de Control y Depósitos CISS | InkSaver Center & Comparador Visual |
+## Public project status
+
+| Area | Status |
+| --- | --- |
+| Native ARM64 build | ✅ Reproducible in GitHub Actions |
+| App bundle integrity | ✅ Verified in CI |
+| HP Smart Tank 500 target | ✅ Project target |
+| Release | ✅ `v1.1.0` published |
+| License | ✅ MIT |
+| Full local test suite | ⚠️ Includes hardware/corpus/package fixtures not versioned in the public repository |
+| Apple notarization | ⚠️ Current distribution is not notarized |
+
+The public CI intentionally validates the reproducible source build, bundle signature integrity and ARM64 linkage. The complete local suite contains additional integration fixtures and hardware-oriented material that are not currently suitable for the public GitHub runner.
+
+## Main capabilities
+
+### Printing
+
+- CUPS-oriented native printing components.
+- PCL3GUI raster tooling written in C.
+- Print presets and local queue management.
+- Local raster processing and ink-density controls.
+
+### Scanning
+
+- Dedicated USB scanner helper.
+- eSCL/AirScan bridge components.
+- Integration work targeting standard macOS scanning workflows.
+
+### TankControl app
+
+- Native SwiftUI interface for Apple Silicon.
+- Printer status, diagnostics and maintenance surfaces.
+- Ink-related controls and local presets.
+- Mock/offline mode for development and interface testing.
+
+### Privacy model
+
+TankControl is designed to perform its core functions locally. See [`SECURITY.md`](SECURITY.md) for the current security and vulnerability-reporting policy.
+
+## Screenshots
+
+| Dashboard | Ink / maintenance |
 | :---: | :---: |
 | ![Dashboard](Brand/screenshots/dashboard_mockup.png) | ![InkSaver](Brand/screenshots/inksaver_mockup.png) |
 
----
+Additional screenshots and design assets are kept under [`Brand/`](Brand/).
 
-## 2. Características Principales
+## Installation
 
-### Impresión y RIP Nativo
-* **Filtro CUPS Optimizado (`rastertopcl3gui`):** Codificador nativo PCL3GUI Mode 10 con soporte de compresión run-length, calibración de dot gain y tramado adaptativo en C99 puro para Apple Silicon.
-* **Modo Rápido Borrador (Fast Draft):** Impresión de alta velocidad a 300 DPI con comando PCL de cabezal `\033*o1M` y ahorro de tinta del 70% (Eco70), conmutable en 1 solo clic desde la app o mediante CUPS.
-* **Canal Negro Puro (`PureBlack`):** Evita el consumo parasitario de tintas de color CMY al imprimir texto y documentos monocromáticos.
-* **Perfiles ColorSync Calibrados:** Perfiles ICC dedicados para papel común, satinado fotográfico y mate.
+Use the published assets from the current release:
 
-### InkSaver Center & Transparencia
-* **Control Deslizante Continuo (0% a 75%):** Graduación fina en una sola línea continua, inspirada en la clásica utilidad InkSaver pero implementada nativamente en el motor RIP de macOS.
-* **Tecnología EdgePreserve™:** Mantiene los contornos tipográficos y el texto negro 100% nítidos mientras atenúa inteligentemente fondos e ilustraciones.
-* **Comparador Visual Impreso Antes / Después:** Previsualización dinámica de la densidad del documento en tiempo real con tirador divisor `<->`.
-* **Aviso Honesto:** Declara explícitamente que la reducción es una estimación sobre el buffer raster RGB de software previo al spooler, sin fingir telemetría de sensores piezométricos no existentes.
+**[Download TankControl v1.1.0 →](https://github.com/giorgiogpt/TankControl/releases/tag/v1.1.0)**
 
-### Escaneo Óptico y AirScan
-* **Driver de Escáner Dedicado (`hp_scan`):** Comunicación sobre la interfaz USB secundaria (Vendor Class `0xFF`, Subclase `0x04`, Protocolo `0x01`).
-* **Puente eSCL / AirScan:** Compatibilidad nativa con la aplicación **Captura de Imagen** (*Image Capture*) y vista previa integrada.
+The current package is **unsigned/not notarized with an Apple Developer ID**. Review the release notes before installation. Avoid disabling Gatekeeper globally; use macOS's normal per-app approval flow when required.
 
-### Accesibilidad y Seguridad de Hardware
-* **Diferenciación Geométrica Universal:** Cada depósito CISS se identifica por código, color y una forma geométrica única (Cuadrado para K, Triángulo para C, Diamante para M, Círculo para Y) para usuarios con daltonismo, acompañado de descripciones completas para VoiceOver.
-* **Aislamiento de Operaciones Peligrosas:** Las rutinas con alto consumo de tinta o desgaste mecánico (Purga Profunda Nivel 2, Cebado Forzado CISS, Inyección RAW) están confinadas tras el interruptor de **Developer Mode** y protegidas por una hoja modal de confirmación (`ConfirmationSheet`).
-* **Gemelo Digital (Modo Mock 100% Offline):** Simulación completa para ejecutar, diseñar y auditar la suite sin hardware físico conectado.
+## Build from source
 
----
+### Requirements
 
-## 3. Estructura de la Aplicación
+- Apple Silicon Mac (`arm64`)
+- macOS 12 or newer for the application target
+- Xcode Command Line Tools (`swiftc`, `clang`)
+- `libusb`
+- Python 3 for the test tooling
+
+### Build
+
+```bash
+brew install libusb
+make build
+```
+
+The build produces the native C helpers and `TankControl.app` under the project's build workspace.
+
+### Local test suite
+
+```bash
+make test
+```
+
+The full suite currently contains 205 tests. Some tests depend on local corpus, packaging, sanitizer or hardware-validation fixtures that are deliberately excluded from the public repository, so `make test` is not used as the public CI success criterion yet.
+
+### Packaging
+
+```bash
+make pkg
+make dmg
+```
+
+Release artifacts should be distributed through **GitHub Releases**, not committed as binary build output in the repository.
+
+## Repository map
 
 ```text
-apps/HPSmartTankUtility/Sources/
-├── Design/
-│   ├── DesignTokens.swift              # Colores, radios, tipografías y espaciados
-│   └── Components/
-│       ├── StatusBadge.swift           # Pastilla de estado de conexión accesible
-│       ├── InkTankGauge.swift          # Calibrador visual acrílico con formas
-│       ├── ActionCard.swift            # Tarjeta de acción nativa macOS
-│       ├── ConfirmationSheet.swift     # Modal de confirmación ante operaciones críticas
-│       ├── DiagnosticRow.swift         # Fila de subsistema expandible
-│       ├── MetricCard.swift            # Métrica numérica con SF Pro Rounded
-│       └── EmptyStateView.swift        # Estado vacío para vistas sin datos
-├── Models/
-│   ├── PrinterConnectionState.swift    # Máquina de estados central
-│   ├── SupplyItem.swift                # Modelo de suministros CISS con VoiceOver
-│   ├── OdometerData.swift              # Telemetría de páginas, escaneos y micro-gotas
-│   ├── SmartTankError.swift            # Errores categorizados con guía de solución
-│   ├── Preset.swift                    # Perfiles de impresión locales
-│   └── DiagnosticItem.swift            # Comprobaciones modulares de salud
-├── Services/
-│   ├── ProcessRunner.swift             # Subprocesos seguros sin shell (no sh -c)
-│   ├── SmartTankServiceProtocol.swift  # Interfaz abstracta de hardware
-│   ├── MockSmartTankService.swift      # Gemelo digital offline completo
-│   ├── RealSmartTankService.swift      # Driver de producción con helpers locales
-│   ├── PrinterManager.swift            # Estado observable central y sondeo adaptativo
-│   ├── PrinterService.swift            # Gestión de colas CUPS y presets
-│   ├── ScannerService.swift            # Control óptico de escáner y eSCL
-│   ├── InkSaverService.swift           # Motor de cálculo de ahorro raster
-│   └── NotificationManager.swift       # Notificaciones macOS sin spam
-├── Views/
-│   ├── MainSplitView.swift             # Barra lateral estilizada y contenedor
-│   ├── DashboardView.swift             # Panel de inicio, tanques CISS y acciones
-│   ├── PrintCenterView.swift           # Presets de impresión y cola CUPS
-│   ├── ScannerView.swift               # Ajustes de digitalización y previsualización
-│   ├── InkSaverCenterView.swift        # Comparador interactivo y calculadora
-│   ├── StatusView.swift                # Odómetro profundo y lectura de gotas
-│   ├── MaintenanceView.swift           # Mantenimiento seguro vs Developer Mode
-│   ├── DiagnosticsView.swift           # Chequeo del sistema y exportación de reportes
-│   ├── HistoryView.swift               # Historial de trabajos 100% privado
-│   ├── SettingsView.swift              # Preferencias y conmutador Developer Mode
-│   ├── OnboardingView.swift            # Asistente de bienvenida de 5 pasos
-│   ├── HelpView.swift                  # Árbol de resolución de incidencias
-│   ├── PrivacyView.swift               # Manifiesto de cero telemetría
-│   └── AboutView.swift                 # Créditos y notas de versión
-└── main.swift                          # Punto de entrada y monitor de Barra de Menú
+apps/                 Native macOS application
+src/                  Core source components
+tools/                Driver / hardware tooling
+tests/                Automated test suite
+docs/                 Technical and design documentation
+Brand/                Product identity and screenshots
+.github/              CI, issue templates and repository metadata
+research/             Engineering fixtures and supporting material
 ```
+
+Build products, private captures, large corpora and local staging directories are excluded through `.gitignore`.
+
+## Documentation
+
+- [`ARCHITECTURE.md`](ARCHITECTURE.md) — system architecture
+- [`CHANGELOG.md`](CHANGELOG.md) — release history
+- [`CONTRIBUTING.md`](CONTRIBUTING.md) — contribution workflow
+- [`SECURITY.md`](SECURITY.md) — security policy
+- [`.github/SUPPORT.md`](.github/SUPPORT.md) — support scope
+- [`docs/BRAND-GUIDE.md`](docs/BRAND-GUIDE.md) — product visual system
+- [`docs/TROUBLESHOOTING-TREE.md`](docs/TROUBLESHOOTING-TREE.md) — troubleshooting flow
+
+## Contributing
+
+Issues and pull requests are welcome when they are reproducible and within project scope. Use the provided issue templates and remove personal information, printer serial numbers, document contents, credentials and other sensitive material from logs or screenshots.
+
+For security vulnerabilities, **do not open a public issue containing exploit details**. Follow [`SECURITY.md`](SECURITY.md).
+
+## License
+
+TankControl is distributed under the [`MIT License`](LICENSE).
 
 ---
 
-## 4. Compilación y Ejecución
-
-### Requisitos
-* Mac con procesador Apple Silicon (M1, M2, M3, M4 o variantes Pro/Max/Ultra).
-* macOS 12.0 Monterey o superior.
-* Herramientas de línea de comandos de Xcode (`swiftc`, `clang`).
-* `python3` (para la suite de pruebas unitarias).
-
-### Instalación para Usuarios (Releases)
-Descarga la última imagen de disco `.dmg` desde la sección de Releases:
-1. Abre `HP_Smart_Tank_500_macOS_Instalador.dmg`.
-2. Ejecuta `Instalador HP Smart Tank 500.pkg` para configurar el controlador nativo, perfiles ColorSync y la cola CUPS.
-3. Arrastra `TankControl.app` a la carpeta `Aplicaciones`.
-
-> **Nota sobre macOS Gatekeeper:**  
-> Como TankControl es un desarrollo open source firmado con certificado ad-hoc (sin cuenta Apple Developer comercial de pago), al abrir la aplicación por primera vez en macOS Sonoma o Sequoia puede aparecer un aviso de seguridad. Para autorizarla de inmediato:
-> - Haz clic derecho (o Control-clic) en `TankControl.app` dentro de Aplicaciones y selecciona **Abrir**.
-> - O ejecuta en Terminal:
->   ```bash
->   xattr -cr /Applications/TankControl.app
->   ```
-
-### Bundle Autónomo (Zero Dependencias Externas)
-A diferencia de otros ports que requieren tener instalado Homebrew en `/opt/homebrew`, **TankControl.app** es 100% autónomo. El bundle incluye:
-- `Contents/Frameworks/libusb-1.0.0.dylib` vinculado vía `@rpath`.
-- Binarios auxiliares `hp_scan` y `hp-smart-tank-tool` vinculados directamente al Framework interno.
-- Cero dependencias dinámicas fuera de las librerías nativas del sistema macOS (`/usr/lib/libSystem.B.dylib`).
-
-### Construcción Automatizada (`Makefile` y `build_all.sh`)
-El proyecto incluye automatización completa en la raíz:
-
-```bash
-# Construir binarios C y la app TankControl:
-make build
-
-# Ejecutar la suite completa de 205 pruebas:
-make test
-
-# Generar el instalador .pkg multilingüe:
-make pkg
-
-# Generar la imagen de disco distribuible .dmg:
-make dmg
-
-# Pipeline integral de lanzamiento (build + test + pkg + dmg):
-make release
-```
-
-O utilizando directamente el script de automatización:
-```bash
-./build_all.sh --all
-```
-
-### Ejecutar Suite de Pruebas Unitarias
-```bash
-python3 -m unittest discover -s tests -v
-```
-*(205 pruebas automatizadas cubriendo filtros RIP C99, PCL3GUI Mode 10, InkSaver continuo, seguridad de buffer, topología USB, eSCL, PPD conformance y arquitectura).*
-
----
-
-## 5. Documentación de Referencia
-
-* [`docs/BRAND-GUIDE.md`](docs/BRAND-GUIDE.md): Guía canónica de marca, paleta, tipografía e iconografía.
-* [`docs/APP-DESIGN-SYSTEM.md`](docs/APP-DESIGN-SYSTEM.md): Especificación exhaustiva del sistema de diseño y componentes.
-* [`docs/APP-INFORMATION-ARCHITECTURE.md`](docs/APP-INFORMATION-ARCHITECTURE.md): Árbol de navegación y flujos de usuario.
-* [`docs/APP-UX-AUDIT.md`](docs/APP-UX-AUDIT.md): Auditoría de la utilidad monolítica original y deuda técnica solventada.
-* [`docs/APP-SANDBOX-ASSESSMENT.md`](docs/APP-SANDBOX-ASSESSMENT.md): Evaluación de App Sandbox vs acceso a sockets CUPS y USB.
-* [`docs/TROUBLESHOOTING-TREE.md`](docs/TROUBLESHOOTING-TREE.md): Árbol determinista de resolución de problemas offline.
-
----
-
-## 6. Aviso Legal y Descargo de Responsabilidad
-
-**HP®**, **Smart Tank®**, **DeskJet®** y los números de modelo asociados son marcas comerciales registradas propiedad de **HP Inc.**  
-
-**TankControl** es un desarrollo independiente de código abierto, distribuido bajo licencia permisiva. No mantiene relación comercial, patrocinio, afiliación ni respaldo oficial por parte de HP Inc. La mención de marcas y modelos específicos se efectúa exclusivamente con carácter nominativo y descriptivo para indicar la compatibilidad técnica del controlador.
+<p align="center">
+  <strong>ATELIER MINUIT</strong><br>
+  <sub>Independent software, tools & experiments. · 00:00</sub>
+</p>
