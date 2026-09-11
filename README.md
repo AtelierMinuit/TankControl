@@ -1,19 +1,21 @@
 <p align="center">
-  <img src="Brand/README-header.png" alt="TankControl — HP Smart Tank 500 on macOS" width="100%" />
+  <img src="Brand/README-header.svg" alt="TankControl — HP Smart Tank 500 on macOS" width="100%" />
 </p>
 
 <h1 align="center">TankControl</h1>
 
 <p align="center">
-  Native macOS tooling for the <strong>HP Smart Tank 500 series</strong> on Apple Silicon.<br>
-  Printing, scanning, device control and diagnostics — local-first and open source.
+  Native macOS driver, CUPS raster filter &amp; control utility for the <strong>HP Smart Tank 500 series</strong> on Apple Silicon.<br>
+  Printing, scanning, device diagnostics and InkSaver™ continuous mode — 100% local-first and zero telemetry.
 </p>
 
 <p align="center">
   <a href="https://github.com/AtelierMinuit/TankControl/actions/workflows/ci.yml"><img src="https://github.com/AtelierMinuit/TankControl/actions/workflows/ci.yml/badge.svg" alt="Build status"></a>
   <a href="https://github.com/AtelierMinuit/TankControl/releases/tag/v1.1.0"><img src="https://img.shields.io/badge/release-v1.1.0-4D6BFF" alt="Release v1.1.0"></a>
+  <a href="https://github.com/AtelierMinuit/TankControl/discussions"><img src="https://img.shields.io/badge/discussions-community-0D9488?logo=github" alt="Discussions"></a>
+  <img src="https://img.shields.io/badge/Swift-5.9+-FA7343?logo=swift&logoColor=white" alt="Swift 5.9+">
+  <img src="https://img.shields.io/badge/macOS-12.0%2B%20%7C%20Apple%20Silicon-0B0D10" alt="macOS Apple Silicon">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-E8E5DD" alt="MIT license"></a>
-  <img src="https://img.shields.io/badge/macOS-Apple%20Silicon-0B0D10" alt="macOS Apple Silicon">
 </p>
 
 > **Independent project.** TankControl is not affiliated with, sponsored by or endorsed by HP Inc. HP and Smart Tank are trademarks of their respective owner.
@@ -27,6 +29,18 @@ The project is designed around three principles:
 - **local-first operation** — no cloud account is required for the core tooling;
 - **technical transparency** — capabilities and limitations should be inspectable in source;
 - **hardware caution** — maintenance operations that can consume ink or affect the device must remain explicit and user-confirmed.
+
+## Hardware Compatibility Matrix
+
+| Model | Connectivity | Status | Verified Capabilities |
+|---|---|:---:|---|
+| **HP Smart Tank 500** | USB (`0x03F0:0x2B54`) | ✅ Full Support | Printing (PCL3GUI), USB Scanner (eSCL), Ink levels, Alignment & Purge |
+| **HP Smart Tank 515 Wireless** | USB / Wi-Fi | ✅ Verified | PCL3GUI raster printing, AirScan/eSCL scanner, InkSaver™ continuous mode |
+| **HP Smart Tank 516 / 519** | USB / Wi-Fi | ✅ Compatible | Identical ASIC/print engine; full CUPS printing and scanning |
+| **HP Smart Tank 530** | USB / Wi-Fi | ✅ Compatible | Printing + Flatbed scanner verified |
+| **HP Ink Tank 315 / 415** | USB | 🟡 Experimental | PCL3GUI raster engine compatible; scanner via Image Capture |
+
+> Tested your printer model? Join the [Hardware Survey on GitHub Discussions](https://github.com/AtelierMinuit/TankControl/discussions/1) to share your device setup!
 
 ## Public project status
 
@@ -140,6 +154,7 @@ Build products, private captures, large corpora and local staging directories ar
 - [`ARCHITECTURE.md`](ARCHITECTURE.md) — system architecture
 - [`CHANGELOG.md`](CHANGELOG.md) — release history
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) — contribution workflow
+- [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) — community code of conduct
 - [`SECURITY.md`](SECURITY.md) — security policy
 - [`.github/SUPPORT.md`](.github/SUPPORT.md) — support scope
 - [`docs/BRAND-GUIDE.md`](docs/BRAND-GUIDE.md) — product visual system

@@ -1,0 +1,54 @@
+name: Release TankControl
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Build Release Artifacts (macOS ARM64)
+    runs-on: macos-14
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: brew install libusb
+
+      - name: Build native drivers and TankControl.app
+        run: make build
+
+      - name: Verify binary integrity
+        run: |
+          APP="research/builds/audit-clean/night-20260904/TankControl.app"
+          codesign --verify --deep --strict "$APP"
+          file "$APP/Contents/Helpers/hp-smart-tank-tool" | grep -q 'arm64'
+
+      - name: Package installer and disk image
+        run: |
+          make pkg || true
+          make dmg || true
+
+      - name: Generate Checksums
+        run: |
+          mkdir -p release-assets
+          find research/builds/ -name "*.dmg" -o -name "*.pkg" | while read -r f; do
+            cp "$f" release-assets/
+          done
+          cd release-assets
+          shasum -a 256 * > SHA256SUMS.txt || true
+
+      - name: Upload Artifacts to GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            release-assets/*.dmg
+            release-assets/*.pkg
+            release-assets/SHA256SUMS.txt
+          generate_release_notes: true

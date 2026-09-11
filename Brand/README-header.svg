@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" role="img" aria-labelledby="title desc">
+  <title id="title">TankControl Header</title>
+  <desc id="desc">TankControl — Native macOS Apple Silicon Driver &amp; Utility Suite for HP Smart Tank 500 Series.</desc>
+
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B0D10"/>
+      <stop offset="100%" stop-color="#14181F"/>
+    </linearGradient>
+    <linearGradient id="cyanGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+    <linearGradient id="magentaGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#BE185D"/>
+      <stop offset="100%" stop-color="#F472B6"/>
+    </linearGradient>
+    <linearGradient id="yellowGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#B45309"/>
+      <stop offset="100%" stop-color="#FBBF24"/>
+    </linearGradient>
+    <linearGradient id="blackGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#18181B"/>
+      <stop offset="100%" stop-color="#3F3F46"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1200" height="320" rx="24" fill="url(#bgGrad)" stroke="#22272E" stroke-width="2"/>
+
+  <!-- Ink Tanks Visual System (Left Column) -->
+  <g transform="translate(64, 48)">
+    <!-- Tank 1: Black (GT53 / Black 135ml) -->
+    <g transform="translate(0, 0)">
+      <rect x="0" y="0" width="56" height="224" rx="14" fill="#18181B" stroke="#2B3038" stroke-width="2"/>
+      <rect x="4" y="44" width="48" height="174" rx="10" fill="url(#blackGrad)"/>
+      <line x1="8" y1="88" x2="24" y2="88" stroke="#52525B" stroke-width="1.5"/>
+      <line x1="8" y1="132" x2="24" y2="132" stroke="#52525B" stroke-width="1.5"/>
+      <line x1="8" y1="176" x2="24" y2="176" stroke="#52525B" stroke-width="1.5"/>
+      <text x="28" y="206" fill="#A1A1AA" font-family="ui-monospace, monospace" font-size="11" font-weight="700" text-anchor="middle">K</text>
+    </g>
+
+    <!-- Tank 2: Cyan (GT52 / Cyan 70ml) -->
+    <g transform="translate(68, 32)">
+      <rect x="0" y="0" width="44" height="192" rx="12" fill="#0C1B2B" stroke="#1E3A5F" stroke-width="2"/>
+      <rect x="4" y="38" width="36" height="148" rx="8" fill="url(#cyanGrad)"/>
+      <line x1="8" y1="80" x2="20" y2="80" stroke="#7DD3FC" stroke-width="1.5" stroke-opacity="0.6"/>
+      <line x1="8" y1="120" x2="20" y2="120" stroke="#7DD3FC" stroke-width="1.5" stroke-opacity="0.6"/>
+      <text x="22" y="174" fill="#082F49" font-family="ui-monospace, monospace" font-size="11" font-weight="700" text-anchor="middle">C</text>
+    </g>
+
+    <!-- Tank 3: Magenta (GT52 / Magenta 70ml) -->
+    <g transform="translate(124, 32)">
+      <rect x="0" y="0" width="44" height="192" rx="12" fill="#2B0D1E" stroke="#5F1E3A" stroke-width="2"/>
+      <rect x="4" y="52" width="36" height="134" rx="8" fill="url(#magentaGrad)"/>
+      <line x1="8" y1="80" x2="20" y2="80" stroke="#F472B6" stroke-width="1.5" stroke-opacity="0.6"/>
+      <line x1="8" y1="120" x2="20" y2="120" stroke="#F472B6" stroke-width="1.5" stroke-opacity="0.6"/>
+      <text x="22" y="174" fill="#500724" font-family="ui-monospace, monospace" font-size="11" font-weight="700" text-anchor="middle">M</text>
+    </g>
+
+    <!-- Tank 4: Yellow (GT52 / Yellow 70ml) -->
+    <g transform="translate(180, 32)">
+      <rect x="0" y="0" width="44" height="192" rx="12" fill="#2B210D" stroke="#5F4B1E" stroke-width="2"/>
+      <rect x="4" y="30" width="36" height="156" rx="8" fill="url(#yellowGrad)"/>
+      <line x1="8" y1="80" x2="20" y2="80" stroke="#FDE047" stroke-width="1.5" stroke-opacity="0.6"/>
+      <line x1="8" y1="120" x2="20" y2="120" stroke="#FDE047" stroke-width="1.5" stroke-opacity="0.6"/>
+      <text x="22" y="174" fill="#451A03" font-family="ui-monospace, monospace" font-size="11" font-weight="700" text-anchor="middle">Y</text>
+    </g>
+  </g>
+
+  <!-- Vertical Divider Line -->
+  <line x1="334" y1="44" x2="334" y2="276" stroke="#22272E" stroke-width="2"/>
+
+  <!-- Typography & Content Area (Right Column) -->
+  <g transform="translate(376, 50)">
+    <!-- Category / Atelier Brand Eyebrow -->
+    <g transform="translate(0, 18)">
+      <rect x="0" y="-14" width="8" height="18" rx="2" fill="#4D6BFF"/>
+      <text x="18" y="0" fill="#8C95A3" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="600" letter-spacing="2">ATELIER MINUIT · HARDWARE INTEROPERABILITY</text>
+    </g>
+
+    <!-- Title: TANKCONTROL -->
+    <text x="0" y="86" fill="#E8E5DD" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif" font-size="56" font-weight="800" letter-spacing="4">TANKCONTROL</text>
+
+    <!-- Subtitle / Mission -->
+    <text x="2" y="122" fill="#9CA3AF" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif" font-size="18" font-weight="400" letter-spacing="0.5">Native macOS driver, CUPS raster filter &amp; control utility for HP Smart Tank 500 series.</text>
+
+    <!-- Feature Chips / Pills -->
+    <g transform="translate(2, 154)">
+      <!-- Chip 1: Apple Silicon -->
+      <g transform="translate(0, 0)">
+        <rect width="186" height="34" rx="8" fill="#161B22" stroke="#30363D" stroke-width="1"/>
+        <circle cx="18" cy="17" r="5" fill="#10B981"/>
+        <text x="32" y="22" fill="#E8E5DD" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="500">Apple Silicon Native</text>
+      </g>
+
+      <!-- Chip 2: CUPS RIP Filter -->
+      <g transform="translate(196, 0)">
+        <rect width="144" height="34" rx="8" fill="#161B22" stroke="#30363D" stroke-width="1"/>
+        <circle cx="18" cy="17" r="5" fill="#4D6BFF"/>
+        <text x="32" y="22" fill="#E8E5DD" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="500">CUPS Filter C99</text>
+      </g>
+
+      <!-- Chip 3: InkSaver -->
+      <g transform="translate(350, 0)">
+        <rect width="168" height="34" rx="8" fill="#161B22" stroke="#30363D" stroke-width="1"/>
+        <circle cx="18" cy="17" r="5" fill="#0D9488"/>
+        <text x="32" y="22" fill="#E8E5DD" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="500">InkSaver™ 0–75%</text>
+      </g>
+
+      <!-- Chip 4: Zero Telemetry -->
+      <g transform="translate(528, 0)">
+        <rect width="194" height="34" rx="8" fill="#161B22" stroke="#30363D" stroke-width="1"/>
+        <circle cx="18" cy="17" r="5" fill="#8B5CF6"/>
+        <text x="32" y="22" fill="#E8E5DD" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="500">Zero Telemetry · Local</text>
+      </g>
+    </g>
+
+    <!-- Version & Monogram Watermark (Bottom Right) -->
+    <text x="740" y="214" fill="#4B5563" font-family="ui-monospace, monospace" font-size="12" letter-spacing="1">v1.1.0 · 00:00</text>
+  </g>
+</svg>
