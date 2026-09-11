@@ -104,7 +104,9 @@ class AirPrintIppToolSuiteTests(unittest.TestCase):
 
     def test_print_job_creates_postscript_spool(self) -> None:
         test_file = IPP_SUITE_DIR / "print-job.test"
-        sample_pwg = ROOT / "research" / "cups-apple-v2.3.6" / "examples" / "onepage-letter-300-black-1.pwg"
+        sample_pwg = ROOT / "tests" / "fixtures" / "onepage-letter-300-black-1.pwg"
+        if not sample_pwg.is_file():
+            sample_pwg = ROOT / "research" / "cups-apple-v2.3.6" / "examples" / "onepage-letter-300-black-1.pwg"
         self.assertTrue(sample_pwg.is_file(), f"Sample PWG raster not found: {sample_pwg}")
 
         cmd = [

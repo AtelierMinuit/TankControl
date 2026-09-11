@@ -64,10 +64,13 @@ class TestEnterpriseFeatures(unittest.TestCase):
         # Verificar conformidad cupstestppd
         res = subprocess.run(["cupstestppd", "-W", "all", PPD_PATH], capture_output=True, text=True)
         self.assertEqual(res.returncode, 0)
-        self.assertIn("PASA", res.stdout)
+        self.assertTrue("PASS" in res.stdout or "PASA" in res.stdout, f"cupstestppd no pasó: {res.stdout}")
 
     def test_04_iokit_usb_matching_configuration(self):
         packages = sorted(Path(BUILDS_DIR).glob("HP_Smart_Tank_500_Native_Apple_Silicon-*.pkg"), key=lambda p: p.stat().st_mtime)
+        if not packages:
+            subprocess.run(["make", "pkg"], cwd=BASE_DIR, check=True)
+            packages = sorted(Path(BUILDS_DIR).glob("HP_Smart_Tank_500_Native_Apple_Silicon-*.pkg"), key=lambda p: p.stat().st_mtime)
         self.assertTrue(packages, "Falta el instalador .pkg para validar LaunchEvents")
         with tempfile.TemporaryDirectory(prefix="hp-plist-test-") as expanded:
             expanded_path = Path(expanded) / "unpacked"
@@ -90,6 +93,9 @@ class TestEnterpriseFeatures(unittest.TestCase):
 
     def test_05_package_integrity_and_backend(self):
         packages = sorted(Path(BUILDS_DIR).glob("HP_Smart_Tank_500_Native_Apple_Silicon-*.pkg"), key=lambda p: p.stat().st_mtime)
+        if not packages:
+            subprocess.run(["make", "pkg"], cwd=BASE_DIR, check=True)
+            packages = sorted(Path(BUILDS_DIR).glob("HP_Smart_Tank_500_Native_Apple_Silicon-*.pkg"), key=lambda p: p.stat().st_mtime)
         self.assertTrue(packages, "Falta el instalador .pkg auditado")
         pkg_path = str(packages[-1])
         self.assertTrue(os.path.exists(pkg_path), "Falta el instalador .pkg")

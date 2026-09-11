@@ -23,6 +23,7 @@ venv/
 *.app
 *.pkg
 *.dylib
+!lib/libusb-1.0.0.dylib
 *.a
 tools/rastertopcl3gui
 
@@ -33,11 +34,44 @@ research/builds/*.log
 research/builds/*.stdout
 research/builds/*.stderr
 research/staging/
-research/package_root*/
-research/package_scripts*/
+research/package_root-*/
+research/package_scripts-*/
+research/builds/audit-clean/2026*
+research/builds/audit-clean/package-audit*
+research/builds/audit-clean/*-smoke*
+research/builds/audit-clean/*-corpus*
+research/builds/audit-clean/sanitizers*
+research/builds/audit-clean/*.stderr
+research/builds/audit-clean/*.stdout
+research/builds/audit-clean/*.otool
+research/builds/audit-clean/*.plist
+research/builds/audit-clean/*_asan*
+research/builds/audit-clean/*_sanitized*
+research/builds/audit-clean/copy-noattrs*
+research/builds/audit-clean/ditto-noattrs*
+research/builds/audit-clean/sanitized-corpus*
+research/builds/audit-clean/smarttank_discovery*
+research/builds/audit-clean/smarttank_asan
+research/builds/audit-clean/hp-smart-tank-tool*
+research/builds/audit-clean/hp_scan*
+research/builds/audit-clean/rastertopcl3gui*
+research/builds/audit-clean/smarttank*
+research/package_root/
+research/builds/audit-clean/night-20260904/*_asan*
+research/builds/audit-clean/night-20260904/*_sanitized*
+research/builds/audit-clean/night-20260904/fuzz_mode10*
+research/builds/audit-clean/night-20260904/ews-readonly-probe*
+!research/builds/audit-clean/night-20260904/rastertopcl3gui
+!research/builds/audit-clean/night-20260904/smarttank
+!research/builds/audit-clean/night-20260904/hp_scan
+!research/builds/audit-clean/night-20260904/hp-smart-tank-tool
+!research/builds/audit-clean/night-20260904/TankControl.app
+!research/builds/audit-clean/night-20260904/HP Smart Tank Utility.app
 
 # Heavy Raw Data & Upstream Trees (Preserved locally, excluded from git)
-research/corpus/
+research/corpus/decoded/
+research/corpus/raster/
+research/corpus/logs/
 research/hardware-validation/
 research/hplip/
 research/cups-apple-v2.3.6/

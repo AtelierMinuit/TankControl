@@ -1,5 +1,0 @@
----
-triple:          'arm64-apple-darwin'
-binary-path:     'research/builds/audit-clean/night-20260904/fuzz_mode10_sanitized'
-relocations:     []
-...

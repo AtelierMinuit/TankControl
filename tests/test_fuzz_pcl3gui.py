@@ -22,8 +22,8 @@ BINARY_PATH = AUDIT_BUILD / "rastertopcl3gui"
 DECODER_PATH = PROJECT_ROOT / "tools" / "pcl3gui-decode.py"
 ASAN_BIN = AUDIT_BUILD / "rastertopcl3gui_asan"
 
-# Compilar binario ASan si no existe
-if not ASAN_BIN.exists():
+def build_host_asan_binary() -> Path:
+    ASAN_BIN.parent.mkdir(parents=True, exist_ok=True)
     cmd = [
         "clang", "-fsanitize=address,undefined", "-g", "-O1",
         str(PROJECT_ROOT / "tools" / "rastertopcl3gui.c"),
@@ -31,6 +31,11 @@ if not ASAN_BIN.exists():
         "-lcups"
     ]
     subprocess.run(cmd, check=True)
+    return ASAN_BIN
+
+# Asegurar compilación en el host actual (especialmente en entornos CI)
+if not ASAN_BIN.exists() or os.environ.get("CI"):
+    build_host_asan_binary()
 
 # Cargar decodificador
 SPEC_DEC = importlib.util.spec_from_file_location("pcl3gui_decode", DECODER_PATH)

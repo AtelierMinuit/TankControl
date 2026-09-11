@@ -77,6 +77,10 @@ echo "[pkg] Copiando filtro CUPS, backend smarttank, icono Retina y PPD..."
     cp -X "${BUILD_DIR}/smarttank" "${PKG_ROOT}/usr/local/bin/"
     cp -X "${BUILD_DIR}/hp_scan" "${PKG_ROOT}/usr/local/bin/"
     cp -X "${BUILD_DIR}/hp-smart-tank-tool" "${PKG_ROOT}/usr/local/bin/"
+    if [ ! -f "${DIR}/lib/libusb-1.0.0.dylib" ] && [ -f "/opt/homebrew/opt/libusb/lib/libusb-1.0.0.dylib" ]; then
+        mkdir -p "${DIR}/lib"
+        cp "/opt/homebrew/opt/libusb/lib/libusb-1.0.0.dylib" "${DIR}/lib/libusb-1.0.0.dylib"
+    fi
     cp -X "${DIR}/lib/libusb-1.0.0.dylib" "${PKG_ROOT}/usr/local/lib/"
     install_name_tool -change /opt/homebrew/opt/libusb/lib/libusb-1.0.0.dylib @rpath/libusb-1.0.0.dylib "${PKG_ROOT}/Library/Printers/hp/cups/backend/smarttank" 2>/dev/null || true
     install_name_tool -change /opt/homebrew/opt/libusb/lib/libusb-1.0.0.dylib @rpath/libusb-1.0.0.dylib "${PKG_ROOT}/usr/local/bin/smarttank" 2>/dev/null || true
