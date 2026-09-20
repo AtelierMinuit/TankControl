@@ -1,4 +1,0 @@
-0a13facf07b4e39f5e27000e7e2b212e0919e8406db82826cf7f8e9b92d05c5b  docs/MASTER-AUDIT-2026.md
-a51dd7af00c1c7561933a1be67a314630ad7fa9b06b4d2578cfbe469a8a72863  docs/PHASE-COVERAGE-2026.md
-b7630631d53f6d16eae218f296831c88f92419cc039c0b155562679ecae8adf7  research/audits/post-hardening-20260904-061641/rastertopcl3gui-asan
-d1b6876c0da68900fe4d9b319d489a871f14e87405a913b8be060969240bbd64  research/audits/post-hardening-20260904-061641/smarttank-asan

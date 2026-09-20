@@ -1,3 +1,0 @@
-4127d2db35bf310d076067ba9f2433f143d0fe09491473c02e59fb2a8f4c32ef  docs/HP-CROSS-MODEL-COMPARISON.md
-0cbd93ba2b4bfc9aa870a8cff3d167609a71239dd725a1514c72d5bd71d37ab0  docs/MASTER-AUDIT-2026.md
-1d93fa7f120838da3a00ef7a5c7afaef8fef96ed2410cde9708c67bc6ddcb4c0  research/audits/post-hardening-20260904-062843/ppd-comparison.txt
