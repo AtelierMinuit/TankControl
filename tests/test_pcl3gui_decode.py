@@ -222,6 +222,8 @@ class InverseRasterValidationTests(unittest.TestCase):
     def check_inverse(self, name: str, expected_max_rmse: float) -> None:
         raster_path = PROJECT_ROOT / "research" / "corpus" / "raster" / f"{name}.raster"
         stream_path = PROJECT_ROOT / "research" / "corpus" / "streams" / f"{name}.pcl3gui"
+        if not raster_path.exists():
+            self.skipTest(f"Corpus raster fixture missing: {raster_path}")
         stream_data = stream_path.read_bytes()
 
         r_start, _, _ = DECODER.parse_raster_events(stream_data)
