@@ -43,6 +43,7 @@ public final class ScannerService: ObservableObject {
     @Published public var selectedPaperSize: ScanPaperSize = .a4
     @Published public var selectedFormat: ScanFormat = .pdf
     @Published public var destinationFolder: String = "Descargas"
+    @Published public var enableOCR: Bool = true
     @Published public var isScanning: Bool = false
     @Published public var scanStatusMessage: String = ""
     @Published public var lastScanResultURL: URL? = nil
@@ -110,17 +111,28 @@ public final class ScannerService: ObservableObject {
                 self.isScanning = false
                 if res.isSuccess && FileManager.default.fileExists(atPath: tempJpgURL.path) {
                     if self.selectedFormat == .pdf && !isPreview {
-                        // Convertir a PDF mediante sips
                         let pdfURL = downloadsDir.appendingPathComponent("\(baseFilename).pdf")
-                        let sipsRes = ProcessRunner.shared.run(
-                            executableURL: URL(fileURLWithPath: "/usr/bin/sips"),
-                            arguments: ["-s", "format", "pdf", tempJpgURL.path, "--out", pdfURL.path]
-                        )
-                        if sipsRes.isSuccess && FileManager.default.fileExists(atPath: pdfURL.path) {
-                            try? FileManager.default.removeItem(at: tempJpgURL)
-                            self.lastScanResultURL = pdfURL
-                            completion(.success(pdfURL))
+                        if self.enableOCR, let scannedImg = NSImage(contentsOf: tempJpgURL) {
+                            OCRService.shared.recognizeText(from: scannedImg) { ocrRes in
+                                let recognizedText = ocrRes?.recognizedText ?? ""
+                                _ = OCRService.shared.createSearchablePDF(from: scannedImg, recognizedText: recognizedText, destinationURL: pdfURL)
+                                try? FileManager.default.removeItem(at: tempJpgURL)
+                                self.lastScanResultURL = pdfURL
+                                completion(.success(pdfURL))
+                            }
                             return
+                        } else {
+                            // Fallback estándar vía sips
+                            let sipsRes = ProcessRunner.shared.run(
+                                executableURL: URL(fileURLWithPath: "/usr/bin/sips"),
+                                arguments: ["-s", "format", "pdf", tempJpgURL.path, "--out", pdfURL.path]
+                            )
+                            if sipsRes.isSuccess && FileManager.default.fileExists(atPath: pdfURL.path) {
+                                try? FileManager.default.removeItem(at: tempJpgURL)
+                                self.lastScanResultURL = pdfURL
+                                completion(.success(pdfURL))
+                                return
+                            }
                         }
                     } else if self.selectedFormat == .png && !isPreview {
                         // Convertir a PNG mediante sips

@@ -128,6 +128,30 @@ public struct ScannerView: View {
                                         .truncationMode(.middle)
                                 }
                             }
+
+                            Divider()
+
+                            // Reconocimiento de Texto OCR (Apple Vision)
+                            VStack(alignment: .leading, spacing: 4) {
+                                Toggle(isOn: $service.enableOCR) {
+                                    HStack(spacing: 4) {
+                                        Text("Texto Buscable (OCR)")
+                                            .font(DesignTokens.Fonts.bodyMedium)
+                                        Text("Vision")
+                                            .font(.system(size: 9, weight: .bold))
+                                            .foregroundColor(.purple)
+                                            .padding(.horizontal, 4)
+                                            .padding(.vertical, 1)
+                                            .background(Color.purple.opacity(0.12))
+                                            .cornerRadius(3)
+                                    }
+                                }
+                                .toggleStyle(.checkbox)
+
+                                Text("Indexable en Spotlight y 100% offline.")
+                                    .font(.system(size: 10))
+                                    .foregroundColor(.secondary)
+                            }
                         }
                         .padding(DesignTokens.Spacing.sm)
                         .background(DesignTokens.Colors.surfaceGrouped)

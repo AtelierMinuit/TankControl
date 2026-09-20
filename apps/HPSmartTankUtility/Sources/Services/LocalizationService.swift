@@ -283,6 +283,62 @@ public final class LocalizationService: ObservableObject {
             .portuguese: "Impressão gigante multipágina com abas de colagem e guias de corte para HP Smart Tank",
             .french: "Impression géante multipage avec languettes de collage et repères de coupe pour HP Smart Tank",
             .german: "Großformatiger Mehrseitendruck mit Klebelaschen und Schnittmarken für HP Smart Tank"
+        ],
+        "settings_launch_at_login_header": [
+            .spanish: "Inicio del Sistema",
+            .english: "System Startup",
+            .portuguese: "Inicialização do Sistema",
+            .french: "Démarrage du Système",
+            .german: "Systemstart"
+        ],
+        "settings_launch_at_login_title": [
+            .spanish: "Iniciar TankControl automáticamente",
+            .english: "Launch TankControl at Login",
+            .portuguese: "Iniciar TankControl ao entrar",
+            .french: "Lancer TankControl à l'ouverture de session",
+            .german: "TankControl bei der Anmeldung starten"
+        ],
+        "settings_launch_at_login_desc": [
+            .spanish: "Mantiene activo el agente de barra de menús y el puente AirPrint al encender el Mac.",
+            .english: "Keeps menu bar agent and AirPrint bridge running whenever your Mac turns on.",
+            .portuguese: "Mantém o agente da barra de menus e a ponte AirPrint ativos ao ligar o Mac.",
+            .french: "Maintient l'agent de barre de menus et le pont AirPrint actifs au démarrage du Mac.",
+            .german: "Hält das Menüleisten-Symbol und die AirPrint-Bridge beim Starten des Mac aktiv."
+        ],
+        "settings_updates_header": [
+            .spanish: "Actualizaciones de Software",
+            .english: "Software Updates",
+            .portuguese: "Atualizações de Software",
+            .french: "Mises à jour logicielles",
+            .german: "Software-Aktualisierungen"
+        ],
+        "settings_updates_check_btn": [
+            .spanish: "Buscar Actualizaciones…",
+            .english: "Check for Updates…",
+            .portuguese: "Verificar Atualizações…",
+            .french: "Vérifier les mises à jour…",
+            .german: "Nach Updates suchen…"
+        ],
+        "duplex_btn_title": [
+            .spanish: "Asistente Doble Cara (Dúplex)…",
+            .english: "Manual Duplex Assistant…",
+            .portuguese: "Assistente Frente e Verso…",
+            .french: "Assistant Recto-Verso Manuel…",
+            .german: "Manueller Duplex-Assistent…"
+        ],
+        "ocr_toggle_title": [
+            .spanish: "Texto Buscable (OCR Apple Vision)",
+            .english: "Searchable Text (Apple Vision OCR)",
+            .portuguese: "Texto Pesquisável (OCR Apple Vision)",
+            .french: "Texte Recherchable (OCR Apple Vision)",
+            .german: "Durchsuchbarer Text (Apple Vision OCR)"
+        ],
+        "ocr_toggle_desc": [
+            .spanish: "Procesamiento 100% offline y privado con Neural Engine de Apple Silicon.",
+            .english: "100% offline and private processing powered by Apple Silicon Neural Engine.",
+            .portuguese: "Processamento 100% offline e privado com o Neural Engine da Apple Silicon.",
+            .french: "Traitement 100% hors ligne et privé avec le Neural Engine d'Apple Silicon.",
+            .german: "100% offline und private Verarbeitung mit der Apple Silicon Neural Engine."
         ]
     ]
 }

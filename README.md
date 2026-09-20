@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/AtelierMinuit/TankControl/actions/workflows/ci.yml"><img src="https://github.com/AtelierMinuit/TankControl/actions/workflows/ci.yml/badge.svg" alt="Build status"></a>
-  <a href="https://github.com/AtelierMinuit/TankControl/releases/tag/v1.1.0"><img src="https://img.shields.io/badge/release-v1.1.0-4D6BFF" alt="Release v1.1.0"></a>
+  <a href="https://github.com/AtelierMinuit/TankControl/releases/tag/v2.0.0"><img src="https://img.shields.io/badge/release-v2.0.0-4D6BFF" alt="Release v2.0.0"></a>
   <a href="https://github.com/AtelierMinuit/TankControl/discussions"><img src="https://img.shields.io/badge/discussions-community-0D9488?logo=github" alt="Discussions"></a>
   <img src="https://img.shields.io/badge/Swift-5.9+-FA7343?logo=swift&logoColor=white" alt="Swift 5.9+">
   <img src="https://img.shields.io/badge/macOS-12.0%2B%20%7C%20Apple%20Silicon-0B0D10" alt="macOS Apple Silicon">
@@ -49,7 +49,7 @@ The project is designed around three principles:
 | Native ARM64 build | ✅ Reproducible in GitHub Actions |
 | App bundle integrity | ✅ Verified in CI |
 | HP Smart Tank 500 target | ✅ Project target |
-| Release | ✅ `v1.2.0` published |
+| Release | ✅ `v2.0.0` published |
 | License | ✅ MIT |
 | Full local test suite | ⚠️ Includes hardware/corpus/package fixtures not versioned in the public repository |
 | Apple notarization | ⚠️ Current distribution is not notarized |
@@ -102,7 +102,7 @@ Additional screenshots and design assets are kept under [`Brand/`](Brand/).
 
 Use the published assets from the current release:
 
-**[Download TankControl v1.2.0 →](https://github.com/AtelierMinuit/TankControl/releases/tag/v1.2.0)**
+**[Download TankControl v2.0.0 →](https://github.com/AtelierMinuit/TankControl/releases/tag/v2.0.0)**
 
 The current package is **unsigned/not notarized with an Apple Developer ID**. Review the release notes before installation. Avoid disabling Gatekeeper globally; use macOS's normal per-app approval flow when required.
 
@@ -131,7 +131,7 @@ The build produces the native C helpers and `TankControl.app` under the project'
 make test
 ```
 
-The full suite currently contains 228 tests. Some tests depend on local corpus, packaging, sanitizer or hardware-validation fixtures that are deliberately excluded from the public repository, so `make test` is not used as the public CI success criterion yet.
+The full suite currently contains 245 tests. Some tests depend on local corpus, packaging, sanitizer or hardware-validation fixtures that are deliberately excluded from the public repository, so `make test` is not used as the public CI success criterion yet.
 
 ### Packaging
 

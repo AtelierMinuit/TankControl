@@ -177,6 +177,95 @@ public struct DashboardView: View {
                     )
                 }
 
+                // MARK: - 5. Rendimiento y Ahorro Económico CISS
+                if let odo = printer.odometer, let total = odo.total_pages, total > 0 {
+                    let estimatedSavingsUSD = Double(total) * 0.087
+                    let mlConsumed = odo.drops?.estimatedVolumeMilliliters ?? (Double(total) * 0.035)
+
+                    VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {
+                        HStack {
+                            Text("Rendimiento y Ahorro CISS")
+                                .font(DesignTokens.Fonts.sectionHeader)
+                            Spacer()
+                            Text("Telemetría de Odómetro")
+                                .font(DesignTokens.Fonts.caption)
+                                .foregroundColor(.secondary)
+                        }
+
+                        HStack(spacing: DesignTokens.Spacing.md) {
+                            // Métrica 1: Ahorro
+                            VStack(alignment: .leading, spacing: 3) {
+                                HStack(spacing: 4) {
+                                    Image(systemName: "dollarsign.circle.fill")
+                                        .foregroundColor(.green)
+                                    Text("Ahorro Estimado")
+                                        .font(DesignTokens.Fonts.caption)
+                                        .foregroundColor(.secondary)
+                                }
+                                Text("~$\(String(format: "%.1f", estimatedSavingsUSD))")
+                                    .font(DesignTokens.Fonts.title)
+                                    .foregroundColor(.green)
+                                Text("vs. cartuchos tradicionales")
+                                    .font(.system(size: 10))
+                                    .foregroundColor(.secondary)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(DesignTokens.Spacing.sm)
+                            .background(DesignTokens.Colors.surfaceGrouped)
+                            .cornerRadius(DesignTokens.Radii.small)
+
+                            // Métrica 2: Páginas Totales
+                            VStack(alignment: .leading, spacing: 3) {
+                                HStack(spacing: 4) {
+                                    Image(systemName: "doc.text.fill")
+                                        .foregroundColor(.accentColor)
+                                    Text("Producción Total")
+                                        .font(DesignTokens.Fonts.caption)
+                                        .foregroundColor(.secondary)
+                                }
+                                Text("\(total)")
+                                    .font(DesignTokens.Fonts.title)
+                                    .foregroundColor(.primary)
+                                Text("páginas impresas")
+                                    .font(.system(size: 10))
+                                    .foregroundColor(.secondary)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(DesignTokens.Spacing.sm)
+                            .background(DesignTokens.Colors.surfaceGrouped)
+                            .cornerRadius(DesignTokens.Radii.small)
+
+                            // Métrica 3: Tinta Inyectada
+                            VStack(alignment: .leading, spacing: 3) {
+                                HStack(spacing: 4) {
+                                    Image(systemName: "drop.fill")
+                                        .foregroundColor(.cyan)
+                                    Text("Tinta Consumida")
+                                        .font(DesignTokens.Fonts.caption)
+                                        .foregroundColor(.secondary)
+                                }
+                                Text("~\(String(format: "%.1f", mlConsumed)) ml")
+                                    .font(DesignTokens.Fonts.title)
+                                    .foregroundColor(.primary)
+                                Text("tanques GT51/GT52")
+                                    .font(.system(size: 10))
+                                    .foregroundColor(.secondary)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(DesignTokens.Spacing.sm)
+                            .background(DesignTokens.Colors.surfaceGrouped)
+                            .cornerRadius(DesignTokens.Radii.small)
+                        }
+                    }
+                    .padding(DesignTokens.Spacing.md)
+                    .background(DesignTokens.Colors.surfaceGrouped)
+                    .cornerRadius(DesignTokens.Radii.medium)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: DesignTokens.Radii.medium)
+                            .stroke(DesignTokens.Colors.border, lineWidth: 1)
+                    )
+                }
+
                 Button("Ver actividad de la impresora") { printer.selectedSection = .activity }
                     .buttonStyle(.link)
             }

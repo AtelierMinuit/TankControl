@@ -11,7 +11,7 @@ all: build test
 help:
 	@echo "HP Smart Tank 500 — Comandos de compilación disponibles:"
 	@echo "  make build    Compila binarios C y TankControl.app"
-	@echo "  make test     Ejecuta la suite de pruebas unitarias (228 tests)"
+	@echo "  make test     Ejecuta la suite de pruebas unitarias (245 tests)"
 	@echo "  make pkg      Genera el paquete instalador multilingüe .pkg"
 	@echo "  make dmg      Genera la imagen de disco distribuible .dmg"
 	@echo "  make release  Pipeline completo: build, test, pkg y dmg"

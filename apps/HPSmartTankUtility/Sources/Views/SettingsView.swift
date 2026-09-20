@@ -4,6 +4,8 @@ public struct SettingsView: View {
     @ObservedObject var printer: PrinterManager
     @ObservedObject private var loc = LocalizationService.shared
     @ObservedObject private var airPrint = AirPrintBridgeService.shared
+    @ObservedObject private var launchService = LaunchAtLoginService.shared
+    @ObservedObject private var updateChecker = UpdateCheckerService.shared
     @State private var showingDeveloperModeConfirmation = false
 
     public var body: some View {
@@ -132,6 +134,37 @@ public struct SettingsView: View {
                     )
                 }
 
+                // Grupo 1.7: Inicio del Sistema (Launch at Login)
+                VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {
+                    Text(loc.t("settings_launch_at_login_header"))
+                        .font(DesignTokens.Fonts.sectionHeader)
+
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Image(systemName: "macwindow.badge.plus")
+                                .foregroundColor(launchService.isEnabled ? .blue : .secondary)
+                                .font(.system(size: 16))
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(loc.t("settings_launch_at_login_title"))
+                                    .font(DesignTokens.Fonts.bodyMedium)
+                                Text(loc.t("settings_launch_at_login_desc"))
+                                    .font(DesignTokens.Fonts.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                            Spacer()
+                            Toggle("", isOn: $launchService.isEnabled)
+                                .toggleStyle(.switch)
+                        }
+                    }
+                    .padding(DesignTokens.Spacing.sm)
+                    .background(DesignTokens.Colors.surfaceGrouped)
+                    .cornerRadius(DesignTokens.Radii.small)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: DesignTokens.Radii.small)
+                            .stroke(DesignTokens.Colors.border, lineWidth: 1)
+                    )
+                }
+
                 // Grupo 2: Herramientas de Desarrollo
                 VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {
                     Text(loc.t("settings_dev_header"))
@@ -150,6 +183,50 @@ public struct SettingsView: View {
                         Text(loc.t("settings_dev_desc"))
                             .font(DesignTokens.Fonts.caption)
                             .foregroundColor(.secondary)
+                    }
+                    .padding(DesignTokens.Spacing.sm)
+                    .background(DesignTokens.Colors.surfaceGrouped)
+                    .cornerRadius(DesignTokens.Radii.small)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: DesignTokens.Radii.small)
+                            .stroke(DesignTokens.Colors.border, lineWidth: 1)
+                    )
+                }
+
+                // Grupo 2.5: Actualizaciones de Software
+                VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {
+                    Text(loc.t("settings_updates_header"))
+                        .font(DesignTokens.Fonts.sectionHeader)
+
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Image(systemName: "arrow.triangle.2.circlepath.circle")
+                                .foregroundColor(.accentColor)
+                                .font(.system(size: 16))
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("GitHub Releases Oficial")
+                                    .font(DesignTokens.Fonts.bodyMedium)
+                                Text(updateChecker.statusMessage.isEmpty ? "Versión actual instalada: \(updateChecker.currentVersion)" : updateChecker.statusMessage)
+                                    .font(DesignTokens.Fonts.caption)
+                                    .foregroundColor(updateChecker.updateAvailable ? .green : .secondary)
+                            }
+                            Spacer()
+
+                            if updateChecker.updateAvailable {
+                                Button("Descargar \(updateChecker.latestVersion)") {
+                                    updateChecker.openLatestRelease()
+                                }
+                                .buttonStyle(.borderedProminent)
+                                .controlSize(.small)
+                            } else {
+                                Button(loc.t("settings_updates_check_btn")) {
+                                    updateChecker.checkForUpdates(manual: true)
+                                }
+                                .buttonStyle(.bordered)
+                                .controlSize(.small)
+                                .disabled(updateChecker.isChecking)
+                            }
+                        }
                     }
                     .padding(DesignTokens.Spacing.sm)
                     .background(DesignTokens.Colors.surfaceGrouped)

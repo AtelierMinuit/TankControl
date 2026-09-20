@@ -47,7 +47,7 @@ class TestAppBundleStructure(unittest.TestCase):
         self.assertEqual(plist.get("CFBundleExecutable"), "TankControl")
         self.assertEqual(plist.get("CFBundleName"), "TankControl")
         self.assertEqual(plist.get("CFBundleIdentifier"), "org.openprinting.tankcontrol")
-        self.assertEqual(plist.get("CFBundleShortVersionString"), "0.1.0-alpha")
+        self.assertEqual(plist.get("CFBundleShortVersionString"), "2.0.0")
         self.assertEqual(plist.get("CFBundleIconFile"), "AppIcon")
         self.assertEqual(plist.get("LSMinimumSystemVersion"), "12.0")
 

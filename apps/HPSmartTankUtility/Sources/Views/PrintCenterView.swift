@@ -6,6 +6,7 @@ public struct PrintCenterView: View {
     @StateObject private var inkSaverService = InkSaverService()
     @State private var message = ""
     @State private var showingResult = false
+    @State private var showingManualDuplex = false
 
     private var isHardwareReady: Bool {
         printer.connectionState.isConnected && !printer.isBusy
@@ -90,6 +91,13 @@ public struct PrintCenterView: View {
                             .buttonStyle(.bordered)
                             .controlSize(.regular)
                             .help("Ajustar ahorro raster y presets de tinta GT51/GT52/GT53")
+
+                            Button(action: { showingManualDuplex = true }) {
+                                Label("Asistente Dúplex…", systemImage: "doc.on.doc.fill")
+                            }
+                            .buttonStyle(.bordered)
+                            .controlSize(.regular)
+                            .help("Impresión a doble cara manual asistida para documentos PDF")
                         }
                     }
                     .padding(DesignTokens.Spacing.md)
@@ -247,6 +255,9 @@ public struct PrintCenterView: View {
             Button("Aceptar", role: .cancel) {}
         } message: {
             Text(message)
+        }
+        .sheet(isPresented: $showingManualDuplex) {
+            ManualDuplexSheetView()
         }
         .onAppear {
             inkSaverService.queryCupsSetting()
