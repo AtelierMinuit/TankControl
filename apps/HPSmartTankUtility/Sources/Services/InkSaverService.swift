@@ -60,6 +60,8 @@ public enum InkSaverLevel: String, CaseIterable, Identifiable {
 
 /// Servicio que gestiona la configuración de InkSaver y calcula la estimación de ahorro raster.
 public final class InkSaverService: ObservableObject {
+    public static let shared = InkSaverService()
+
     /// Porcentaje continuo de ahorro raster (de 0 a 75, por defecto 35%).
     @Published public var savingsPercent: Int = 35 {
         didSet {
@@ -267,6 +269,12 @@ public final class InkSaverService: ObservableObject {
             return "La cola '\(queueName)' no está registrada en CUPS. Ejecute el instalador .pkg incluido para crearla."
         }
         return rawStderr.isEmpty ? "Error configurando CUPS (código \(exitCode))" : rawStderr
+    }
+
+    /// Aplica un porcentaje predefinido de ahorro y lo persiste inmediatamente en CUPS.
+    public func applyPresetToCUPS(percent: Int, queueName: String = "HP_Smart_Tank_500") {
+        self.savingsPercent = percent
+        self.applyCupsSetting(queueName: queueName)
     }
 
     /// Aplica persistentemente el ajuste a CUPS ejecutando `lpoptions -p HP_Smart_Tank_500 -o HPInkSaver=EcoXX`

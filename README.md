@@ -58,12 +58,14 @@ The public CI intentionally validates the reproducible source build, bundle sign
 
 ## Main capabilities
 
-### Printing
+### Printing & ColorSync
 
 - CUPS-oriented native printing components.
 - PCL3GUI raster tooling written in C.
 - Print presets and local queue management.
-- Local raster processing and ink-density controls.
+- Local raster processing and continuous InkSaver™ mode (0% to 75% savings).
+- **AirPrint / Bonjour Bridge**: Wireless driverless printing for iOS (iPhone/iPad) and local Macs via native mDNS/Bonjour (`_ipp._tcp.`) advertisement and CUPS sharing.
+- **Guided ICC Color Calibrator**: Integrated 3-step calibration wizard generating custom ColorSync `.icc` profiles for photographic and specialty papers with $\Delta E$ spectral metrics and TRC gamma correction.
 
 ### Scanning
 
@@ -74,6 +76,7 @@ The public CI intentionally validates the reproducible source build, bundle sign
 ### TankControl app
 
 - Native SwiftUI interface for Apple Silicon.
+- **Interactive Menu Bar Popover Widget**: Instant access to live CISS ink levels, connection telemetry, quick InkSaver presets, and 1-click actions (Scan, Queue, Printhead cleaning).
 - Printer status, diagnostics and maintenance surfaces.
 - Ink-related controls and local presets.
 - Mock/offline mode for development and interface testing.

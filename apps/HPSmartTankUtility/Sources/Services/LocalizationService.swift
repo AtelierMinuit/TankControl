@@ -86,6 +86,9 @@ public final class LocalizationService: ObservableObject {
         "section_inksaver": [
             .spanish: "InkSaver", .english: "InkSaver", .portuguese: "InkSaver", .french: "InkSaver", .german: "InkSaver"
         ],
+        "section_calibration": [
+            .spanish: "Calibración ICC", .english: "ICC Calibration", .portuguese: "Calibração ICC", .french: "Étalonnage ICC", .german: "ICC-Farbkalibrierung"
+        ],
         "section_maintenance": [
             .spanish: "Mantenimiento", .english: "Maintenance", .portuguese: "Manutenção", .french: "Maintenance", .german: "Wartung"
         ],
@@ -224,6 +227,34 @@ public final class LocalizationService: ObservableObject {
             .portuguese: "Inclui operações que consomem tinta ou enviam comandos diretos ao dispositivo. Ativar esta seção não executa nenhuma operação sem confirmação adicional.",
             .french: "Comprend des opérations consommant de l'encre ou envoyant des commandes directes. L'activation de cette section n'exécute aucune opération sans confirmation.",
             .german: "Enthält Operationen, die Tinte verbrauchen oder direkte Befehle an das Gerät senden. Die Aktivierung führt keine Aktionen ohne Bestätigung aus."
+        ],
+        "settings_airprint_header": [
+            .spanish: "Puente AirPrint para iOS y Red Local",
+            .english: "AirPrint Bridge for iOS & Local Network",
+            .portuguese: "Ponte AirPrint para iOS e Rede Local",
+            .french: "Pont AirPrint pour iOS et Réseau Local",
+            .german: "AirPrint-Bridge für iOS und lokales Netzwerk"
+        ],
+        "settings_airprint_desc": [
+            .spanish: "Anuncia la HP Smart Tank 500 mediante Bonjour/mDNS en la red local para imprimir sin cables ni controladores desde iPhone, iPad y Mac.",
+            .english: "Advertises the HP Smart Tank 500 via Bonjour/mDNS on the local network for wireless, driverless printing from iPhone, iPad, and Mac.",
+            .portuguese: "Anuncia a HP Smart Tank 500 via Bonjour/mDNS na rede local para impressão sem fio e sem drivers a partir do iPhone, iPad e Mac.",
+            .french: "Diffuse l'imprimante HP Smart Tank 500 via Bonjour/mDNS sur le réseau local pour imprimer sans fil et sans pilote depuis iPhone, iPad et Mac.",
+            .german: "Gibt den HP Smart Tank 500 über Bonjour/mDNS im lokalen Netzwerk frei für kabelloses Drucken ohne Treiber von iPhone, iPad und Mac."
+        ],
+        "settings_airprint_active": [
+            .spanish: "Activo (Transmitiendo en red local)",
+            .english: "Active (Broadcasting on local network)",
+            .portuguese: "Ativo (Transmitindo na rede local)",
+            .french: "Actif (Diffusion sur le réseau local)",
+            .german: "Aktiv (Im lokalen Netzwerk sichtbar)"
+        ],
+        "settings_airprint_inactive": [
+            .spanish: "Inactivo (Compartición pausada)",
+            .english: "Inactive (Sharing paused)",
+            .portuguese: "Inativo (Compartilhamento pausado)",
+            .french: "Inactif (Partage en pause)",
+            .german: "Inaktiv (Freigabe angehalten)"
         ]
     ]
 }

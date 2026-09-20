@@ -3,6 +3,7 @@ import SwiftUI
 public struct SettingsView: View {
     @ObservedObject var printer: PrinterManager
     @ObservedObject private var loc = LocalizationService.shared
+    @ObservedObject private var airPrint = AirPrintBridgeService.shared
     @State private var showingDeveloperModeConfirmation = false
 
     public var body: some View {
@@ -75,6 +76,52 @@ public struct SettingsView: View {
                             .font(DesignTokens.Fonts.caption)
                             .foregroundColor(.secondary)
                             .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .padding(DesignTokens.Spacing.sm)
+                    .background(DesignTokens.Colors.surfaceGrouped)
+                    .cornerRadius(DesignTokens.Radii.small)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: DesignTokens.Radii.small)
+                            .stroke(DesignTokens.Colors.border, lineWidth: 1)
+                    )
+                }
+
+                // Grupo 1.5: Puente AirPrint para iOS y Red Local
+                VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {
+                    Text(loc.t("settings_airprint_header"))
+                        .font(DesignTokens.Fonts.sectionHeader)
+
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Image(systemName: "antenna.radiowaves.left.and.right")
+                                .foregroundColor(airPrint.isAdvertising ? .blue : .secondary)
+                                .font(.system(size: 16))
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(loc.t("settings_airprint_header"))
+                                    .font(DesignTokens.Fonts.bodyMedium)
+                                Text(loc.t("settings_airprint_desc"))
+                                    .font(DesignTokens.Fonts.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                            Spacer()
+                            Toggle("", isOn: Binding(
+                                get: { airPrint.isAdvertising },
+                                set: { enable in
+                                    if enable { airPrint.startAdvertising() }
+                                    else { airPrint.stopAdvertising() }
+                                }
+                            ))
+                            .toggleStyle(.switch)
+                        }
+
+                        HStack(spacing: 4) {
+                            Circle()
+                                .fill(airPrint.isAdvertising ? Color.green : Color.gray)
+                                .frame(width: 6, height: 6)
+                            Text(airPrint.isAdvertising ? loc.t("settings_airprint_active") : loc.t("settings_airprint_inactive"))
+                                .font(DesignTokens.Fonts.caption)
+                                .foregroundColor(airPrint.isAdvertising ? .green : .secondary)
+                        }
                     }
                     .padding(DesignTokens.Spacing.sm)
                     .background(DesignTokens.Colors.surfaceGrouped)

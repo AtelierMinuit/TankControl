@@ -7,6 +7,7 @@ import UserNotifications
 class AppDelegate: NSObject, NSApplicationDelegate {
     var window: NSWindow!
     var statusItem: NSStatusItem!
+    var popover: NSPopover!
     let printer = PrinterManager()
     private var activeAlertKeys = Set<String>()
 
@@ -141,67 +142,54 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func setupStatusItem() {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         if let button = statusItem.button {
-            button.image = NSImage(systemSymbolName: "printer", accessibilityDescription: "HP Smart Tank")
+            button.image = NSImage(systemSymbolName: "printer.fill", accessibilityDescription: "TankControl")
             button.imagePosition = .imageLeft
-            button.title = " Smart Tank"
+            button.title = " TankControl"
+            button.action = #selector(togglePopover(_:))
+            button.target = self
         }
-        updateStatusMenu()
+
+        popover = NSPopover()
+        popover.contentSize = NSSize(width: 290, height: 350)
+        popover.behavior = .transient
+        popover.contentViewController = NSHostingController(
+            rootView: MenuBarPopoverView(
+                printer: printer,
+                onOpenMainWindow: { [weak self] in
+                    self?.popover.performClose(nil)
+                    self?.showMainWindow()
+                },
+                onScan: { [weak self] in
+                    self?.popover.performClose(nil)
+                    self?.menuScan()
+                },
+                onOpenQueue: { [weak self] in
+                    self?.popover.performClose(nil)
+                    self?.menuQueue()
+                },
+                onCleanHeads: { [weak self] in
+                    self?.popover.performClose(nil)
+                    self?.printer.cleanHeads()
+                },
+                onQuit: {
+                    NSApplication.shared.terminate(nil)
+                }
+            )
+        )
 
         printer.onUpdate = { [weak self] in
-            self?.updateStatusMenu()
+            self?.checkAndTriggerNotifications()
         }
     }
 
-    private func updateStatusMenu() {
-        let menu = NSMenu()
-
-        // 1. Estado del Dispositivo
-        let headerItem = NSMenuItem(
-            title: "HP Smart Tank 500: \(printer.connectionState.label)",
-            action: nil,
-            keyEquivalent: ""
-        )
-        headerItem.isEnabled = false
-        menu.addItem(headerItem)
-
-        menu.addItem(NSMenuItem.separator())
-
-        // 2. Niveles de Tinta Condensados
-        let suppliesSummary: String
-        if !printer.supplies.isEmpty {
-            suppliesSummary = printer.supplies.map { "\($0.code): \($0.level)%" }.joined(separator: " • ")
+    @objc private func togglePopover(_ sender: Any?) {
+        guard let button = statusItem.button else { return }
+        if popover.isShown {
+            popover.performClose(sender)
         } else {
-            suppliesSummary = "Sin lectura disponible"
+            popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+            popover.contentViewController?.view.window?.makeKey()
         }
-        let suppliesItem = NSMenuItem(title: "Tinta: \(suppliesSummary)", action: nil, keyEquivalent: "")
-        suppliesItem.isEnabled = false
-        menu.addItem(suppliesItem)
-
-        menu.addItem(NSMenuItem.separator())
-
-        // 3. Acciones Cotidianas (Scan, Queue, Open)
-        let openItem = NSMenuItem(title: "Abrir Utilidad...", action: #selector(showMainWindow), keyEquivalent: "o")
-        openItem.target = self
-        menu.addItem(openItem)
-
-        let scanItem = NSMenuItem(title: "Escanear Documento...", action: #selector(menuScan), keyEquivalent: "s")
-        scanItem.target = self
-        menu.addItem(scanItem)
-
-        let queueItem = NSMenuItem(title: "Ver Cola de Impresión...", action: #selector(menuQueue), keyEquivalent: "p")
-        queueItem.target = self
-        menu.addItem(queueItem)
-
-        menu.addItem(NSMenuItem.separator())
-
-        // 4. Salir
-        let quitItem = NSMenuItem(title: "Salir", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
-        menu.addItem(quitItem)
-
-        statusItem.menu = menu
-
-        // Comprobación y envío de notificaciones locales
-        checkAndTriggerNotifications()
     }
 
     private func checkAndTriggerNotifications() {

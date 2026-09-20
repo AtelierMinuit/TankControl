@@ -78,6 +78,14 @@ public struct MainSplitView: View {
                     }
 
                     NavigationLink(
+                        destination: ColorCalibrationView(printer: printer),
+                        tag: SidebarSection.calibration,
+                        selection: navigationSelection
+                    ) {
+                        Label(SidebarSection.calibration.localizedTitle, systemImage: SidebarSection.calibration.icon)
+                    }
+
+                    NavigationLink(
                         destination: ActivityView(printer: printer),
                         tag: SidebarSection.activity,
                         selection: navigationSelection

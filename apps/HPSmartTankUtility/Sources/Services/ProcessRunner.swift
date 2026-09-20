@@ -129,4 +129,12 @@ public final class ProcessRunner {
         }
         return nil
     }
+
+    /// Ejecuta un comando de forma asíncrona en una cola global de utilidades sin bloquear el hilo principal.
+    public static func runAsync(_ path: String, arguments: [String] = [], timeoutSeconds: TimeInterval = 30.0, completion: @escaping (String, Int32) -> Void) {
+        DispatchQueue.global(qos: .utility).async {
+            let res = ProcessRunner.shared.run(executableURL: URL(fileURLWithPath: path), arguments: arguments, timeoutSeconds: timeoutSeconds)
+            completion(res.combinedOutput, res.exitCode)
+        }
+    }
 }
