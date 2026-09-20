@@ -179,6 +179,9 @@ public struct PrintCenterView: View {
                     )
                 }
 
+                // MARK: - Asistente y Comparador Visual de Papel
+                PaperGuideView(printer: printer)
+
                 // MARK: - Opciones de Controlador y Perfiles
                 VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {
                     Text("Configuración de Calidad y Medios")

@@ -255,6 +255,20 @@ public final class LocalizationService: ObservableObject {
             .portuguese: "Inativo (Compartilhamento pausado)",
             .french: "Inactif (Partage en pause)",
             .german: "Inaktiv (Freigabe angehalten)"
+        ],
+        "paper_guide_title": [
+            .spanish: "Guía y Comparador de Formatos de Papel",
+            .english: "Paper Formats Guide & Comparator",
+            .portuguese: "Guia e Comparador de Formatos de Papel",
+            .french: "Guide et Comparateur de Formats de Papier",
+            .german: "Papierformate Leitfaden & Komparator"
+        ],
+        "paper_guide_subtitle": [
+            .spanish: "Diferenciación exacta entre Carta, Oficio Chile/LATAM (13''), Legal (14'') y A4",
+            .english: "Exact dimensions and tray alignment for Letter, Oficio, Legal, and A4",
+            .portuguese: "Diferenciação exata entre Carta, Ofício Chile/LATAM (13''), Legal (14'') e A4",
+            .french: "Différenciation exacte entre Lettre, Oficio Chili/LATAM (13''), Légal (14'') et A4",
+            .german: "Exakte Maße und Ausrichtung für US-Letter, Oficio, US-Legal und A4"
         ]
     ]
 }

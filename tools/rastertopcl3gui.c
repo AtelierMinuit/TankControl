@@ -706,16 +706,29 @@ int main(int argc, char *argv[]) {
             break;
         }
 
-        /* Determinar ID de medio PCL según dimensiones de página de CUPS (P15_CISS) */
+        /* Determinar ID de medio PCL según PPD cupsInteger0 o dimensiones de página de CUPS */
         int media_id = 26; /* A4 por defecto */
-        if (header.PageSize[1] > 1050) media_id = 101;   /* Custom / Continuous Roll Banner */
-        else if (header.PageSize[1] >= 780 && header.PageSize[1] <= 800) media_id = 2;   /* Letter / Letter.FB */
-        else if (header.PageSize[1] >= 1000 && header.PageSize[1] <= 1020) media_id = 3; /* Legal */
-        else if (header.PageSize[1] >= 420 && header.PageSize[1] <= 440) media_id = 74;  /* 4x6in / 4x6in.FB (10x15cm) */
-        else if (header.PageSize[1] >= 495 && header.PageSize[1] <= 515) media_id = 122; /* 5x7in / 5x7in.FB */
-        else if (header.PageSize[1] >= 585 && header.PageSize[1] <= 605) media_id = 25;  /* A5 / A5.FB */
-        else if (header.PageSize[1] >= 720 && header.PageSize[1] <= 740) media_id = 100; /* B5 */
-        else if (header.PageSize[1] >= 835 && header.PageSize[1] <= 850) media_id = 26;  /* A4 / A4.FB */
+        if (header.cupsInteger[0] > 0 && header.cupsInteger[0] <= 200) {
+            media_id = (int)header.cupsInteger[0];
+        } else if (header.PageSize[1] > 1050) {
+            media_id = 101;   /* Custom / Continuous Roll Banner (hasta 44" / 1117mm) */
+        } else if (header.PageSize[1] >= 1000 && header.PageSize[1] <= 1020) {
+            media_id = 3;     /* Legal / Oficio Americano (8.5 x 14 in / 1008 pt) */
+        } else if (header.PageSize[1] >= 925 && header.PageSize[1] <= 950) {
+            media_id = 10;    /* Oficio Chile / LATAM / Folio (8.5 x 13 in / 936 pt) */
+        } else if (header.PageSize[1] >= 835 && header.PageSize[1] <= 850) {
+            media_id = 26;    /* A4 (210 x 297 mm / 841.68 pt) */
+        } else if (header.PageSize[1] >= 780 && header.PageSize[1] <= 800) {
+            media_id = 2;     /* Carta / Letter (8.5 x 11 in / 792 pt) */
+        } else if (header.PageSize[1] >= 710 && header.PageSize[1] <= 745) {
+            media_id = 100;   /* B5 / JB5 */
+        } else if (header.PageSize[1] >= 585 && header.PageSize[1] <= 605) {
+            media_id = 25;    /* A5 (148 x 210 mm / 595.44 pt) */
+        } else if (header.PageSize[1] >= 495 && header.PageSize[1] <= 515) {
+            media_id = 122;   /* 5x7 in (13 x 18 cm / 504 pt) */
+        } else if (header.PageSize[1] >= 410 && header.PageSize[1] <= 445) {
+            media_id = (header.PageSize[0] < 310 && header.PageSize[1] < 430) ? 24 : 74;  /* A6 (297.84x419.52 pt) o 4x6 in (288x432 pt) */
+        }
 
         /* 1. Detección de impresión fotográfica sin bordes (.FB) */
         int is_borderless = 0;
@@ -747,6 +760,8 @@ int main(int argc, char *argv[]) {
         /* 4. Emisión de cabecera de página PCL3GUI */
         fwrite(PCL_RESET, 1, strlen(PCL_RESET), stdout);
         printf("\033&l1H\033&l%dM\033&l%dA\033*o%dM", media_type, media_id, quality_cmd);
+        fprintf(stderr, "DEBUG: [rastertopcl3gui] PageSize: %ux%u pt, media_id: %d, media_type: %d\n",
+                header.PageSize[0], header.PageSize[1], media_id, media_type);
 
         /* Media Subtype Seq: Esc*o5W 0D 03 00 [hi] [lo] */
         unsigned char subtype_seq[10] = {0x1b, '*', 'o', '5', 'W', 0x0D, 0x03, 0x00,
