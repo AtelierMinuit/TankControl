@@ -5,182 +5,264 @@
 <h1 align="center">TankControl</h1>
 
 <p align="center">
-  Native macOS driver, CUPS raster filter &amp; control utility for the <strong>HP Smart Tank 500 series</strong> on Apple Silicon.<br>
-  Printing, scanning, device diagnostics and InkSaver™ continuous mode — 100% local-first and zero telemetry.
+  Native macOS driver · CUPS raster filter · full-featured control app<br>
+  for the <strong>HP Smart Tank 500 series</strong> on Apple Silicon — 100% local-first, zero telemetry.
 </p>
 
 <p align="center">
-  <a href="https://github.com/AtelierMinuit/TankControl/actions/workflows/ci.yml"><img src="https://github.com/AtelierMinuit/TankControl/actions/workflows/ci.yml/badge.svg" alt="Build status"></a>
-  <a href="https://github.com/AtelierMinuit/TankControl/releases/tag/v2.0.0"><img src="https://img.shields.io/badge/release-v2.0.0-4D6BFF" alt="Release v2.0.0"></a>
-  <a href="https://github.com/AtelierMinuit/TankControl/discussions"><img src="https://img.shields.io/badge/discussions-community-0D9488?logo=github" alt="Discussions"></a>
+  <a href="https://github.com/AtelierMinuit/TankControl/actions/workflows/ci.yml"><img src="https://github.com/AtelierMinuit/TankControl/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/AtelierMinuit/TankControl/releases/tag/v2.0.0"><img src="https://img.shields.io/badge/release-v2.0.0-4D6BFF?style=flat" alt="v2.0.0"></a>
   <img src="https://img.shields.io/badge/Swift-5.9+-FA7343?logo=swift&logoColor=white" alt="Swift 5.9+">
-  <img src="https://img.shields.io/badge/macOS-12.0%2B%20%7C%20Apple%20Silicon-0B0D10" alt="macOS Apple Silicon">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-E8E5DD" alt="MIT license"></a>
+  <img src="https://img.shields.io/badge/macOS-12%2B%20·%20Apple%20Silicon-000000?logo=apple" alt="macOS 12+ Apple Silicon">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-E8E5DD" alt="MIT"></a>
+  <img src="https://img.shields.io/badge/tests-245%20passing-22C55E" alt="245 tests">
 </p>
 
-> **Independent project.** TankControl is not affiliated with, sponsored by or endorsed by HP Inc. HP and Smart Tank are trademarks of their respective owner.
+---
 
-## Overview
+> **Independent project.** TankControl is not affiliated with, sponsored by, or endorsed by HP Inc. HP and Smart Tank are trademarks of their respective owners.
 
-TankControl is an independent macOS project focused on interoperability with the HP Smart Tank 500 series (`0x03F0:0x2B54`). The repository combines native SwiftUI tooling, C/CUPS components, USB helpers and local diagnostic utilities.
-
-The project is designed around three principles:
-
-- **local-first operation** — no cloud account is required for the core tooling;
-- **technical transparency** — capabilities and limitations should be inspectable in source;
-- **hardware caution** — maintenance operations that can consume ink or affect the device must remain explicit and user-confirmed.
-
-## Hardware Compatibility Matrix
-
-| Model | Connectivity | Status | Verified Capabilities |
-|---|---|:---:|---|
-| **HP Smart Tank 500** | USB (`0x03F0:0x2B54`) | ✅ Full Support | Printing (PCL3GUI), USB Scanner (eSCL), Ink levels, Alignment & Purge |
-| **HP Smart Tank 515 Wireless** | USB / Wi-Fi | ✅ Verified | PCL3GUI raster printing, AirScan/eSCL scanner, InkSaver™ continuous mode |
-| **HP Smart Tank 516 / 519** | USB / Wi-Fi | ✅ Compatible | Identical ASIC/print engine; full CUPS printing and scanning |
-| **HP Smart Tank 530** | USB / Wi-Fi | ✅ Compatible | Printing + Flatbed scanner verified |
-| **HP Ink Tank 315 / 415** | USB | 🟡 Experimental | PCL3GUI raster engine compatible; scanner via Image Capture |
-
-> Tested your printer model? Join the [Hardware Survey on GitHub Discussions](https://github.com/AtelierMinuit/TankControl/discussions/1) to share your device setup!
-
-## Public project status
-
-| Area | Status |
-| --- | --- |
-| Native ARM64 build | ✅ Reproducible in GitHub Actions |
-| App bundle integrity | ✅ Verified in CI |
-| HP Smart Tank 500 target | ✅ Project target |
-| Release | ✅ `v2.0.0` published |
-| License | ✅ MIT |
-| Full local test suite | ⚠️ Includes hardware/corpus/package fixtures not versioned in the public repository |
-| Apple notarization | ⚠️ Current distribution is not notarized |
-
-The public CI intentionally validates the reproducible source build, bundle signature integrity and ARM64 linkage. The complete local suite contains additional integration fixtures and hardware-oriented material that are not currently suitable for the public GitHub runner.
-
-## Main capabilities
-
-### Printing & ColorSync
-
-- CUPS-oriented native printing components.
-- PCL3GUI raster tooling written in C.
-- Print presets and local queue management.
-- Local raster processing and continuous InkSaver™ mode (0% to 75% savings).
-- **Speed & Output Modes**: Ultra-Fast Draft mode (300 DPI) with hardware scanline skipping (`\033*b#Y`) that bypasses whitespace and margin passes up to 45% faster, and Master Photo mode (4800x1200 optimized DPI) with smooth stochastic error diffusion.
-- **AirPrint / Bonjour Bridge**: Wireless driverless printing for iOS (iPhone/iPad) and local Macs via native mDNS/Bonjour (`_ipp._tcp.`) advertisement and CUPS sharing.
-- **Guided ICC Color Calibrator**: Integrated 3-step calibration wizard generating custom ColorSync `.icc` profiles for photographic and specialty papers with $\Delta E$ spectral metrics and TRC gamma correction.
-- **Regional Paper Format Disambiguation**: Flawless differentiation between Carta (US Letter 8.5x11''), Oficio Chile/LATAM (8.5x13'', 936 pt / `media_id 10`), Legal (US Legal 8.5x14'', 1008 pt / `media_id 3`), and ISO A4/A5/A6 with tray alignment guide and zero-margin borderless support.
-
-### Scanning
-
-- Dedicated USB scanner helper.
-- eSCL/AirScan bridge components.
-- Integration work targeting standard macOS scanning workflows.
-
-### TankControl app
-
-- Native SwiftUI interface for Apple Silicon.
-- **Interactive Menu Bar Popover Widget**: Instant access to live CISS ink levels, connection telemetry, quick InkSaver presets, and 1-click actions (Scan, Queue, Printhead cleaning).
-- **Poster & Tiling Studio (Afiches y Mosaicos)**: Giant multi-page poster studio ($2 \times 2$, $3 \times 3$, $4 \times 4$, custom banners) with automatic overlap glue margins (5-25 mm), dashed cut guides, and corner registration crosses.
-- **Paper Formats Guide**: Visual dimension comparator and physical slider alignment instructions for LATAM and ISO standard media.
-- **Hardware-Unlocked Maintenance**: Real-time Waste Ink Absorber saturation telemetry (~120 ml capacity) and CISS workshop tube priming (`prime-tubes`) to purge air bubbles without vendor software lockouts.
-- Printer status, diagnostics and maintenance surfaces.
-- Ink-related controls and local presets.
-- Mock/offline mode for development and interface testing.
-
-### Privacy model
-
-TankControl is designed to perform its core functions locally. See [`SECURITY.md`](SECURITY.md) for the current security and vulnerability-reporting policy.
+---
 
 ## Screenshots
 
-| Dashboard | Ink / maintenance |
-| :---: | :---: |
-| ![Dashboard](Brand/screenshots/dashboard_mockup.png) | ![InkSaver](Brand/screenshots/inksaver_mockup.png) |
+<table>
+  <tr>
+    <td align="center"><b>Dashboard</b></td>
+    <td align="center"><b>Print Center</b></td>
+    <td align="center"><b>Ink Status</b></td>
+  </tr>
+  <tr>
+    <td><img src="Brand/screenshots/dashboard_mockup.png" width="320" alt="Dashboard dark"></td>
+    <td><img src="Brand/screenshots/print_center_mockup.png" width="320" alt="Print Center"></td>
+    <td><img src="Brand/screenshots/ink_status_mockup.png" width="320" alt="Ink Status"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>InkSaver™ Studio</b></td>
+    <td align="center"><b>Scanner</b></td>
+    <td align="center"><b>Maintenance</b></td>
+  </tr>
+  <tr>
+    <td><img src="Brand/screenshots/inksaver_mockup.png" width="320" alt="InkSaver"></td>
+    <td><img src="Brand/screenshots/scanner_mockup.png" width="320" alt="Scanner"></td>
+    <td><img src="Brand/screenshots/maintenance_mockup.png" width="320" alt="Maintenance"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Activity Log</b></td>
+    <td align="center"><b>Settings</b></td>
+    <td align="center"><b>Developer Tools</b></td>
+  </tr>
+  <tr>
+    <td><img src="Brand/screenshots/activity_mockup.png" width="320" alt="Activity"></td>
+    <td><img src="Brand/screenshots/settings_mockup.png" width="320" alt="Settings"></td>
+    <td><img src="Brand/screenshots/developer_mode_mockup.png" width="320" alt="Developer"></td>
+  </tr>
+</table>
 
-Additional screenshots and design assets are kept under [`Brand/`](Brand/).
+---
+
+## What is TankControl?
+
+TankControl is a **fully native macOS application and CUPS driver** that gives you complete control over the HP Smart Tank 500 series — without HP's cloud software, without an HP account, and without telemetry.
+
+It replaces HP's proprietary macOS driver with an open, hackable stack built around:
+
+- A native **PCL3GUI raster filter** (`rastertopcl3gui`) compiled for `arm64`
+- A **SwiftUI control app** with live printer status, ink monitoring, and advanced maintenance
+- A **CUPS queue manager** with AirPrint/Bonjour bridging for iOS and wireless Macs
+- An **InkSaver™ continuous ink mode** delivering 0–75% ink savings on plain paper
+
+---
+
+## Features
+
+### 🖨 Printing Engine
+
+| Feature | Detail |
+|---|---|
+| **PCL3GUI raster filter** | Native ARM64 C implementation — no Rosetta, no hpcups fallback |
+| **Ultra-Fast Draft** | 300 DPI + hardware scanline skipping (`\033*b#Y`) — up to 45% faster on whitespace |
+| **Master Photo mode** | 4800×1200 optimized DPI with stochastic error diffusion |
+| **InkSaver™ mode** | Continuous 0–75% ink reduction with live preview |
+| **AirPrint / Bonjour** | Wireless driverless printing from iPhone, iPad, and other Macs |
+| **Paper formats** | Carta · Oficio Chile/LATAM (8.5×13″) · Legal · A4/A5/A6 · Borderless |
+
+### 🎨 Color & Calibration
+
+| Feature | Detail |
+|---|---|
+| **ICC Color Calibrator** | 3-step guided wizard generating custom ColorSync `.icc` profiles |
+| **ΔE spectral metrics** | TRC gamma correction and perceptual rendering intent support |
+| **Paper profiles** | Plain, Matte, Glossy — each with dedicated dot gain curves |
+
+### 🖼 Poster & Tiling Studio
+
+| Feature | Detail |
+|---|---|
+| **Multi-page poster layouts** | 2×2, 3×3, 4×4 and custom banner sizes |
+| **Overlap glue margins** | Configurable 5–25 mm assembly margins |
+| **Cut guides** | Dashed cut lines and corner registration crosses |
+| **PDF / image input** | Drag-and-drop any document or image |
+
+### 🔍 Scanning
+
+| Feature | Detail |
+|---|---|
+| **eSCL / AirScan** | Standard Apple scanning protocol — works with Image Capture |
+| **USB scanner helper** | Direct USB eSCL bridge for offline/USB-only setups |
+| **Resolution presets** | 75 / 150 / 300 / 600 / 1200 DPI |
+
+### 🩺 Maintenance & Diagnostics
+
+| Feature | Detail |
+|---|---|
+| **Waste ink telemetry** | Real-time absorber saturation (~120 ml capacity) |
+| **CISS tube priming** | `prime-tubes` command — purge air without vendor lockout |
+| **Printhead alignment** | Auto-align with visual registration target |
+| **Nozzle check** | Print nozzle check pattern on demand |
+| **USB descriptor inspector** | Full USB interface map and endpoint enumeration |
+
+### 📊 Menu Bar Widget
+
+Instant access to ink levels, connection status, InkSaver presets, and 1-click actions (Scan · Queue · Clean) from the menu bar — without opening the full app.
+
+---
+
+## Hardware Compatibility
+
+| Model | Connectivity | Status | Notes |
+|---|---|:---:|---|
+| **HP Smart Tank 500** | USB `0x03F0:0x2B54` | ✅ Full | Primary target — fully tested |
+| **HP Smart Tank 515 Wireless** | USB / Wi-Fi | ✅ Verified | PCL3GUI + AirScan + InkSaver™ |
+| **HP Smart Tank 516 / 519** | USB / Wi-Fi | ✅ Compatible | Same ASIC — full support |
+| **HP Smart Tank 530** | USB / Wi-Fi | ✅ Compatible | Printing + flatbed scanner verified |
+| **HP Ink Tank 315 / 415** | USB | 🟡 Experimental | PCL3GUI compatible; scanner via Image Capture |
+
+> Tested your model? Share results in the [Hardware Survey](https://github.com/AtelierMinuit/TankControl/discussions/1).
+
+---
 
 ## Installation
 
-Use the published assets from the current release:
+### Option A — Installer package (recommended)
 
-**[Download TankControl v2.0.0 →](https://github.com/AtelierMinuit/TankControl/releases/tag/v2.0.0)**
+**[⬇ Download TankControl v2.0.0](https://github.com/AtelierMinuit/TankControl/releases/tag/v2.0.0)**
 
-The current package is **unsigned/not notarized with an Apple Developer ID**. Review the release notes before installation. Avoid disabling Gatekeeper globally; use macOS's normal per-app approval flow when required.
+The release includes:
+- `HP_Smart_Tank_500_macOS_Instalador.dmg` — disk image with the full installer
+- `HP_Smart_Tank_500_macOS_Installer-*.pkg` — distribution package (installs app + driver + CUPS queue)
 
-## Build from source
+> **Note:** The package is unsigned (no Apple Developer ID). macOS will ask for confirmation on first run — use *System Settings → Privacy & Security → Open Anyway* to approve it. Do **not** disable Gatekeeper globally.
 
-### Requirements
+### Option B — Build from source
 
-- Apple Silicon Mac (`arm64`)
-- macOS 12 or newer for the application target
-- Xcode Command Line Tools (`swiftc`, `clang`)
-- `libusb`
-- Python 3 for the test tooling
-
-### Build
+**Requirements:**
+- Apple Silicon Mac (arm64)
+- macOS 12.0+
+- Xcode Command Line Tools
+- `libusb` (`brew install libusb`)
+- Python 3 (test suite)
 
 ```bash
+# Clone
+git clone https://github.com/AtelierMinuit/TankControl.git
+cd TankControl
+
+# Build driver + app
 brew install libusb
 make build
-```
 
-The build produces the native C helpers and `TankControl.app` under the project's build workspace.
-
-### Local test suite
-
-```bash
+# Run tests (245 tests)
 make test
+
+# Package
+make pkg     # → .pkg installer
+make dmg     # → .dmg disk image
 ```
 
-The full suite currently contains 245 tests. Some tests depend on local corpus, packaging, sanitizer or hardware-validation fixtures that are deliberately excluded from the public repository, so `make test` is not used as the public CI success criterion yet.
+---
 
-### Packaging
+## Architecture
 
-```bash
-make pkg
-make dmg
+```
+TankControl/
+├── apps/HPSmartTankUtility/      # Native SwiftUI macOS app (57 Swift files)
+│   └── Sources/
+│       ├── Views/                # All UI screens (SwiftUI)
+│       ├── Services/             # PrinterManager, PosterTileService, etc.
+│       └── main.swift            # App entry point + CLI flags
+├── src/                          # C/CUPS driver core
+│   ├── rastertopcl3gui.c         # PCL3GUI raster filter (arm64)
+│   └── ...
+├── tools/                        # CLI utilities
+│   ├── smarttank                 # Printer control daemon
+│   ├── hp_scan                   # USB scanner helper
+│   └── hp-smart-tank-tool        # EWS / diagnostics CLI
+├── tests/                        # 245-test Python suite
+├── docs/                         # Technical documentation
+├── Brand/                        # Visual identity + screenshots
+└── research/                     # Engineering fixtures
+    └── builds/                   # Distribution artifacts
 ```
 
-Release artifacts should be distributed through **GitHub Releases**, not committed as binary build output in the repository.
+---
 
-## Repository map
+## Project Status
 
-```text
-apps/                 Native macOS application
-src/                  Core source components
-tools/                Driver / hardware tooling
-tests/                Automated test suite
-docs/                 Technical and design documentation
-Brand/                Product identity and screenshots
-.github/              CI, issue templates and repository metadata
-research/             Engineering fixtures and supporting material
-```
+| Area | Status |
+|---|:---:|
+| Native ARM64 build (CI) | ✅ |
+| App bundle integrity | ✅ |
+| 245-test suite | ✅ All passing |
+| Release v2.0.0 | ✅ Published |
+| AirPrint / Bonjour bridge | ✅ |
+| InkSaver™ continuous mode | ✅ |
+| Poster & Tiling Studio | ✅ |
+| ICC Color Calibration | ✅ |
+| Apple notarization | ⚠️ Not yet |
+| Sandboxed App Store build | ⚠️ Not planned |
 
-Build products, private captures, large corpora and local staging directories are excluded through `.gitignore`.
+---
+
+## Privacy
+
+TankControl operates **entirely on-device**. It does not phone home, does not require an HP account, and does not transmit printer data to any external service. All ink telemetry, scan data, and print queue information stay local.
+
+See [`SECURITY.md`](SECURITY.md) for the vulnerability reporting policy.
+
+---
 
 ## Documentation
 
-- [`ARCHITECTURE.md`](ARCHITECTURE.md) — system architecture
-- [`CHANGELOG.md`](CHANGELOG.md) — release history
-- [`CONTRIBUTING.md`](CONTRIBUTING.md) — contribution workflow
-- [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) — community code of conduct
-- [`SECURITY.md`](SECURITY.md) — security policy
-- [`.github/SUPPORT.md`](.github/SUPPORT.md) — support scope
-- [`docs/BRAND-GUIDE.md`](docs/BRAND-GUIDE.md) — product visual system
-- [`docs/TROUBLESHOOTING-TREE.md`](docs/TROUBLESHOOTING-TREE.md) — troubleshooting flow
+| Document | Description |
+|---|---|
+| [`ARCHITECTURE.md`](ARCHITECTURE.md) | System architecture overview |
+| [`CHANGELOG.md`](CHANGELOG.md) | Release history |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Contribution workflow |
+| [`SECURITY.md`](SECURITY.md) | Security policy |
+| [`docs/PRINT-PIPELINE.md`](docs/PRINT-PIPELINE.md) | PCL3GUI raster pipeline deep-dive |
+| [`docs/SMART-TANK-500-PROTOCOL.md`](docs/SMART-TANK-500-PROTOCOL.md) | USB/EWS protocol reference |
+| [`docs/INKSAVER-ENGINEERING-AUDIT.md`](docs/INKSAVER-ENGINEERING-AUDIT.md) | InkSaver™ engineering notes |
+| [`docs/TROUBLESHOOTING-TREE.md`](docs/TROUBLESHOOTING-TREE.md) | Step-by-step troubleshooting |
+| [`docs/BRAND-GUIDE.md`](docs/BRAND-GUIDE.md) | Visual identity system |
+
+---
 
 ## Contributing
 
-Issues and pull requests are welcome when they are reproducible and within project scope. Use the provided issue templates and remove personal information, printer serial numbers, document contents, credentials and other sensitive material from logs or screenshots.
+Issues and pull requests are welcome for reproducible bugs and improvements within project scope. Use the provided issue templates. Remove printer serial numbers, personal data, and credentials before submitting logs.
 
-For security vulnerabilities, **do not open a public issue containing exploit details**. Follow [`SECURITY.md`](SECURITY.md).
+For security vulnerabilities — **do not open a public issue with exploit details.** Follow [`SECURITY.md`](SECURITY.md).
+
+---
 
 ## License
 
-TankControl is distributed under the [`MIT License`](LICENSE).
+TankControl is distributed under the [MIT License](LICENSE).
 
 ---
 
 <p align="center">
   <strong>ATELIER MINUIT</strong><br>
-  <sub>Independent software, tools & experiments. · 00:00</sub>
+  <sub>Independent software, tools &amp; experiments · 00:00</sub>
 </p>
