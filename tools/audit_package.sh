@@ -12,7 +12,7 @@ EXPANDED="${BASE}.pkg"
 trap 'rm -rf -- "$BASE" "$EXPANDED"' EXIT
 
 pkgutil --expand-full "$PKG" "$EXPANDED"
-APP=$(find "$EXPANDED" -type d -name 'HP Smart Tank Utility.app' -print -quit)
+APP=$(find "$EXPANDED" -type d \( -name 'TankControl.app' -o -name 'HP Smart Tank Utility.app' \) -print -quit)
 [ -n "$APP" ] || { echo "ERROR: app ausente" >&2; exit 1; }
 codesign --verify --deep --strict "$APP"
 

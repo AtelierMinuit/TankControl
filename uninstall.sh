@@ -49,6 +49,7 @@ OWNED_FILES=(
     "/Library/LaunchAgents/com.hp.smarttank.airscan.plist"
     "/Library/LaunchAgents/com.hp.smarttank.airprint.plist"
     "/Applications/HP Smart Tank Utility.app"
+    "/Applications/TankControl.app"
 )
 
 if [ "$DRY_RUN" -eq 1 ]; then
@@ -79,7 +80,7 @@ fi
 # 2. Eliminar exclusivamente archivos manifestados como propios
 for path in "${OWNED_FILES[@]}"; do
     [ -e "$path" ] || continue
-    if [ "$path" = "/Applications/HP Smart Tank Utility.app" ] && \
+    if { [ "$path" = "/Applications/HP Smart Tank Utility.app" ] || [ "$path" = "/Applications/TankControl.app" ]; } && \
        ! pkgutil --pkg-info "com.hp.smarttank500.driver.applesilicon" >/dev/null 2>&1; then
         echo "Preservando app: no existe recibo de instalación del paquete propio." >&2
         continue

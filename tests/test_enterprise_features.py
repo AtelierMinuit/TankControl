@@ -107,7 +107,10 @@ class TestEnterpriseFeatures(unittest.TestCase):
         payload = res.stdout
         self.assertIn("./Library/Printers/hp/cups/backend/smarttank", payload)
         self.assertIn("./Library/Printers/hp/cups/filters/rastertopcl3gui", payload)
-        self.assertIn("./Applications/HP Smart Tank Utility.app/Contents/MacOS/HP Smart Tank Utility", payload)
+        self.assertTrue(
+            "./Applications/TankControl.app/Contents/MacOS/TankControl" in payload or
+            "./Applications/HP Smart Tank Utility.app/Contents/MacOS/HP Smart Tank Utility" in payload
+        )
         self.assertIn("./Library/Printers/hp/Icons/HP_Smart_Tank_500.icns", payload)
         self.assertIn("./Library/LaunchAgents/com.hp.smarttank.airscan.plist", payload)
         self.assertIn("./usr/local/lib/libusb-1.0.0.dylib", payload)

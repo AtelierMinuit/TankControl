@@ -16,22 +16,29 @@ OUT_PKG="${DIR}/research/builds/HP_Smart_Tank_500_Native_Apple_Silicon-${STAGE_T
 
 echo "=== Construyendo Paquete Instalador .pkg Oficial ==="
 
-# No empaquetar artefactos parciales ni caer silenciosamente en una build vieja.
-if [ ! -d "${BUILD_DIR}/HP Smart Tank Utility.app/Contents" ] ||
-   [ ! -x "${BUILD_DIR}/HP Smart Tank Utility.app/Contents/MacOS/HP Smart Tank Utility" ]; then
-    echo "ERROR: bundle SwiftUI ausente o incompleto en BUILD_DIR=${BUILD_DIR}" >&2
-    exit 2
+# Validar bundle SwiftUI nativo
+APP_SRC="${BUILD_DIR}/TankControl.app"
+if [ ! -d "${APP_SRC}/Contents" ] || [ ! -x "${APP_SRC}/Contents/MacOS/TankControl" ]; then
+    if [ ! -d "${BUILD_DIR}/HP Smart Tank Utility.app/Contents" ] || \
+       [ ! -x "${BUILD_DIR}/HP Smart Tank Utility.app/Contents/MacOS/HP Smart Tank Utility" ]; then
+        echo "ERROR: bundle SwiftUI ausente o incompleto en BUILD_DIR=${BUILD_DIR}" >&2
+        exit 2
+    fi
+    APP_SRC="${BUILD_DIR}/HP Smart Tank Utility.app"
 fi
+
 for helper in hp_scan hp-smart-tank-tool; do
-    if [ ! -x "${BUILD_DIR}/HP Smart Tank Utility.app/Contents/Helpers/${helper}" ]; then
+    if [ ! -x "${APP_SRC}/Contents/Helpers/${helper}" ]; then
         echo "ERROR: helper requerido ausente o no ejecutable en el bundle: ${helper}" >&2
         exit 2
     fi
 done
-if ! codesign --verify --deep --strict "${BUILD_DIR}/HP Smart Tank Utility.app" >/dev/null 2>&1; then
+
+if ! codesign --verify --deep --strict "${APP_SRC}" >/dev/null 2>&1; then
     echo "ERROR: la firma/integridad del bundle SwiftUI no es válida" >&2
     exit 2
 fi
+
 for required in rastertopcl3gui smarttank hp_scan hp-smart-tank-tool; do
     if [ ! -x "${BUILD_DIR}/${required}" ]; then
         echo "ERROR: binario requerido ausente o no ejecutable: ${BUILD_DIR}/${required}" >&2
@@ -53,22 +60,17 @@ mkdir -p "${PKG_ROOT}/usr/local/lib"
 mkdir -p "${PKG_ROOT}/usr/local/share/hp-smart-tank"
 mkdir -p "${PKG_SCRIPTS}"
 
-# 2. Copiar aplicación GUI SwiftUI nativa
-echo "[pkg] Copiando HP Smart Tank Utility.app..."
-cp -RX "${BUILD_DIR}/HP Smart Tank Utility.app" "${PKG_ROOT}/Applications/"
-if [ -d "${BUILD_DIR}/TankControl.app" ]; then
-    cp -RX "${BUILD_DIR}/TankControl.app" "${PKG_ROOT}/Applications/"
-fi
-for app_path in "${PKG_ROOT}/Applications/HP Smart Tank Utility.app" "${PKG_ROOT}/Applications/TankControl.app"; do
-    [ -d "$app_path" ] || continue
-    for helper in "${app_path}/Contents/Helpers/hp_scan" "${app_path}/Contents/Helpers/hp-smart-tank-tool"; do
-        if [ -f "$helper" ]; then
-            install_name_tool -change /opt/homebrew/opt/libusb/lib/libusb-1.0.0.dylib @rpath/libusb-1.0.0.dylib "$helper" 2>/dev/null || true
-            install_name_tool -add_rpath /usr/local/lib "$helper" 2>/dev/null || true
-        fi
-    done
-    codesign --force --deep --sign - "$app_path"
+# 2. Copiar aplicación GUI SwiftUI nativa oficial TankControl
+echo "[pkg] Copiando TankControl.app..."
+cp -RX "${APP_SRC}" "${PKG_ROOT}/Applications/TankControl.app"
+app_path="${PKG_ROOT}/Applications/TankControl.app"
+for helper in "${app_path}/Contents/Helpers/hp_scan" "${app_path}/Contents/Helpers/hp-smart-tank-tool"; do
+    if [ -f "$helper" ]; then
+        install_name_tool -change /opt/homebrew/opt/libusb/lib/libusb-1.0.0.dylib @rpath/libusb-1.0.0.dylib "$helper" 2>/dev/null || true
+        install_name_tool -add_rpath /usr/local/lib "$helper" 2>/dev/null || true
+    fi
 done
+codesign --force --deep --sign - "$app_path"
 
 # 3. Copiar filtro binario CUPS nativo, backend bidireccional, icono Retina y PPD
 echo "[pkg] Copiando filtro CUPS, backend smarttank, icono Retina y PPD..."
@@ -315,10 +317,15 @@ if xattr -lr "${PKG_ROOT}" "${PKG_SCRIPTS}" 2>/dev/null | grep -v 'com.apple.pro
     exit 2
 fi
 
-# 9. Empaquetar con pkgbuild
-echo "[pkg] Empaquetando con /usr/bin/pkgbuild..."
+# 9. Empaquetar con pkgbuild (desactivando BundleIsRelocatable para evitar colisiones de sandboxing)
+echo "[pkg] Analizando componentes y empaquetando con /usr/bin/pkgbuild..."
+COMPONENTS_PLIST="${DIR}/research/staging/components-${STAGE_TAG}.plist"
+pkgbuild --analyze --root "${PKG_ROOT}" "${COMPONENTS_PLIST}"
+plutil -replace 0.BundleIsRelocatable -bool false "${COMPONENTS_PLIST}" 2>/dev/null || true
+
 pkgbuild \
     --root "${PKG_ROOT}" \
+    --component-plist "${COMPONENTS_PLIST}" \
     --scripts "${PKG_SCRIPTS}" \
     --filter '(^|/)\._[^/]*$' \
     --filter '(^|/)\.DS_Store$' \
