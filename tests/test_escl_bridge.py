@@ -113,8 +113,15 @@ class ESCLBridgeServerTests(unittest.TestCase):
                 data=b"<ScanSettings/>",
                 method="POST",
             )
-            with urllib.request.urlopen(request) as response:
-                return response.headers["Location"]
+            for attempt in range(4):
+                try:
+                    with urllib.request.urlopen(request, timeout=10) as response:
+                        return response.headers["Location"]
+                except Exception:
+                    if attempt == 3:
+                        raise
+                    time.sleep(0.05 * (attempt + 1))
+            raise RuntimeError("No se pudo crear trabajo concurrente tras reintentos")
 
         with ThreadPoolExecutor(max_workers=8) as executor:
             locations = list(executor.map(create_job, range(24)))
