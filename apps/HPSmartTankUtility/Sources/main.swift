@@ -33,6 +33,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 case "scanner", "scan": targetSection = .scanner
                 case "ink", "tinta": targetSection = .ink
                 case "inksaver", "ahorro": targetSection = .inkSaver
+                case "poster", "posterstudio", "afiches", "mosaicos": targetSection = .posterStudio
+                case "calibration", "calibracion", "icc": targetSection = .calibration
                 case "maintenance", "mantenimiento": targetSection = .maintenance
                 case "activity", "actividad": targetSection = .activity
                 case "developer", "desarrollo":

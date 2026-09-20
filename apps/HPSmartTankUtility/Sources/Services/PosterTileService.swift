@@ -33,7 +33,7 @@ public final class PosterTileService: ObservableObject {
     @Published public var statusMessage: String = ""
 
     private init() {
-        createSampleImageIfNeeded()
+        // Inicialización limpia sin datos sintéticos por defecto
     }
 
     /// Carga una imagen de prueba de alta resolución si no hay ninguna cargada

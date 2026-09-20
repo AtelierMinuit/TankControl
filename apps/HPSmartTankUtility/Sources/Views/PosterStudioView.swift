@@ -18,28 +18,28 @@ public struct PosterStudioView: View {
 
     public var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: DesignTokens.Spacing.lg) {
+            VStack(alignment: .leading, spacing: DesignTokens.Spacing.md) {
                 // MARK: - Cabecera
                 HStack(spacing: DesignTokens.Spacing.md) {
                     Image(systemName: "square.grid.3x3.fill")
-                        .font(.system(size: 24))
+                        .font(.system(size: 22))
                         .foregroundColor(.indigo)
-                        .frame(width: 44, height: 44)
+                        .frame(width: 40, height: 40)
                         .background(Color.indigo.opacity(0.12))
                         .cornerRadius(DesignTokens.Radii.small)
 
                     VStack(alignment: .leading, spacing: 2) {
                         Text(loc.t("section_poster_studio"))
                             .font(DesignTokens.Fonts.title)
-                        Text(loc.t("poster_studio_subtitle"))
-                            .font(DesignTokens.Fonts.body)
+                        Text("Impresión multipágina en mosaico con solapas y marcas de corte.")
+                            .font(DesignTokens.Fonts.caption)
                             .foregroundColor(.secondary)
                     }
 
                     Spacer()
 
                     Button(action: selectFile) {
-                        Label("Cargar Imagen o PDF…", systemImage: "photo.badge.plus")
+                        Label(service.selectedImage == nil ? "Cargar Imagen o PDF…" : "Cambiar Archivo…", systemImage: "photo.badge.plus")
                     }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.regular)
@@ -65,25 +65,25 @@ public struct PosterStudioView: View {
                     .cornerRadius(DesignTokens.Radii.small)
                 }
 
-                // MARK: - Contenedor Principal en Dos Columnas
-                HStack(alignment: .top, spacing: DesignTokens.Spacing.lg) {
-                    // Columna Izquierda: Ajustes de Cuadrícula y Papel
+                // MARK: - Contenedor Principal en Dos Columnas Adaptables
+                HStack(alignment: .top, spacing: DesignTokens.Spacing.md) {
+                    // Columna Izquierda: Ajustes de Cuadrícula y Papel (Ancho acotado para evitar overlay)
                     VStack(alignment: .leading, spacing: DesignTokens.Spacing.md) {
-                        // Presets rápidos
+                        // Presets de Mosaico
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Distribución en Mosaico")
                                 .font(DesignTokens.Fonts.sectionHeader)
 
-                            HStack(spacing: 8) {
-                                presetButton(title: "2×2 (4 Hojas)", cols: 2, rows: 2, subtitle: "~A2 (43×56 cm)")
-                                presetButton(title: "3×3 (9 Hojas)", cols: 3, rows: 3, subtitle: "~A1 (65×84 cm)")
-                                presetButton(title: "4×4 (16 Hojas)", cols: 4, rows: 4, subtitle: "~A0 (86×112 cm)")
+                            HStack(spacing: 6) {
+                                presetButton(title: "2×2 (4 Hojas)", cols: 2, rows: 2)
+                                presetButton(title: "3×3 (9 Hojas)", cols: 3, rows: 3)
+                                presetButton(title: "4×4 (16 Hojas)", cols: 4, rows: 4)
                             }
 
-                            HStack(spacing: 8) {
-                                presetButton(title: "1×3 (Pancarta)", cols: 3, rows: 1, subtitle: "Horizontal")
-                                presetButton(title: "2×1 (Díptico)", cols: 2, rows: 1, subtitle: "Panorámico")
-                                presetButton(title: "1×4 (Banner)", cols: 4, rows: 1, subtitle: "Extendido")
+                            HStack(spacing: 6) {
+                                presetButton(title: "2×1 (Díptico)", cols: 2, rows: 1)
+                                presetButton(title: "1×3 (Pancarta)", cols: 3, rows: 1)
+                                presetButton(title: "1×4 (Banner)", cols: 4, rows: 1)
                             }
                         }
                         .padding(DesignTokens.Spacing.md)
@@ -95,22 +95,23 @@ public struct PosterStudioView: View {
                         )
 
                         // Selector de Papel y Solapa
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text("Sustrato y Solapas de Encolado")
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Sustrato y Solapas")
                                 .font(DesignTokens.Fonts.sectionHeader)
 
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("Tamaño de Papel Individual:")
+                                Text("Tamaño de Papel:")
                                     .font(DesignTokens.Fonts.caption)
                                     .foregroundColor(.secondary)
 
                                 Picker("", selection: $service.paperFormatId) {
-                                    Text("Carta (8.5×11 pulg.)").tag("carta")
-                                    Text("Oficio (8.5×13 pulg. / Chile-LATAM)").tag("oficio")
-                                    Text("Legal (8.5×14 pulg.)").tag("legal")
-                                    Text("A4 (210×297 mm)").tag("a4")
+                                    Text("Carta (8.5 × 11 pulg.)").tag("carta")
+                                    Text("Oficio (8.5 × 13 pulg. / Chile-LATAM)").tag("oficio")
+                                    Text("Legal (8.5 × 14 pulg.)").tag("legal")
+                                    Text("A4 (210 × 297 mm)").tag("a4")
                                 }
-                                .pickerStyle(.segmented)
+                                .pickerStyle(.menu)
+                                .labelsHidden()
                             }
 
                             VStack(alignment: .leading, spacing: 4) {
@@ -130,7 +131,7 @@ public struct PosterStudioView: View {
                             Toggle("Imprimir guías de corte punteadas", isOn: $service.includeCutGuides)
                                 .font(DesignTokens.Fonts.caption)
 
-                            Toggle("Incluir marcas de registro y numeración de hojas", isOn: $service.includeGlueTabs)
+                            Toggle("Marcas de registro y numeración", isOn: $service.includeGlueTabs)
                                 .font(DesignTokens.Fonts.caption)
                         }
                         .padding(DesignTokens.Spacing.md)
@@ -146,7 +147,7 @@ public struct PosterStudioView: View {
                             HStack {
                                 Image(systemName: "ruler.fill")
                                     .foregroundColor(.indigo)
-                                Text("Dimensiones Finales Ensambladas")
+                                Text("Dimensiones Ensambladas")
                                     .font(DesignTokens.Fonts.bodyMedium)
                                 Spacer()
                                 Text("\(service.currentInfo.totalPages) Hojas")
@@ -160,7 +161,7 @@ public struct PosterStudioView: View {
 
                             HStack(alignment: .firstTextBaseline) {
                                 Text("\(service.currentInfo.posterWidthCm, specifier: "%.1f") × \(service.currentInfo.posterHeightCm, specifier: "%.1f") cm")
-                                    .font(.system(size: 22, weight: .bold, design: .rounded))
+                                    .font(.system(size: 20, weight: .bold, design: .rounded))
                                     .foregroundColor(.primary)
 
                                 Spacer()
@@ -170,7 +171,7 @@ public struct PosterStudioView: View {
                                     .foregroundColor(.secondary)
                             }
 
-                            Text("Papel base: \(service.currentInfo.paperName). Solapa de superposición: \(Int(service.overlapMm)) mm con marcas de corte perimetrales.")
+                            Text("Formato base: \(service.currentInfo.paperName)")
                                 .font(DesignTokens.Fonts.caption)
                                 .foregroundColor(.secondary)
                         }
@@ -182,7 +183,7 @@ public struct PosterStudioView: View {
                                 .stroke(DesignTokens.Colors.border, lineWidth: 1)
                         )
                     }
-                    .frame(maxWidth: 380)
+                    .frame(width: 290)
 
                     // Columna Derecha: Previsualización Gráfica y Acciones
                     VStack(alignment: .leading, spacing: DesignTokens.Spacing.md) {
@@ -192,14 +193,18 @@ public struct PosterStudioView: View {
                         // Contenedor visual del afiche con cuadrícula
                         ZStack {
                             RoundedRectangle(cornerRadius: DesignTokens.Radii.medium)
-                                .fill(Color.secondary.opacity(0.08))
-                                .frame(height: 380)
+                                .fill(Color.secondary.opacity(0.06))
+                                .frame(height: 320)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: DesignTokens.Radii.medium)
+                                        .stroke(Color.secondary.opacity(0.15), style: StrokeStyle(lineWidth: 1, dash: [4, 4]))
+                                )
 
                             if let image = service.selectedImage {
                                 Image(nsImage: image)
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(maxHeight: 360)
+                                    .frame(maxHeight: 300)
                                     .cornerRadius(DesignTokens.Radii.small)
                                     .overlay(
                                         // Cuadrícula sobrepuesta
@@ -229,15 +234,26 @@ public struct PosterStudioView: View {
                                             }
                                         }
                                     )
-                                    .shadow(color: Color.black.opacity(0.15), radius: 6, x: 0, y: 3)
+                                    .shadow(color: Color.black.opacity(0.12), radius: 5, x: 0, y: 2)
                             } else {
-                                VStack(spacing: 8) {
-                                    Image(systemName: "photo.on.rectangle.angled")
-                                        .font(.system(size: 44))
+                                VStack(spacing: 10) {
+                                    Image(systemName: "photo.badge.plus")
+                                        .font(.system(size: 40))
+                                        .foregroundColor(.secondary.opacity(0.7))
+                                    Text("Sin documento cargado")
+                                        .font(DesignTokens.Fonts.bodyMedium)
                                         .foregroundColor(.secondary)
-                                    Text("Arrastra una imagen o PDF aquí")
-                                        .font(DesignTokens.Fonts.body)
-                                        .foregroundColor(.secondary)
+                                    Text("Selecciona una imagen o archivo PDF para generar el afiche en mosaico.")
+                                        .font(DesignTokens.Fonts.caption)
+                                        .foregroundColor(.secondary.opacity(0.8))
+                                        .multilineTextAlignment(.center)
+                                        .frame(maxWidth: 240)
+                                    Button(action: selectFile) {
+                                        Label("Seleccionar Archivo…", systemImage: "plus")
+                                    }
+                                    .buttonStyle(.bordered)
+                                    .controlSize(.small)
+                                    .padding(.top, 4)
                                 }
                             }
                         }
@@ -252,6 +268,10 @@ public struct PosterStudioView: View {
                                     .foregroundColor(.secondary)
                                     .lineLimit(1)
                                 Spacer()
+                                Button("Cambiar", action: selectFile)
+                                    .font(DesignTokens.Fonts.caption)
+                                    .buttonStyle(.plain)
+                                    .foregroundColor(.accentColor)
                             }
                         }
 
@@ -284,10 +304,10 @@ public struct PosterStudioView: View {
                             }
                         }
                     }
-                    .frame(maxWidth: .infinity)
+                    .frame(minWidth: 260, maxWidth: .infinity)
                 }
             }
-            .padding(DesignTokens.Spacing.lg)
+            .padding(DesignTokens.Spacing.md)
         }
         .confirmationDialog(
             "¿Enviar trabajo de afiche a la HP Smart Tank 500?",
@@ -308,24 +328,19 @@ public struct PosterStudioView: View {
         }
     }
 
-    private func presetButton(title: String, cols: Int, rows: Int, subtitle: String) -> some View {
+    private func presetButton(title: String, cols: Int, rows: Int) -> some View {
         Button(action: {
             service.gridColumns = cols
             service.gridRows = rows
         }) {
-            VStack(spacing: 2) {
-                Text(title)
-                    .font(DesignTokens.Fonts.captionBold)
-                Text(subtitle)
-                    .font(.system(size: 9))
-                    .foregroundColor(service.gridColumns == cols && service.gridRows == rows ? .white.opacity(0.85) : .secondary)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 8)
-            .padding(.horizontal, 4)
-            .background(service.gridColumns == cols && service.gridRows == rows ? Color.indigo : Color.secondary.opacity(0.08))
-            .foregroundColor(service.gridColumns == cols && service.gridRows == rows ? .white : .primary)
-            .cornerRadius(DesignTokens.Radii.small)
+            Text(title)
+                .font(.system(size: 11, weight: service.gridColumns == cols && service.gridRows == rows ? .bold : .medium))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 6)
+                .padding(.horizontal, 4)
+                .background(service.gridColumns == cols && service.gridRows == rows ? Color.indigo : Color.secondary.opacity(0.08))
+                .foregroundColor(service.gridColumns == cols && service.gridRows == rows ? .white : .primary)
+                .cornerRadius(DesignTokens.Radii.small)
         }
         .buttonStyle(.plain)
     }
