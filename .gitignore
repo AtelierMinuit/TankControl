@@ -68,22 +68,17 @@ research/builds/audit-clean/night-20260904/ews-readonly-probe*
 !research/builds/audit-clean/night-20260904/TankControl.app
 !research/builds/audit-clean/night-20260904/HP Smart Tank Utility.app
 
-# Heavy Raw Data & Upstream Trees (Preserved locally, excluded from git)
-research/corpus/decoded/
-research/corpus/raster/
-research/corpus/logs/
+# Heavy Raw Data & Upstream Trees (excluded from git — deleted locally)
+research/corpus/
 research/hardware-validation/
 research/hplip/
 research/cups-apple-v2.3.6/
 research/extracted/
 research/captures/
+research/audits/
 
-# Intermediate UI Review Sessions (Keep latest 20260905-210520 & docs)
-research/ui-review/20260905-133201/
-research/ui-review/20260905-204403/
-research/ui-review/20260905-204706/
-research/ui-review/20260905-live/
-research/ui-review/round2/
+# UI Review sessions (deleted — all rounds)
+research/ui-review/
 
 # Temporary and Scratch Dumps
 scratch/

@@ -1,7 +1,0 @@
-e9d01964a4c473e07a6007a8d1e57aceb44885fb9dc147fbe870ffa6a9c8c6ba  research/audits/post-hardening-20260904-063815/Info.plist
-a0cfb88fcd3cc2acbcc676f063275b97aa33ec550f9502ede2fd5bacf1791f4a  research/audits/post-hardening-20260904-063815/KNOWN-LIMITATIONS.md
-d123ee1ae1f45f1cad17821a0b76db8bea3f694b78af85c98698277cfc6e54be  research/audits/post-hardening-20260904-063815/MASTER-AUDIT-2026.md
-a8cd9ef650c2dea85db7ead9dbb3a7054befe352a8b3f489e79181c15c38b238  research/audits/post-hardening-20260904-063815/main.swift
-9859169f89de9a25b2b641f9092b9e7a2d3c3120ab90e29ab8969a307ebe25a8  research/audits/post-hardening-20260904-063815/swift-fix-build.log
-743286c47a532b10bbf5b83b23fca9ad93c01c8758a361699172359973acbbcd  research/audits/post-hardening-20260904-063815/swift-fix-tests.log
-1b503f2f246896ad9373f00710aeab289d5dee0206274d07214a1cdf77cdf0e9  research/audits/post-hardening-20260904-063815/test_security_hardening.py

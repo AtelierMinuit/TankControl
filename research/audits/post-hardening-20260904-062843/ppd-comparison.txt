@@ -1,3 +1,0 @@
-hplip_constraints=178
-own_constraints=
-     508 /tmp/hp-ppd-diff.log
