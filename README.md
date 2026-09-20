@@ -49,7 +49,7 @@ The project is designed around three principles:
 | Native ARM64 build | ✅ Reproducible in GitHub Actions |
 | App bundle integrity | ✅ Verified in CI |
 | HP Smart Tank 500 target | ✅ Project target |
-| Release | ✅ `v1.1.0` published |
+| Release | ✅ `v1.2.0` published |
 | License | ✅ MIT |
 | Full local test suite | ⚠️ Includes hardware/corpus/package fixtures not versioned in the public repository |
 | Apple notarization | ⚠️ Current distribution is not notarized |
@@ -102,7 +102,7 @@ Additional screenshots and design assets are kept under [`Brand/`](Brand/).
 
 Use the published assets from the current release:
 
-**[Download TankControl v1.1.0 →](https://github.com/AtelierMinuit/TankControl/releases/tag/v1.1.0)**
+**[Download TankControl v1.2.0 →](https://github.com/AtelierMinuit/TankControl/releases/tag/v1.2.0)**
 
 The current package is **unsigned/not notarized with an Apple Developer ID**. Review the release notes before installation. Avoid disabling Gatekeeper globally; use macOS's normal per-app approval flow when required.
 
