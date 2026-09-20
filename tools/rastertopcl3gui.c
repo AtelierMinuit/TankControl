@@ -524,10 +524,14 @@ int main(int argc, char *argv[]) {
     else if (strstr(options, "HPWatermark=Sample") || strstr(options, "watermark=sample")) watermark_text = "MUESTRA";
 
     int cli_output_mode = -1; /* -1 = auto de raster header; 1 = Draft, 2 = Normal, 3 = Best, 4 = Photo */
-    if (strstr(options, "OutputMode=Draft") || strstr(options, "outputmode=draft") || strstr(options, "quality=draft")) cli_output_mode = 1;
+    if (strstr(options, "OutputMode=FastDraft") || strstr(options, "outputmode=fastdraft") ||
+        strstr(options, "OutputMode=Draft") || strstr(options, "outputmode=draft") ||
+        strstr(options, "quality=draft") || strstr(options, "quality=fastdraft")) cli_output_mode = 1;
     else if (strstr(options, "OutputMode=Normal") || strstr(options, "outputmode=normal")) cli_output_mode = 2;
     else if (strstr(options, "OutputMode=Best") || strstr(options, "outputmode=best")) cli_output_mode = 3;
-    else if (strstr(options, "OutputMode=Photo") || strstr(options, "outputmode=photo")) cli_output_mode = 4;
+    else if (strstr(options, "OutputMode=PhotoMaster") || strstr(options, "outputmode=photomaster") ||
+             strstr(options, "OutputMode=Photo") || strstr(options, "outputmode=photo") ||
+             strstr(options, "quality=photo")) cli_output_mode = 4;
 
     int ink_saver_mode = 0;
     int ink_saver_percent = 0;
@@ -964,10 +968,11 @@ int main(int argc, char *argv[]) {
                 }
             }
 
-            /* Comprobar si la fila es blanca (fondo) */
+            /* Comprobar si la fila es blanca (fondo) con aceleración para Borrador (Draft) */
             int is_white = 1;
+            int white_thresh = (quality_cmd == 1) ? 250 : 255;
             for (size_t i = 0; i < row_bytes; i++) {
-                if (cur_row[i] != 0xFF) {
+                if (cur_row[i] < (unsigned char)white_thresh) {
                     is_white = 0;
                     break;
                 }

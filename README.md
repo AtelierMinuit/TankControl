@@ -64,6 +64,7 @@ The public CI intentionally validates the reproducible source build, bundle sign
 - PCL3GUI raster tooling written in C.
 - Print presets and local queue management.
 - Local raster processing and continuous InkSaver™ mode (0% to 75% savings).
+- **Speed & Output Modes**: Ultra-Fast Draft mode (300 DPI) with hardware scanline skipping (`\033*b#Y`) that bypasses whitespace and margin passes up to 45% faster, and Master Photo mode (4800x1200 optimized DPI) with smooth stochastic error diffusion.
 - **AirPrint / Bonjour Bridge**: Wireless driverless printing for iOS (iPhone/iPad) and local Macs via native mDNS/Bonjour (`_ipp._tcp.`) advertisement and CUPS sharing.
 - **Guided ICC Color Calibrator**: Integrated 3-step calibration wizard generating custom ColorSync `.icc` profiles for photographic and specialty papers with $\Delta E$ spectral metrics and TRC gamma correction.
 - **Regional Paper Format Disambiguation**: Flawless differentiation between Carta (US Letter 8.5x11''), Oficio Chile/LATAM (8.5x13'', 936 pt / `media_id 10`), Legal (US Legal 8.5x14'', 1008 pt / `media_id 3`), and ISO A4/A5/A6 with tray alignment guide and zero-margin borderless support.
@@ -78,6 +79,7 @@ The public CI intentionally validates the reproducible source build, bundle sign
 
 - Native SwiftUI interface for Apple Silicon.
 - **Interactive Menu Bar Popover Widget**: Instant access to live CISS ink levels, connection telemetry, quick InkSaver presets, and 1-click actions (Scan, Queue, Printhead cleaning).
+- **Poster & Tiling Studio (Afiches y Mosaicos)**: Giant multi-page poster studio ($2 \times 2$, $3 \times 3$, $4 \times 4$, custom banners) with automatic overlap glue margins (5-25 mm), dashed cut guides, and corner registration crosses.
 - **Paper Formats Guide**: Visual dimension comparator and physical slider alignment instructions for LATAM and ISO standard media.
 - **Hardware-Unlocked Maintenance**: Real-time Waste Ink Absorber saturation telemetry (~120 ml capacity) and CISS workshop tube priming (`prime-tubes`) to purge air bubbles without vendor software lockouts.
 - Printer status, diagnostics and maintenance surfaces.
@@ -129,7 +131,7 @@ The build produces the native C helpers and `TankControl.app` under the project'
 make test
 ```
 
-The full suite currently contains 217 tests. Some tests depend on local corpus, packaging, sanitizer or hardware-validation fixtures that are deliberately excluded from the public repository, so `make test` is not used as the public CI success criterion yet.
+The full suite currently contains 228 tests. Some tests depend on local corpus, packaging, sanitizer or hardware-validation fixtures that are deliberately excluded from the public repository, so `make test` is not used as the public CI success criterion yet.
 
 ### Packaging
 

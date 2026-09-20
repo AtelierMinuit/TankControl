@@ -269,6 +269,20 @@ public final class LocalizationService: ObservableObject {
             .portuguese: "Diferenciação exata entre Carta, Ofício Chile/LATAM (13''), Legal (14'') e A4",
             .french: "Différenciation exacte entre Lettre, Oficio Chili/LATAM (13''), Légal (14'') et A4",
             .german: "Exakte Maße und Ausrichtung für US-Letter, Oficio, US-Legal und A4"
+        ],
+        "section_poster_studio": [
+            .spanish: "Afiches y Mosaicos",
+            .english: "Poster & Tiling Studio",
+            .portuguese: "Estúdio de Pôsteres e Mosaicos",
+            .french: "Studio Affiches et Mosaïques",
+            .german: "Poster- und Kacheldruck Studio"
+        ],
+        "poster_studio_subtitle": [
+            .spanish: "Impresión gigante multipágina con solapas de pegado y marcas de corte para HP Smart Tank",
+            .english: "Giant multi-page tiled printing with glue tabs and alignment cut marks for HP Smart Tank",
+            .portuguese: "Impressão gigante multipágina com abas de colagem e guias de corte para HP Smart Tank",
+            .french: "Impression géante multipage avec languettes de collage et repères de coupe pour HP Smart Tank",
+            .german: "Großformatiger Mehrseitendruck mit Klebelaschen und Schnittmarken für HP Smart Tank"
         ]
     ]
 }

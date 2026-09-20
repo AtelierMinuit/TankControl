@@ -8,6 +8,7 @@ public enum SidebarSection: String, CaseIterable, Identifiable {
     case scanner = "Escáner"
     case ink = "Tinta"
     case inkSaver = "InkSaver"
+    case posterStudio = "Afiches y Mosaicos"
     case calibration = "Calibración ICC"
     case maintenance = "Mantenimiento"
     case activity = "Actividad"
@@ -24,6 +25,7 @@ public enum SidebarSection: String, CaseIterable, Identifiable {
         case .scanner: return "scanner"
         case .ink: return "drop.fill"
         case .inkSaver: return "leaf.fill"
+        case .posterStudio: return "square.grid.3x3.fill"
         case .calibration: return "paintpalette.fill"
         case .maintenance: return "wrench.and.screwdriver"
         case .activity: return "chart.bar"
@@ -40,6 +42,7 @@ public enum SidebarSection: String, CaseIterable, Identifiable {
         case .scanner: return LocalizationService.shared.t("section_scan")
         case .ink: return LocalizationService.shared.t("section_ink")
         case .inkSaver: return LocalizationService.shared.t("section_inksaver")
+        case .posterStudio: return LocalizationService.shared.t("section_poster_studio")
         case .calibration: return LocalizationService.shared.t("section_calibration")
         case .maintenance: return LocalizationService.shared.t("section_maintenance")
         case .activity: return LocalizationService.shared.t("section_activity")

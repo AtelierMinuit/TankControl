@@ -66,6 +66,14 @@ public struct MainSplitView: View {
                     ) {
                         Label(SidebarSection.inkSaver.localizedTitle, systemImage: SidebarSection.inkSaver.icon)
                     }
+
+                    NavigationLink(
+                        destination: PosterStudioView(printer: printer),
+                        tag: SidebarSection.posterStudio,
+                        selection: navigationSelection
+                    ) {
+                        Label(SidebarSection.posterStudio.localizedTitle, systemImage: SidebarSection.posterStudio.icon)
+                    }
                 }
 
                 Section(header: Text(loc.t("group_maintenance_usage")).font(.caption.weight(.bold))) {
