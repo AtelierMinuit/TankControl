@@ -10,9 +10,9 @@ public struct SettingsView: View {
             VStack(alignment: .leading, spacing: DesignTokens.Spacing.md) {
                 // Cabecera
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Configuración")
+                    Text(loc.t("section_settings"))
                         .font(DesignTokens.Fonts.title)
-                    Text("Preferencias generales y opciones de desarrollo de TankControl.")
+                    Text(loc.t("settings_subtitle"))
                         .font(DesignTokens.Fonts.caption)
                         .foregroundColor(.secondary)
                 }
@@ -57,21 +57,21 @@ public struct SettingsView: View {
 
                 // Grupo 1: Preferencias del Sistema
                 VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {
-                    Text("Notificaciones y Sistema")
+                    Text(loc.t("settings_notifications_header"))
                         .font(DesignTokens.Fonts.sectionHeader)
 
                     VStack(alignment: .leading, spacing: 6) {
                         HStack {
                             Image(systemName: "bell.badge")
                                 .foregroundColor(.accentColor)
-                            Text("Avisos de Hardware y Tinta Baja")
+                            Text(loc.t("settings_notifications_title"))
                                 .font(DesignTokens.Fonts.bodyMedium)
                             Spacer()
-                            Text("Activas")
+                            Text(loc.t("settings_notifications_active"))
                                 .font(DesignTokens.Fonts.caption)
                                 .foregroundColor(.green)
                         }
-                        Text("Notifica automáticamente si algún depósito CISS cae por debajo del 12% o si la impresora reporta un atasco.")
+                        Text(loc.t("settings_notifications_desc"))
                             .font(DesignTokens.Fonts.caption)
                             .foregroundColor(.secondary)
                             .fixedSize(horizontal: false, vertical: true)
@@ -87,11 +87,11 @@ public struct SettingsView: View {
 
                 // Grupo 2: Herramientas de Desarrollo
                 VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {
-                    Text("Opciones de Desarrollo")
+                    Text(loc.t("settings_dev_header"))
                         .font(DesignTokens.Fonts.sectionHeader)
 
                     VStack(alignment: .leading, spacing: 8) {
-                        Toggle("Mostrar sección de Desarrollo en la barra lateral", isOn: Binding(
+                        Toggle(loc.t("settings_dev_toggle"), isOn: Binding(
                             get: { printer.developerMode },
                             set: { enabled in
                                 if enabled { showingDeveloperModeConfirmation = true }
@@ -100,7 +100,7 @@ public struct SettingsView: View {
                         ))
                         .font(DesignTokens.Fonts.bodyMedium)
 
-                        Text("Habilita el visor de descriptores USB, volcados XML de firmware y diagnósticos de subsistemas.")
+                        Text(loc.t("settings_dev_desc"))
                             .font(DesignTokens.Fonts.caption)
                             .foregroundColor(.secondary)
                     }
@@ -124,7 +124,7 @@ public struct SettingsView: View {
                                 .foregroundColor(.secondary)
                         }
                         Spacer()
-                        Button("Acerca de…") {
+                        Button(loc.t("settings_btn_about")) {
                             printer.selectedSection = .about
                         }
                         .buttonStyle(.bordered)
@@ -141,11 +141,11 @@ public struct SettingsView: View {
             }
             .padding(DesignTokens.Spacing.md)
         }
-        .confirmationDialog("¿Mostrar herramientas de desarrollo?", isPresented: $showingDeveloperModeConfirmation, titleVisibility: .visible) {
-            Button("Mostrar herramientas") { printer.developerMode = true }
-            Button("Cancelar", role: .cancel) {}
+        .confirmationDialog(loc.t("settings_dialog_dev_title"), isPresented: $showingDeveloperModeConfirmation, titleVisibility: .visible) {
+            Button(loc.t("settings_dialog_dev_confirm")) { printer.developerMode = true }
+            Button(loc.t("settings_dialog_dev_cancel"), role: .cancel) {}
         } message: {
-            Text("Incluye operaciones que consumen tinta o envían comandos directos al equipo. Activar esta sección no ejecuta ninguna operación sin confirmación adicional.")
+            Text(loc.t("settings_dialog_dev_message"))
         }
     }
 }

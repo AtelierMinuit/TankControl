@@ -36,7 +36,9 @@ jobs:
           otool -L "$TOOL" | grep -q '@rpath/libusb-1.0.0.dylib'
           otool -L "$SCAN" | grep -q '@rpath/libusb-1.0.0.dylib'
 
+      - name: Run automated test suite
+        run: python3 -m unittest discover -s tests
+
       - name: CI scope note
         run: |
-          echo "Public CI validates reproducible build, bundle integrity and ARM64 linkage."
-          echo "The complete local test suite includes hardware/corpus/package fixtures that are intentionally not versioned in this public repository."
+          echo "Public CI validates reproducible build, bundle integrity, automated tests and ARM64 linkage."

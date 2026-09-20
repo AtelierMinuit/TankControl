@@ -212,17 +212,29 @@ static void apply_ink_saver_pro(unsigned char *cur_row, const unsigned char *see
                                 int width, int y, int saver_percent, int saver_mode, int color_drop_mode,
                                 unsigned long long *input_units, unsigned long long *saved_units) {
     if (!cur_row || width <= 0) return;
+    int prev_orig_r = cur_row[0];
+    int prev_orig_g = cur_row[1];
+    int prev_orig_b = cur_row[2];
+
     for (int x = 0; x < width; x++) {
-        int r = cur_row[x * 3];
-        int g = cur_row[x * 3 + 1];
-        int b = cur_row[x * 3 + 2];
+        int orig_r = cur_row[x * 3];
+        int orig_g = cur_row[x * 3 + 1];
+        int orig_b = cur_row[x * 3 + 2];
+        int r = orig_r;
+        int g = orig_g;
+        int b = orig_b;
 
         int ink_r = 255 - r;
         int ink_g = 255 - g;
         int ink_b = 255 - b;
         int ink_total = ink_r + ink_g + ink_b;
 
-        if (ink_total == 0) continue;
+        if (ink_total == 0) {
+            prev_orig_r = orig_r;
+            prev_orig_g = orig_g;
+            prev_orig_b = orig_b;
+            continue;
+        }
         if (input_units) *input_units += (unsigned long long)ink_total;
 
         /* 1. Filtro ecológico de color */
@@ -231,15 +243,18 @@ static void apply_ink_saver_pro(unsigned char *cur_row, const unsigned char *see
             if (r >= 165 && g >= 165 && b >= 165 && ink_total >= 10) {
                 int left_diff = 0;
                 if (x > 0) {
-                    left_diff = abs(r - cur_row[(x - 1) * 3]) +
-                                abs(g - cur_row[(x - 1) * 3 + 1]) +
-                                abs(b - cur_row[(x - 1) * 3 + 2]);
+                    left_diff = abs(r - prev_orig_r) +
+                                abs(g - prev_orig_g) +
+                                abs(b - prev_orig_b);
                 }
                 if (left_diff <= 25) {
                     cur_row[x * 3] = 255;
                     cur_row[x * 3 + 1] = 255;
                     cur_row[x * 3 + 2] = 255;
                     if (saved_units) *saved_units += (unsigned long long)ink_total;
+                    prev_orig_r = orig_r;
+                    prev_orig_g = orig_g;
+                    prev_orig_b = orig_b;
                     continue;
                 }
             }
@@ -261,9 +276,9 @@ static void apply_ink_saver_pro(unsigned char *cur_row, const unsigned char *see
         int orig_px_ink = (255 - r) + (255 - g) + (255 - b);
         if (saver_mode == 4) {
             /* EdgePreserve: preserva bordes y atenúa el relleno en el raster. */
-            int r_left = (x > 0) ? cur_row[(x - 1) * 3] : r;
-            int g_left = (x > 0) ? cur_row[(x - 1) * 3 + 1] : g;
-            int b_left = (x > 0) ? cur_row[(x - 1) * 3 + 2] : b;
+            int r_left = (x > 0) ? prev_orig_r : r;
+            int g_left = (x > 0) ? prev_orig_g : g;
+            int b_left = (x > 0) ? prev_orig_b : b;
 
             int r_right = (x < width - 1) ? cur_row[(x + 1) * 3] : r;
             int g_right = (x < width - 1) ? cur_row[(x + 1) * 3 + 1] : g;
@@ -298,13 +313,12 @@ static void apply_ink_saver_pro(unsigned char *cur_row, const unsigned char *see
             }
         } else if (saver_percent > 0) {
             /* Motor InkSaver continuo (0% a 75%):
-             * - Para texto y gráficos vectoriales: detección de bordes (delta > 45) para preservar los contornos oscuros y nítidos.
+             * - Para texto y gráficos vectoriales: detección de bordes (delta > 45) para preservar contornos oscuros y nítidos.
              * - Para los interiores/rellenos: aplica la atenuación exacta correspondiente al porcentaje: 255 - ((255 - val) * (100 - percent)) / 100.
-             * - Para valores de ahorro >= 30%: aplica la micro-perforación inteligente (x + y) % 2 == 1 para aprovechar la ganancia de punto capilar del papel.
              */
-            int r_left = (x > 0) ? cur_row[(x - 1) * 3] : r;
-            int g_left = (x > 0) ? cur_row[(x - 1) * 3 + 1] : g;
-            int b_left = (x > 0) ? cur_row[(x - 1) * 3 + 2] : b;
+            int r_left = (x > 0) ? prev_orig_r : r;
+            int g_left = (x > 0) ? prev_orig_g : g;
+            int b_left = (x > 0) ? prev_orig_b : b;
 
             int r_right = (x < width - 1) ? cur_row[(x + 1) * 3] : r;
             int g_right = (x < width - 1) ? cur_row[(x + 1) * 3 + 1] : g;
@@ -322,22 +336,16 @@ static void apply_ink_saver_pro(unsigned char *cur_row, const unsigned char *see
             if (delta > 45) {
                 /* Contorno de letra o trazo vectorial fino: preservar contornos oscuros y nítidos */
             } else {
-                /* Interiores y rellenos */
-                if (saver_percent >= 30) {
-                    /* Micro-perforación inteligente para dot gain capilar del papel */
-                    if ((x + y) % 2 == 1) {
-                        r = 255 - ((255 - r) * (100 - saver_percent)) / 100;
-                        g = 255 - ((255 - g) * (100 - saver_percent)) / 100;
-                        b = 255 - ((255 - b) * (100 - saver_percent)) / 100;
-                    }
-                } else {
-                    /* Atenuación nominal directa según porcentaje continuo */
-                    r = 255 - ((255 - r) * (100 - saver_percent)) / 100;
-                    g = 255 - ((255 - g) * (100 - saver_percent)) / 100;
-                    b = 255 - ((255 - b) * (100 - saver_percent)) / 100;
-                }
+                /* Atenuación nominal directa según porcentaje continuo en interiores y rellenos */
+                r = 255 - ((255 - r) * (100 - saver_percent)) / 100;
+                g = 255 - ((255 - g) * (100 - saver_percent)) / 100;
+                b = 255 - ((255 - b) * (100 - saver_percent)) / 100;
             }
         }
+
+        prev_orig_r = orig_r;
+        prev_orig_g = orig_g;
+        prev_orig_b = orig_b;
 
         cur_row[x * 3]     = (unsigned char)r;
         cur_row[x * 3 + 1] = (unsigned char)g;
@@ -680,6 +688,13 @@ int main(int argc, char *argv[]) {
         if (is_gray && header.cupsBytesPerLine < (unsigned int)width) {
             fprintf(stderr, "ERROR: [rastertopcl3gui] cupsBytesPerLine (%u) < width (%d)\n",
                     header.cupsBytesPerLine, width);
+            processing_error = 1;
+            break;
+        }
+
+        if (is_cmyk && header.cupsBytesPerLine < (unsigned int)width * 4) {
+            fprintf(stderr, "ERROR: [rastertopcl3gui] cupsBytesPerLine (%u) < width * 4 (%d)\n",
+                    header.cupsBytesPerLine, width * 4);
             processing_error = 1;
             break;
         }

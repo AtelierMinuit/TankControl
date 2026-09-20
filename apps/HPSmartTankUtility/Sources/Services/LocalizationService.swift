@@ -148,6 +148,13 @@ public final class LocalizationService: ObservableObject {
         ],
 
         // Configuración y Selector de Idioma
+        "settings_subtitle": [
+            .spanish: "Preferencias generales y opciones de desarrollo de TankControl.",
+            .english: "General preferences and development options for TankControl.",
+            .portuguese: "Preferências gerais e opções de desenvolvimento do TankControl.",
+            .french: "Préférences générales et options de développement de TankControl.",
+            .german: "Allgemeine Einstellungen und Entwickleroptionen für TankControl."
+        ],
         "settings_language_header": [
             .spanish: "Idioma de la Aplicación", .english: "Application Language", .portuguese: "Idioma do Aplicativo", .french: "Langue de l'application", .german: "Anwendungssprache"
         ],
@@ -160,6 +167,63 @@ public final class LocalizationService: ObservableObject {
         ],
         "settings_notifications_header": [
             .spanish: "Notificaciones y Sistema", .english: "Notifications & System", .portuguese: "Notificações e Sistema", .french: "Notifications et Système", .german: "Benachrichtigungen & System"
+        ],
+        "settings_notifications_title": [
+            .spanish: "Avisos de Hardware y Tinta Baja",
+            .english: "Hardware and Low Ink Alerts",
+            .portuguese: "Alertas de Hardware e Tinta Baixa",
+            .french: "Alertes Matériel et Encre Faible",
+            .german: "Hardware- und Tintenstandswarnungen"
+        ],
+        "settings_notifications_active": [
+            .spanish: "Activas", .english: "Active", .portuguese: "Ativas", .french: "Actives", .german: "Aktiv"
+        ],
+        "settings_notifications_desc": [
+            .spanish: "Notifica automáticamente si algún depósito CISS cae por debajo del 12% o si la impresora reporta un atasco.",
+            .english: "Automatically notifies if any CISS tank drops below 12% or if the printer reports a paper jam.",
+            .portuguese: "Notifica automaticamente se algum tanque CISS cair abaixo de 12% ou se a impressora relatar atolamento de papel.",
+            .french: "Notifie automatiquement si un réservoir CISS passe sous 12% ou si l'imprimante signale un bourrage papier.",
+            .german: "Benachrichtigt automatisch, wenn ein CISS-Tank unter 12 % fällt oder der Drucker einen Papierstau meldet."
+        ],
+        "settings_dev_header": [
+            .spanish: "Opciones de Desarrollo", .english: "Developer Options", .portuguese: "Opções de Desenvolvedor", .french: "Options Développeur", .german: "Entwickleroptionen"
+        ],
+        "settings_dev_toggle": [
+            .spanish: "Mostrar sección de Desarrollo en la barra lateral",
+            .english: "Show Developer section in sidebar",
+            .portuguese: "Mostrar seção de Desenvolvimento na barra lateral",
+            .french: "Afficher la section Développeur dans la barre latérale",
+            .german: "Entwicklerbereich in der Seitenleiste anzeigen"
+        ],
+        "settings_dev_desc": [
+            .spanish: "Habilita el visor de descriptores USB, volcados XML de firmware y diagnósticos de subsistemas.",
+            .english: "Enables USB descriptor viewer, firmware XML dumps, and subsystem diagnostics.",
+            .portuguese: "Habilita o visualizador de descritores USB, despejos XML de firmware e diagnósticos de subsistemas.",
+            .french: "Active le visualiseur de descripteurs USB, les vidages XML du micrologiciel et les diagnostics de sous-systèmes.",
+            .german: "Aktiviert den USB-Deskriptor-Viewer, Firmware-XML-Dumps und Subsystem-Diagnosen."
+        ],
+        "settings_btn_about": [
+            .spanish: "Acerca de…", .english: "About…", .portuguese: "Sobre…", .french: "À propos…", .german: "Über…"
+        ],
+        "settings_dialog_dev_title": [
+            .spanish: "¿Mostrar herramientas de desarrollo?",
+            .english: "Show developer tools?",
+            .portuguese: "Mostrar ferramentas de desenvolvedor?",
+            .french: "Afficher les outils de développement ?",
+            .german: "Entwicklertools anzeigen?"
+        ],
+        "settings_dialog_dev_confirm": [
+            .spanish: "Mostrar herramientas", .english: "Show tools", .portuguese: "Mostrar ferramentas", .french: "Afficher les outils", .german: "Tools anzeigen"
+        ],
+        "settings_dialog_dev_cancel": [
+            .spanish: "Cancelar", .english: "Cancel", .portuguese: "Cancelar", .french: "Annuler", .german: "Abbrechen"
+        ],
+        "settings_dialog_dev_message": [
+            .spanish: "Incluye operaciones que consumen tinta o envían comandos directos al equipo. Activar esta sección no ejecuta ninguna operación sin confirmación adicional.",
+            .english: "Includes operations that consume ink or send raw commands to the hardware. Enabling this section does not execute any operation without explicit confirmation.",
+            .portuguese: "Inclui operações que consomem tinta ou enviam comandos diretos ao dispositivo. Ativar esta seção não executa nenhuma operação sem confirmação adicional.",
+            .french: "Comprend des opérations consommant de l'encre ou envoyant des commandes directes. L'activation de cette section n'exécute aucune opération sans confirmation.",
+            .german: "Enthält Operationen, die Tinte verbrauchen oder direkte Befehle an das Gerät senden. Die Aktivierung führt keine Aktionen ohne Bestätigung aus."
         ]
     ]
 }

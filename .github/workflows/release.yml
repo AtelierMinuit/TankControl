@@ -29,10 +29,13 @@ jobs:
           codesign --verify --deep --strict "$APP"
           file "$APP/Contents/Helpers/hp-smart-tank-tool" | grep -q 'arm64'
 
+      - name: Run automated test suite
+        run: python3 -m unittest discover -s tests
+
       - name: Package installer and disk image
         run: |
-          make pkg || true
-          make dmg || true
+          make pkg
+          make dmg
 
       - name: Generate Checksums
         run: |
@@ -41,7 +44,8 @@ jobs:
             cp "$f" release-assets/
           done
           cd release-assets
-          shasum -a 256 * > SHA256SUMS.txt || true
+          test -n "$(ls -A .)" || { echo "Error: No release assets found!"; exit 1; }
+          shasum -a 256 *.dmg *.pkg > SHA256SUMS.txt
 
       - name: Upload Artifacts to GitHub Release
         uses: softprops/action-gh-release@v2
