@@ -97,7 +97,7 @@ class TestPaperFormatsPPD(unittest.TestCase):
         cmd = ["cupstestppd", "-W", "all", str(PPD_PATH)]
         res = subprocess.run(cmd, capture_output=True, text=True)
         self.assertEqual(res.returncode, 0, f"cupstestppd falló:\n{res.stderr}")
-        self.assertIn("PASA", res.stdout)
+        self.assertTrue("PASA" in res.stdout or "PASS" in res.stdout, f"cupstestppd no pasó:\n{res.stdout}")
 
 
 class TestRasterToPCL3GUIMediaID(unittest.TestCase):
