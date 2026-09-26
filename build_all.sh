@@ -146,7 +146,7 @@ if [ $DO_BINARIES -eq 1 ]; then
 
     # Filtro RIP PCL3GUI
     info "  -> Compilando rastertopcl3gui..."
-    clang -O2 -Wall -Wextra -Wpedantic "${ROOT_DIR}/tools/rastertopcl3gui.c" -lcups -o "${BUILD_DIR}/rastertopcl3gui"
+    clang -O2 -Wall -Wextra -Wpedantic "${ROOT_DIR}/tools/rastertopcl3gui.c" -lcups -lcupsimage -o "${BUILD_DIR}/rastertopcl3gui"
     cp -X "${BUILD_DIR}/rastertopcl3gui" "${ROOT_DIR}/tools/rastertopcl3gui"
 
     # Backend CUPS bidireccional smarttank
