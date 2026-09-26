@@ -748,7 +748,7 @@ int main(int argc, char *argv[]) {
         int quality_cmd = 2; /* Normal */
         if (cli_output_mode > 0) {
             quality_cmd = cli_output_mode;
-        } else if (header.OutputType[0] == '3' || dpi <= 300) {
+        } else if (header.OutputType[0] == '3' || (dpi <= 300 && header.OutputType[0] == '\0')) {
             quality_cmd = 1; /* Draft / Borrador Rápido */
         } else if (header.OutputType[0] == '1') {
             quality_cmd = 3; /* Best */

@@ -489,7 +489,7 @@
 *OrderDependency: 10 AnySetup *OutputMode
 *DefaultOutputMode: Normal
 *OutputMode Draft/Fast Draft: "<</OutputType(3)/HWResolution[300 300]>>setpagedevice"
-*OutputMode Normal/Normal: "<</OutputType(0)/HWResolution[600 600]>>setpagedevice"
+*OutputMode Normal/Normal: "<</OutputType(0)/HWResolution[300 300]>>setpagedevice"
 *OutputMode Best/Best: "<</OutputType(1)/HWResolution[600 600]>>setpagedevice"
 *OutputMode Photo/High-Resolution Photo: "<</OutputType(2)/HWResolution[1200 1200]>>setpagedevice"
 *CloseUI: *OutputMode
@@ -677,25 +677,25 @@
 *es.MediaType PlainPaperLight/Plain Paper, Light/Recycled: "Papel Normal Ligero"
 *es.Translation OutputMode/Print Quality: "Calidad de Impresion"
 *es.OutputMode Draft/Fast Draft: "Borrador Rapido (300 DPI - Alta Velocidad)"
-*es.OutputMode Normal/Normal: "Normal (600 DPI)"
+*es.OutputMode Normal/Normal: "Normal (300 DPI)"
 *es.OutputMode Best/Best: "Optima (600 DPI Alta Densidad)"
 *es.OutputMode Photo/High-Resolution Photo: "Fotografica Maxima (1200 DPI)"
 
 *pt.Translation OutputMode/Print Quality: "Qualidade de Impressao"
 *pt.OutputMode Draft/Fast Draft: "Rascunho Rapido (300 DPI - Alta Velocidade)"
-*pt.OutputMode Normal/Normal: "Normal (600 DPI)"
+*pt.OutputMode Normal/Normal: "Normal (300 DPI)"
 *pt.OutputMode Best/Best: "Otima (600 DPI Alta Densidade)"
 *pt.OutputMode Photo/High-Resolution Photo: "Foto em Alta Resolucao (1200 DPI)"
 
 *fr.Translation OutputMode/Print Quality: "Qualite d'impression"
 *fr.OutputMode Draft/Fast Draft: "Brouillon Rapide (300 DPI - Haute Vitesse)"
-*fr.OutputMode Normal/Normal: "Normale (600 DPI)"
+*fr.OutputMode Normal/Normal: "Normale (300 DPI)"
 *fr.OutputMode Best/Best: "Optimale (600 DPI Haute Densite)"
 *fr.OutputMode Photo/High-Resolution Photo: "Photo Haute Resolution (1200 DPI)"
 
 *de.Translation OutputMode/Print Quality: "Druckqualitat"
 *de.OutputMode Draft/Fast Draft: "Schnellentwurf (300 DPI - Hohe Geschwindigkeit)"
-*de.OutputMode Normal/Normal: "Normal (600 DPI)"
+*de.OutputMode Normal/Normal: "Normal (300 DPI)"
 *de.OutputMode Best/Best: "Optimal (600 DPI Hohe Dichte)"
 *de.OutputMode Photo/High-Resolution Photo: "Foto Hohe Auflosung (1200 DPI)"
 
