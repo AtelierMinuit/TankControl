@@ -194,6 +194,7 @@ class TestAccountingAndSavings(unittest.TestCase):
             [str(TOOL_PATH), "accounting"],
             capture_output=True,
             text=True,
+            env=dict(os.environ, HP_SMART_TANK_MOCK="1"),
             check=True
         )
         self.assertIn("AUDITORÍA FINANCIERA", proc.stdout)

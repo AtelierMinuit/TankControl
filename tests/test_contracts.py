@@ -27,13 +27,18 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-FILTER_PATH = PROJECT_ROOT / "research" / "builds" / "antigravity-offline-audit" / "rastertopcl3gui"
-if not FILTER_PATH.exists():
-    FILTER_PATH = PROJECT_ROOT / "research" / "builds" / "audit-clean" / "night-20260904" / "rastertopcl3gui"
-
-BACKEND_PATH = PROJECT_ROOT / "research" / "builds" / "antigravity-offline-audit" / "smarttank"
-if not BACKEND_PATH.exists():
-    BACKEND_PATH = PROJECT_ROOT / "research" / "builds" / "audit-clean" / "night-20260904" / "smarttank"
+BUILD_CANDIDATES = [
+    Path(os.environ["HP_BUILD_DIR"]) if os.environ.get("HP_BUILD_DIR") else None,
+    PROJECT_ROOT / "research" / "builds" / "audit-clean" / "night-20260904",
+    PROJECT_ROOT / "research" / "builds" / "antigravity-offline-audit",
+]
+BUILD_CANDIDATES = [p for p in BUILD_CANDIDATES if p is not None]
+BUILD_DIR = next(
+    (p for p in BUILD_CANDIDATES if (p / "rastertopcl3gui").exists() and (p / "smarttank").exists()),
+    BUILD_CANDIDATES[0],
+)
+FILTER_PATH = BUILD_DIR / "rastertopcl3gui"
+BACKEND_PATH = BUILD_DIR / "smarttank"
 
 HARNESS_PATH = PROJECT_ROOT / "tools" / "run_hardware_validation.sh"
 SCHEMA_PATH = PROJECT_ROOT / "docs" / "hardware-validation-summary.schema.json"

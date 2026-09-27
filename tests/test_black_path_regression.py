@@ -27,9 +27,8 @@ import tempfile
 import unittest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-FILTER_PATH = PROJECT_ROOT / "research" / "builds" / "antigravity-offline-audit" / "rastertopcl3gui"
-if not FILTER_PATH.exists():
-    FILTER_PATH = PROJECT_ROOT / "research" / "builds" / "audit-clean" / "night-20260904" / "rastertopcl3gui"
+BUILD_DIR = Path(os.environ["HP_BUILD_DIR"]) if os.environ.get("HP_BUILD_DIR") else PROJECT_ROOT / "research" / "builds" / "audit-clean" / "night-20260904"
+FILTER_PATH = BUILD_DIR / "rastertopcl3gui"
 
 DECODER_PATH = PROJECT_ROOT / "tools" / "pcl3gui-decode.py"
 

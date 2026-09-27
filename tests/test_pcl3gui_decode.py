@@ -121,6 +121,24 @@ class ParserRobustnessTests(unittest.TestCase):
 
 
 class CorpusIntegrationTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        required = [
+            PROJECT_ROOT / "research" / "corpus" / "streams" / name
+            for name in (
+                "01-white.pcl3gui", "05-black-square.pcl3gui",
+                "06-red-square.pcl3gui", "07-green-square.pcl3gui",
+                "08-blue-square.pcl3gui", "09-grayscale.pcl3gui",
+                "10-gradient-steps.pcl3gui",
+            )
+        ]
+        missing = [str(path) for path in required if not path.is_file()]
+        if missing:
+            raise unittest.SkipTest(
+                "Corpus PCL3GUI no disponible; genere research/corpus con "
+                "tools/generate-differential-corpus.sh: " + ", ".join(missing)
+            )
+
     def decode(self, name: str):
         data = (PROJECT_ROOT / "research" / "corpus" / "streams" / name).read_bytes()
         raster_start, _, _ = DECODER.parse_raster_events(data)
@@ -175,6 +193,22 @@ class CorpusIntegrationTests(unittest.TestCase):
 
 
 class ResolutionsAndMediaTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        required = [
+            PROJECT_ROOT / "research" / "corpus" / "streams" / name
+            for name in (
+                "11-a4-full.pcl3gui", "11-a4-borderless.pcl3gui",
+                "12-normal600.pcl3gui", "12-photo1200.pcl3gui",
+            )
+        ]
+        missing = [str(path) for path in required if not path.is_file()]
+        if missing:
+            raise unittest.SkipTest(
+                "Corpus de resoluciones no disponible; genere research/corpus con "
+                "tools/generate-differential-corpus.sh: " + ", ".join(missing)
+            )
+
     def test_resolution_scaling_600_vs_1200(self) -> None:
         data_600 = (PROJECT_ROOT / "research" / "corpus" / "streams" / "12-normal600.pcl3gui").read_bytes()
         data_1200 = (PROJECT_ROOT / "research" / "corpus" / "streams" / "12-photo1200.pcl3gui").read_bytes()

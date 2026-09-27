@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import importlib.util
+import os
 from pathlib import Path
 import random
 import struct
@@ -13,6 +14,17 @@ import tempfile
 import unittest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+
+def build_dir() -> Path:
+    candidates = []
+    if os.environ.get("HP_BUILD_DIR"):
+        candidates.append(Path(os.environ["HP_BUILD_DIR"]))
+    candidates.extend([
+        PROJECT_ROOT / "research" / "builds" / "audit-clean" / "night-20260904",
+        PROJECT_ROOT / "research" / "builds" / "antigravity-offline-audit",
+    ])
+    return next((p for p in candidates if (p / "rastertopcl3gui").is_file()), candidates[0])
 
 # Cargar decoder
 DECODER_PATH = PROJECT_ROOT / "tools" / "pcl3gui-decode.py"
@@ -43,7 +55,7 @@ def make_cups_raster(width: int, height: int, rows: list[bytes]) -> bytes:
 class Pcl3GuiMetamorphicTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.c_filter = str(PROJECT_ROOT / "research" / "builds" / "antigravity-offline-audit" / "rastertopcl3gui")
+        cls.c_filter = str(build_dir() / "rastertopcl3gui")
 
     def test_property_5000_differential_roundtrips(self) -> None:
         """Prueba 5.000 casos deterministas generados con seed fija."""

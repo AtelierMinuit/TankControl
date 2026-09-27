@@ -10,7 +10,8 @@ import tempfile
 import unittest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-BACKEND_BIN = PROJECT_ROOT / "research" / "builds" / "antigravity-offline-audit" / "smarttank"
+BUILD_DIR = Path(os.environ["HP_BUILD_DIR"]) if os.environ.get("HP_BUILD_DIR") else PROJECT_ROOT / "research" / "builds" / "audit-clean" / "night-20260904"
+BACKEND_BIN = BUILD_DIR / "smarttank"
 
 
 class CupsBackendSimulationTests(unittest.TestCase):

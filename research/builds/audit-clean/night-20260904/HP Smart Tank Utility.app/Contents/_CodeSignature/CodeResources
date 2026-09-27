@@ -15,28 +15,28 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			yc0bGJ3XQggJgPdEFb+44OWO3pk=
+			pIKmx/Db0PT41RcQTX3l+b4InZg=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"c9cd1b189dd742080980f74415bfb8e0e58ede99"</string>
+			<string>cdhash H"a482a6c7f0dbd0f4f8d517104d7de5f9be089d98"</string>
 		</dict>
 		<key>Helpers/hp-smart-tank-tool</key>
 		<dict>
 			<key>cdhash</key>
 			<data>
-			FPxRrWEZrQsa/S9SOu2xgsA/rJ8=
+			xIejIoTdB4kR/QODPvSn20MVM1U=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"14fc51ad6119ad0b1afd2f523aedb182c03fac9f"</string>
+			<string>cdhash H"c487a32284dd078911fd03833ef4a7db43153355"</string>
 		</dict>
 		<key>Helpers/hp_scan</key>
 		<dict>
 			<key>cdhash</key>
 			<data>
-			aylxv/SVySbl47EG7Xir0AILG0g=
+			0q58liLPO8mlUMqyi+v6TbZcdSU=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"6b2971bff495c926e5e3b106ed78abd0020b1b48"</string>
+			<string>cdhash H"d2ae7c9622cf3bc9a550cab28bebfa4db65c7525"</string>
 		</dict>
 		<key>MacOS/HP Smart Tank Utility</key>
 		<dict>

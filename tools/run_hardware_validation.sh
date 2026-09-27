@@ -15,6 +15,27 @@ set -Eeuo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
+# Build reproducible: allow CI/operators to select an artifact directory, while
+# retaining compatibility with the historical audit layout.
+if [[ -n "${HP_BUILD_DIR:-}" ]]; then
+    BUILD_DIR="${HP_BUILD_DIR}"
+else
+    BUILD_DIR=""
+    for candidate in \
+        "${ROOT_DIR}/research/builds/audit-clean/night-20260904" \
+        "${ROOT_DIR}/research/builds/antigravity-offline-audit"; do
+        if [[ -x "${candidate}/rastertopcl3gui" && -x "${candidate}/smarttank" ]]; then
+            BUILD_DIR="${candidate}"
+            break
+        fi
+    done
+fi
+
+if [[ -z "${BUILD_DIR}" ]]; then
+    echo "ERROR: no se encontró un directorio de build válido; defina HP_BUILD_DIR." >&2
+    exit 1
+fi
+
 # Constantes de Hardware
 TARGET_VID="03f0"
 TARGET_PID="2b54"
@@ -369,10 +390,10 @@ generate_manifest() {
 
         echo "--- Hashes de Binarios Auditados (SHA-256) ---"
         local bins=(
-            "${ROOT_DIR}/research/builds/antigravity-offline-audit/rastertopcl3gui"
-            "${ROOT_DIR}/research/builds/antigravity-offline-audit/smarttank"
-            "${ROOT_DIR}/research/builds/antigravity-offline-audit/hp_scan"
-            "${ROOT_DIR}/research/builds/antigravity-offline-audit/hp-smart-tank-tool"
+            "${BUILD_DIR}/rastertopcl3gui"
+            "${BUILD_DIR}/smarttank"
+            "${BUILD_DIR}/hp_scan"
+            "${BUILD_DIR}/hp-smart-tank-tool"
         )
         for b in "${bins[@]}"; do
             if [[ -f "${b}" ]]; then
@@ -539,10 +560,10 @@ action_environment() {
 
 action_binaries() {
     local bins=(
-        "${ROOT_DIR}/research/builds/antigravity-offline-audit/rastertopcl3gui"
-        "${ROOT_DIR}/research/builds/antigravity-offline-audit/smarttank"
-        "${ROOT_DIR}/research/builds/antigravity-offline-audit/hp_scan"
-        "${ROOT_DIR}/research/builds/antigravity-offline-audit/hp-smart-tank-tool"
+        "${BUILD_DIR}/rastertopcl3gui"
+        "${BUILD_DIR}/smarttank"
+        "${BUILD_DIR}/hp_scan"
+        "${BUILD_DIR}/hp-smart-tank-tool"
     )
     for b in "${bins[@]}"; do
         if [[ ! -x "${b}" ]]; then
@@ -582,7 +603,7 @@ action_usb_probe() {
         require_real_device || return $?
 
         echo "Dispositivo detectado. Extrayendo inventario de descriptores..."
-        "${ROOT_DIR}/research/builds/antigravity-offline-audit/usb-descriptor-inventory"
+        "${BUILD_DIR}/usb-descriptor-inventory"
     } > "${SESSION_DIR}/usb.txt"
     cat "${SESSION_DIR}/usb.txt"
 }
@@ -594,7 +615,7 @@ action_cups_probe() {
         lpstat -s 2>&1 || true
 
         echo "=== DESCUBRIMIENTO DE BACKEND SMARTECT ==="
-        local backend="${ROOT_DIR}/research/builds/antigravity-offline-audit/smarttank"
+        local backend="${BUILD_DIR}/smarttank"
         if [[ -x "${backend}" ]]; then
             # Invocar backend sin argumentos para probar registro CUPS
             "${backend}" 2>&1 || true
@@ -628,7 +649,7 @@ print(json.dumps({'status': 'Ready', 'supplies': {'K': 95, 'C': 85, 'M': 90, 'Y'
 
     require_real_device || return $?
 
-    local tool="${ROOT_DIR}/research/builds/antigravity-offline-audit/hp-smart-tank-tool"
+    local tool="${BUILD_DIR}/hp-smart-tank-tool"
     echo "Consultando estado general (LEDM)..."
     "${tool}" status > "${out_dir}/status.txt"
     "${tool}" json-status > "${out_dir}/status.json" 2>/dev/null || true
@@ -656,7 +677,7 @@ action_print_pipeline() {
     /usr/sbin/cupsfilter -p "${ppd}" -m application/vnd.cups-raster "${pdf_file}" > "${raster_file}" 2>/dev/null
 
     echo "3. Convirtiendo CUPS Raster a PCL3GUI Modo 10 con rastertopcl3gui..."
-    local filter="${ROOT_DIR}/research/builds/antigravity-offline-audit/rastertopcl3gui"
+    local filter="${BUILD_DIR}/rastertopcl3gui"
     "${filter}" 1 "Operator" "Smoke Test" 1 "" "${raster_file}" > "${pcl_file}" 2>"${SESSION_DIR}/logs/filter_stderr.log"
 
     # Registrar integridad del stream antes del backend
@@ -715,7 +736,7 @@ action_print_pipeline() {
     require_real_device || return $?
 
     echo "Transmitiendo stream al backend smarttank (Interfaz 1: 07/01/02)..."
-    local backend="${ROOT_DIR}/research/builds/antigravity-offline-audit/smarttank"
+    local backend="${BUILD_DIR}/smarttank"
     "${backend}" 1 "Operator" "Smoke Test" 1 "" "${pcl_file}"
 }
 
@@ -760,7 +781,7 @@ action_scan_pipeline() {
     require_real_device || return $?
 
     echo "Iniciando captura con hp_scan (Interfaz 0: ff/cc/00)..."
-    local scanner="${ROOT_DIR}/research/builds/antigravity-offline-audit/hp_scan"
+    local scanner="${BUILD_DIR}/hp_scan"
     "${scanner}" --resolution 150 --mode Color --output "${img_out}"
 
     if [[ ! -s "${img_out}" ]]; then
@@ -776,7 +797,7 @@ action_fault_tests() {
     require_operation_allowed || return $?
     echo "=== PRUEBAS NEGATIVAS Y RESILIENCIA DE ARNES (OFFLINE) ==="
     echo "1. Verificando rechazo de archivos corruptos en rastertopcl3gui..."
-    local filter="${ROOT_DIR}/research/builds/antigravity-offline-audit/rastertopcl3gui"
+    local filter="${BUILD_DIR}/rastertopcl3gui"
     local corrupted_file
     corrupted_file="$(mktemp "${TMPDIR:-/tmp}/corrupt_raster.XXXXXX")"
     TEMP_FILES+=("${corrupted_file}")

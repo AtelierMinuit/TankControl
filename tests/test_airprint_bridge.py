@@ -6,6 +6,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 import shutil
+import sys
 import subprocess
 import tempfile
 import unittest
@@ -15,6 +16,19 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class AirPrintBridgeTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.fixture_dir = tempfile.TemporaryDirectory(prefix="hp-ipp-fixtures-")
+        subprocess.run(
+            [sys.executable, str(ROOT / "tools" / "generate-pdf-corpus.py"), self.fixture_dir.name],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        self.sample = Path(self.fixture_dir.name) / "01-white.pdf"
+
+    def tearDown(self) -> None:
+        self.fixture_dir.cleanup()
+
     def test_required_macos_components_exist(self) -> None:
         self.assertTrue(Path("/usr/bin/ippeveprinter").is_file())
         self.assertTrue(Path("/usr/libexec/cups/command/ippeveps").is_file())
@@ -29,9 +43,8 @@ class AirPrintBridgeTests(unittest.TestCase):
         self.assertNotIn("hp_escl_bridge.py", source)
 
     def test_submit_rejects_unknown_format(self) -> None:
-        sample = ROOT / "research" / "corpus" / "pdf" / "01-white.pdf"
         result = subprocess.run(
-            [str(ROOT / "tools" / "hp_ipp_submit.sh"), str(sample)],
+            [str(ROOT / "tools" / "hp_ipp_submit.sh"), str(self.sample)],
             env={**os.environ, "CONTENT_TYPE": "application/octet-stream"},
             capture_output=True,
             text=True,
@@ -40,7 +53,6 @@ class AirPrintBridgeTests(unittest.TestCase):
         self.assertIn("formato no soportado", result.stderr)
 
     def test_pdf_converts_without_printing(self) -> None:
-        sample = ROOT / "research" / "corpus" / "pdf" / "01-white.pdf"
         with tempfile.TemporaryDirectory(prefix="hp-ipp-output-") as output:
             env = {
                 **os.environ,
@@ -52,7 +64,7 @@ class AirPrintBridgeTests(unittest.TestCase):
                 "IPP_JOB_NAME": "Acceptance test",
             }
             result = subprocess.run(
-                [str(ROOT / "tools" / "hp_ipp_submit.sh"), str(sample)],
+                [str(ROOT / "tools" / "hp_ipp_submit.sh"), str(self.sample)],
                 env=env,
                 capture_output=True,
                 text=True,

@@ -369,6 +369,7 @@ class ESCLBridge:
         candidates = [
             os.environ.get("HP_SCAN_BIN"),
             "/usr/local/bin/hp_scan",
+            str(Path(__file__).resolve().parent.parent / "research/builds/audit-clean/night-20260904/hp_scan"),
             str(Path(__file__).resolve().parent.parent / "research/builds/antigravity-offline-audit/hp_scan"),
             str(Path(__file__).resolve().parent / "hp_scan")
         ]
