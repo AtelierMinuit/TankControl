@@ -99,6 +99,8 @@ public struct InkSaverCenterView: View {
                                 }
                                 .buttonStyle(.plain)
                                 .help("\(level.description) Reducción estimada: \(level.estimatedCoverageReduction).")
+                                .accessibilityLabel("Nivel InkSaver: \(level.friendlyLabel)")
+                                .accessibilityHint(level.description)
                             }
                         }
                     }
@@ -124,6 +126,8 @@ public struct InkSaverCenterView: View {
                             in: 0...75,
                             step: 5
                         )
+                        .accessibilityLabel("Porcentaje de ahorro de tinta")
+                        .accessibilityValue("\(inkSaverService.savingsPercent) por ciento")
                         
                         HStack {
                             Text("Normal").font(.caption).foregroundColor(.secondary)
@@ -216,6 +220,8 @@ public struct VisualComparatorView: View {
                             sliderPosition = max(0.05, min(0.95, value.location.x / width))
                         }
                     )
+                    .accessibilityLabel("Comparador visual antes y después")
+                    .accessibilityHint("Arrastra para comparar el renderizado con y sin InkSaver")
             }
         }
         .cornerRadius(8)

@@ -61,6 +61,8 @@ public struct PresetChipRow: View {
                     }
                     .buttonStyle(.plain)
                     .help(preset.subtitle)
+                    .accessibilityLabel(preset.title)
+                    .accessibilityHint(preset.subtitle)
                 }
             }
         }

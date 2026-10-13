@@ -84,7 +84,7 @@ public struct ScannerView: View {
                     },
                     PresetChipRow.Preset(
                         id: "archive",
-                        icon: "archivebox.fill",
+                        icon: "internaldrive.fill",
                         title: "Archivo",
                         subtitle: "PDF · A4 · 600 DPI · OCR"
                     ) {
