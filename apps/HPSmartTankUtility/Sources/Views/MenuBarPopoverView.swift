@@ -59,6 +59,7 @@ public struct MenuBarPopoverView: View {
                 }
                 .buttonStyle(.plain)
                 .help("Abrir Utilidad Completa")
+                .accessibilityLabel("Abrir utilidad completa")
             }
             .padding(.bottom, 2)
 
@@ -231,5 +232,7 @@ public struct MenuBarPopoverView: View {
                 .cornerRadius(4)
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("Ahorro de tinta \(percent) por ciento")
+        .accessibilityValue(isSelected ? "Seleccionado" : "No seleccionado")
     }
 }
