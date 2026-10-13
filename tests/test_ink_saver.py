@@ -16,6 +16,8 @@ from pathlib import Path
 import subprocess
 import unittest
 
+from tests._env import CUPSTESTPPD_AVAILABLE, NATIVE_TOOL
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 PPD_PATH = PROJECT_ROOT / "research" / "builds" / "hp-smart_tank_500_series_mac.ppd"
 AUDIT_BUILD = Path(os.environ.get("HP_AUDIT_BUILD_DIR", str(PROJECT_ROOT / "research" / "builds" / "audit-clean" / "night-20260904")))
@@ -25,6 +27,7 @@ TOOL_PATH = AUDIT_BUILD / "hp-smart-tank-tool"
 SAMPLE_RASTER = PROJECT_ROOT / "scratch" / "05-black-square.rgb.raster"
 
 
+@unittest.skipUnless(CUPSTESTPPD_AVAILABLE, "requiere cupstestppd")
 class TestInkSaverPPD(unittest.TestCase):
     """Verifica que el archivo PPD exponga los controles InkSaver y pase cupstestppd."""
 
@@ -163,6 +166,7 @@ class TestInkSaverRIPEngine(unittest.TestCase):
         self.assertIn(b"\x1b*o2M", proc_normal.stdout)
 
 
+@unittest.skipUnless(NATIVE_TOOL, "requiere binario nativo hp-smart-tank-tool ejecutable")
 class TestAccountingAndSavings(unittest.TestCase):
     """Verifica el registro contable y financiero de ahorro de tinta."""
 

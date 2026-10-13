@@ -10,6 +10,10 @@ CONVERTER="/usr/libexec/cups/command/ippeveps"
 LP_BIN="/usr/bin/lp"
 MAX_JOB_BYTES=$((1024 * 1024 * 1024))
 
+# Tamaño de archivo portable (BSD stat -f / GNU stat -c)
+file_size() { if [ "$(uname)" = "Darwin" ]; then stat -f '%z' "$1"; else stat -c '%s' "$1"; fi; }
+file_owner() { if [ "$(uname)" = "Darwin" ]; then stat -f '%u' "$1"; else stat -c '%u' "$1"; fi; }
+
 if [[ ! "${QUEUE_NAME}" =~ ^[A-Za-z0-9_.-]{1,127}$ ]]; then
     echo "ERROR: nombre de cola no válido" >&2
     exit 2
@@ -26,7 +30,7 @@ if [[ ! -f "${INPUT_FILE}" || -L "${INPUT_FILE}" ]]; then
     exit 2
 fi
 
-JOB_BYTES="$(stat -f '%z' "${INPUT_FILE}")"
+JOB_BYTES="$(file_size "${INPUT_FILE}")"
 if [[ ! "${JOB_BYTES}" =~ ^[0-9]+$ ]] || (( JOB_BYTES < 1 || JOB_BYTES > MAX_JOB_BYTES )); then
     echo "ERROR: tamaño de trabajo fuera de rango" >&2
     exit 2

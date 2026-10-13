@@ -9,6 +9,8 @@ Verifica:
 """
 
 import unittest
+
+from tests._env import NATIVE_TOOL
 import os
 import subprocess
 import json
@@ -24,6 +26,7 @@ import sys
 sys.path.insert(0, os.path.join(BASE_DIR, "tools"))
 from virtual_smart_tank import VirtualEWSHandler
 
+@unittest.skipUnless(NATIVE_TOOL, "requiere binario nativo hp-smart-tank-tool ejecutable")
 class TestOdometerAndMaintenance(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

@@ -15,6 +15,8 @@ import struct
 import subprocess
 import unittest
 
+from tests._env import NATIVE_FILTER, NATIVE_TOOL
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 AUDIT_BUILD = Path(os.environ.get("HP_AUDIT_BUILD_DIR", str(PROJECT_ROOT / "research" / "builds" / "audit-clean" / "night-20260904")))
 FILTER_PATH = AUDIT_BUILD / "rastertopcl3gui"
@@ -69,6 +71,7 @@ def create_minimal_cups_raster(width: int, height: int, colorspace: int = 6, bpp
     return sync_word + bytes(header) + bytes(pixel_data)
 
 
+@unittest.skipUnless(NATIVE_FILTER, "requiere binario nativo rastertopcl3gui ejecutable")
 class TestPhase1ResilienceAndCMYK(unittest.TestCase):
     """Verifica mejoras de robustez en rastertopcl3gui y cups_backend_smarttank."""
 
@@ -107,6 +110,7 @@ class TestPhase1ResilienceAndCMYK(unittest.TestCase):
         self.assertEqual(proc.returncode, 0)
 
 
+@unittest.skipUnless(NATIVE_TOOL, "requiere binario nativo hp-smart-tank-tool ejecutable")
 class TestWorkshopCommands(unittest.TestCase):
     """Verifica los nuevos comandos de taller y servicio de CISS (prime-tubes, waste-ink, head-health)."""
 

@@ -9,8 +9,11 @@ Valida la integridad del bundle, Info.plist, iconos, firmas ad-hoc y seguridad d
 import json
 import os
 import plistlib
+import struct
 import subprocess
 import unittest
+
+from tests._env import IS_MACOS
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 BUILD_DIR = os.environ.get("HP_AUDIT_BUILD_DIR", os.path.join(REPO_ROOT, "research/builds/audit-clean/night-20260904"))
@@ -20,6 +23,7 @@ SOURCES_DIR = os.path.join(REPO_ROOT, "apps/HPSmartTankUtility/Sources")
 BRAND_DIR = os.path.join(REPO_ROOT, "Brand")
 
 
+@unittest.skipUnless(IS_MACOS, "requiere bundle .app de macOS y codesign")
 class TestAppBundleStructure(unittest.TestCase):
     """Verifica que el bundle de macOS cumpla con los estándares Apple Silicon."""
 
@@ -81,9 +85,11 @@ class TestBrandAndIconography(unittest.TestCase):
         self.assertTrue(os.path.isfile(master_png), f"Falta icono maestro: {master_png}")
 
         # Comprobar dimensiones con sips
-        out = subprocess.check_output(["sips", "-g", "pixelWidth", "-g", "pixelHeight", master_png], text=True)
-        self.assertIn("pixelWidth: 2048", out)
-        self.assertIn("pixelHeight: 2048", out)
+        with open(master_png, "rb") as fh:
+            header = fh.read(24)
+        width, height = struct.unpack(">II", header[16:24])
+        self.assertEqual(width, 1024, "El icono maestro debe medir 1024 px de ancho")
+        self.assertEqual(height, 1024, "El icono maestro debe medir 1024 px de alto")
 
     def test_appiconset_contents_json(self):
         json_path = os.path.join(BRAND_DIR, "AppIcon/AppIcon.appiconset/Contents.json")

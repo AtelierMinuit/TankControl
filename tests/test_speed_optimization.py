@@ -17,6 +17,8 @@ import subprocess
 import tempfile
 import unittest
 
+from tests._env import NATIVE_FILTER
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 FILTER_PATH = PROJECT_ROOT / "tools" / "rastertopcl3gui"
 
@@ -50,6 +52,7 @@ def create_mock_raster_with_pattern(width_pt: int, height_pt: int, rows_pattern:
     return magic + bytes(hdr) + bytes(pixel_data)
 
 
+@unittest.skipUnless(NATIVE_FILTER, "requiere binario nativo rastertopcl3gui ejecutable")
 class TestSpeedOptimization(unittest.TestCase):
     """Verifica el salto de scanlines y la optimización de rendimiento en el driver C."""
 

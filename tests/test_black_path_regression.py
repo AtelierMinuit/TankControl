@@ -26,6 +26,8 @@ import sys
 import tempfile
 import unittest
 
+from tests._env import NATIVE_FILTER
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 BUILD_DIR = Path(os.environ["HP_BUILD_DIR"]) if os.environ.get("HP_BUILD_DIR") else PROJECT_ROOT / "research" / "builds" / "audit-clean" / "night-20260904"
 FILTER_PATH = BUILD_DIR / "rastertopcl3gui"
@@ -81,6 +83,7 @@ def build_raster(
     return sync_word + bytes(header) + b"".join(pixel_rows)
 
 
+@unittest.skipUnless(NATIVE_FILTER, "requiere binario nativo rastertopcl3gui ejecutable")
 class TestBlackPathRegression(unittest.TestCase):
     """Regresión del canal negro y fidelidad tonal en el RIP rastertopcl3gui."""
 

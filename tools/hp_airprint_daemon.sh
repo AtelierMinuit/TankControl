@@ -62,7 +62,9 @@ if [[ -L "${SPOOL_ROOT}" ]]; then
     exit 1
 fi
 mkdir -p "${SPOOL_ROOT}"
-[[ "$(stat -f '%u' "${SPOOL_ROOT}")" == "${UID}" ]] || { echo "ERROR: spool AirPrint ajeno" >&2; exit 1; }
+SPOOL_OWNER="$(stat -f '%u' "${SPOOL_ROOT}" 2>/dev/null || true)"
+if [ -z "${SPOOL_OWNER}" ]; then SPOOL_OWNER="$(stat -c '%u' "${SPOOL_ROOT}")"; fi
+[[ "${SPOOL_OWNER}" == "${UID}" ]] || { echo "ERROR: spool AirPrint ajeno" >&2; exit 1; }
 chmod 700 "${SPOOL_ROOT}"
 
 export HP_SMART_TANK_QUEUE="${QUEUE_NAME}"

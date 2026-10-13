@@ -13,6 +13,8 @@ import sys
 import tempfile
 import unittest
 
+from tests._env import NATIVE_FILTER
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -52,6 +54,7 @@ def make_cups_raster(width: int, height: int, rows: list[bytes]) -> bytes:
     return sync_word + bytes(header) + b"".join(rows)
 
 
+@unittest.skipUnless(NATIVE_FILTER, "requiere binario nativo rastertopcl3gui ejecutable")
 class Pcl3GuiMetamorphicTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:

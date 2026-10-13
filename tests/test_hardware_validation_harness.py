@@ -11,6 +11,8 @@ import os
 import subprocess
 import tempfile
 import unittest
+
+from tests._env import IS_MACOS
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -18,6 +20,7 @@ HARNESS_BIN = REPO_ROOT / "tools" / "run_hardware_validation.sh"
 SMOKE_GEN = REPO_ROOT / "tools" / "generate_smoke_test_page.py"
 
 
+@unittest.skipUnless(IS_MACOS, "requiere entorno macOS (sips, binarios nativos)")
 class TestHardwareValidationHarness(unittest.TestCase):
     def setUp(self):
         self.assertTrue(HARNESS_BIN.exists(), f"Harness no encontrado en {HARNESS_BIN}")

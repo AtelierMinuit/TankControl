@@ -9,6 +9,8 @@ Verifica:
 """
 
 import unittest
+
+from tests._env import NATIVE_BACKEND
 import os
 import subprocess
 
@@ -16,6 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AUDIT_BUILD = os.environ.get("HP_AUDIT_BUILD_DIR", os.path.join(BASE_DIR, "research", "builds", "audit-clean", "night-20260904"))
 BACKEND_PATH = os.path.join(AUDIT_BUILD, "smarttank")
 
+@unittest.skipUnless(NATIVE_BACKEND, "requiere binario nativo smarttank ejecutable")
 class TestSmartTankBackend(unittest.TestCase):
     def setUp(self):
         self.assertTrue(os.path.exists(BACKEND_PATH), f"No se encontró el binario: {BACKEND_PATH}")

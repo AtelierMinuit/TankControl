@@ -13,6 +13,8 @@ from pathlib import Path
 import subprocess
 import unittest
 
+from tests._env import CUPSTESTPPD_AVAILABLE, NATIVE_BACKEND, NATIVE_FILTER, NATIVE_TOOL
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 PPD_PATH = PROJECT_ROOT / "research" / "builds" / "hp-smart_tank_500_series_mac.ppd"
 AUDIT_BUILD = Path(os.environ.get("HP_AUDIT_BUILD_DIR", str(PROJECT_ROOT / "research" / "builds" / "audit-clean" / "night-20260904")))
@@ -22,6 +24,7 @@ TOOL_PATH = AUDIT_BUILD / "hp-smart-tank-tool"
 SAMPLE_RASTER = PROJECT_ROOT / "scratch" / "05-black-square.rgb.raster"
 
 
+@unittest.skipUnless(CUPSTESTPPD_AVAILABLE, "requiere cupstestppd")
 class TestProPPDFeatures(unittest.TestCase):
     """Verifica que el PPD no vuelva a exponer el banner no demostrado."""
 
@@ -67,6 +70,7 @@ class TestProPPDFeatures(unittest.TestCase):
         self.assertTrue("PASA" in res.stdout or "PASS" in res.stdout)
 
 
+@unittest.skipUnless(NATIVE_FILTER, "requiere binario nativo rastertopcl3gui ejecutable")
 class TestProRasterFilter(unittest.TestCase):
     """Verifica que el motor rastertopcl3gui procese las opciones profesionales."""
 
@@ -92,6 +96,7 @@ class TestProRasterFilter(unittest.TestCase):
         self.assertIn("MarcaAgua: BORRADOR", stderr)
 
 
+@unittest.skipUnless(NATIVE_BACKEND, "requiere binario nativo smarttank ejecutable")
 class TestBackendAccounting(unittest.TestCase):
     """Verifica que el backend registre la contabilidad financiera y consumo."""
 
@@ -114,6 +119,7 @@ class TestBackendAccounting(unittest.TestCase):
         self.assertGreater(data["cost_usd"], 0)
 
 
+@unittest.skipUnless(NATIVE_TOOL, "requiere binario nativo hp-smart-tank-tool ejecutable")
 class TestCLIDiagnostics(unittest.TestCase):
     """Verifica los nuevos comandos de terminal accounting y test-pattern."""
 
