@@ -29,6 +29,45 @@ public struct PrintCenterView: View {
 
                 Divider()
 
+                // MARK: - Presets de Impresión Frecuentes
+                PresetChipRow(header: "Tareas Frecuentes", presets: [
+                    PresetChipRow.Preset(
+                        id: "fastdraft",
+                        icon: "bolt.fill",
+                        title: "Borrador Rápido",
+                        subtitle: "300 DPI · Ahorro 70%"
+                    ) {
+                        inkSaverService.setFastDraftMode(enabled: true)
+                    },
+                    PresetChipRow.Preset(
+                        id: "normal",
+                        icon: "doc.text.fill",
+                        title: "Calidad Normal",
+                        subtitle: "600 DPI · Uso diario"
+                    ) {
+                        inkSaverService.setFastDraftMode(enabled: false)
+                    },
+                    PresetChipRow.Preset(
+                        id: "testpage",
+                        icon: "paperplane.fill",
+                        title: "Página de Prueba",
+                        subtitle: "Verificar inyectores"
+                    ) {
+                        triggerTestPage()
+                    },
+                    PresetChipRow.Preset(
+                        id: "duplex",
+                        icon: "doc.on.doc.fill",
+                        title: "Dúplex Manual",
+                        subtitle: "PDF a doble cara"
+                    ) {
+                        showingManualDuplex = true
+                    }
+                ])
+                Text("Accesos rápidos a las operaciones habituales. La configuración técnica completa sigue abajo.")
+                    .font(DesignTokens.Fonts.caption)
+                    .foregroundColor(.secondary)
+
                 // MARK: - Tarjeta de Cola CUPS Activa
                 VStack(alignment: .leading, spacing: DesignTokens.Spacing.sm) {
                     Text("Cola del Sistema macOS")

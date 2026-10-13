@@ -44,6 +44,61 @@ public struct ScannerView: View {
                     .cornerRadius(DesignTokens.Radii.small)
                 }
 
+                // MARK: - Presets de un clic (tareas comunes)
+                PresetChipRow(header: "Escaneos Frecuentes", presets: [
+                    PresetChipRow.Preset(
+                        id: "doc",
+                        icon: "doc.text.fill",
+                        title: "Documento",
+                        subtitle: "PDF · A4 · 300 DPI · OCR"
+                    ) {
+                        service.selectedColorMode = .color
+                        service.selectedResolution = .dpi300
+                        service.selectedPaperSize = .a4
+                        service.selectedFormat = .pdf
+                        service.enableOCR = true
+                    },
+                    PresetChipRow.Preset(
+                        id: "photo",
+                        icon: "photo.fill",
+                        title: "Fotografía",
+                        subtitle: "JPEG · 10×15 cm · 600 DPI"
+                    ) {
+                        service.selectedColorMode = .color
+                        service.selectedResolution = .dpi600
+                        service.selectedPaperSize = .photo
+                        service.selectedFormat = .jpeg
+                        service.enableOCR = false
+                    },
+                    PresetChipRow.Preset(
+                        id: "form",
+                        icon: "text.viewfinder",
+                        subtitle: "PNG · A4 · 300 DPI · B/N",
+                        title: "Formulario B/N"
+                    ) {
+                        service.selectedColorMode = .monochrome
+                        service.selectedResolution = .dpi300
+                        service.selectedPaperSize = .a4
+                        service.selectedFormat = .png
+                        service.enableOCR = false
+                    },
+                    PresetChipRow.Preset(
+                        id: "archive",
+                        icon: "archivebox.fill",
+                        title: "Archivo",
+                        subtitle: "PDF · A4 · 600 DPI · OCR"
+                    ) {
+                        service.selectedColorMode = .grayscale
+                        service.selectedResolution = .dpi600
+                        service.selectedPaperSize = .a4
+                        service.selectedFormat = .pdf
+                        service.enableOCR = true
+                    }
+                ])
+                Text("Un clic ajusta modo, resolución y formato. Los ajustes finos de abajo siguen disponibles para usuarios avanzados.")
+                    .font(DesignTokens.Fonts.caption)
+                    .foregroundColor(.secondary)
+
                 // MARK: - Layout en dos columnas
                 HStack(alignment: .top, spacing: DesignTokens.Spacing.md) {
                     // Columna 1: Panel de Ajustes Compacto

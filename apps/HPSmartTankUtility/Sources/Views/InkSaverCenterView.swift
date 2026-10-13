@@ -63,6 +63,46 @@ public struct InkSaverCenterView: View {
                     VisualComparatorView(sliderPosition: $sliderPos, savingsPercent: inkSaverService.savingsPercent)
                         .frame(height: 140)
                     
+                    // Presets rápidos de nivel (1 clic, sin perder el slider fino)
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Niveles Rápidos")
+                            .font(DesignTokens.Fonts.sectionHeader)
+                        HStack(spacing: 8) {
+                            ForEach(InkSaverLevel.allCases, id: \.self) { level in
+                                Button(action: { inkSaverService.setLevel(level) }) {
+                                    VStack(spacing: 2) {
+                                        Text(level.friendlyLabel)
+                                            .font(DesignTokens.Fonts.bodyMedium)
+                                            .lineLimit(1)
+                                        Text(level.rawValue)
+                                            .font(DesignTokens.Fonts.caption)
+                                            .foregroundColor(.secondary)
+                                            .lineLimit(1)
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 6)
+                                    .background(
+                                        inkSaverService.activeLevel == level
+                                            ? Color.accentColor.opacity(0.15)
+                                            : DesignTokens.Colors.surfaceGrouped
+                                    )
+                                    .cornerRadius(DesignTokens.Radii.small)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: DesignTokens.Radii.small)
+                                            .stroke(
+                                                inkSaverService.activeLevel == level
+                                                    ? Color.accentColor.opacity(0.5)
+                                                    : DesignTokens.Colors.border,
+                                                lineWidth: 1
+                                            )
+                                    )
+                                }
+                                .buttonStyle(.plain)
+                                .help("\(level.description) Reducción estimada: \(level.estimatedCoverageReduction).")
+                            }
+                        }
+                    }
+
                     // Slider
                     VStack(spacing: 8) {
                         HStack {
