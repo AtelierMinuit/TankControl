@@ -73,8 +73,8 @@ public struct ScannerView: View {
                     PresetChipRow.Preset(
                         id: "form",
                         icon: "text.viewfinder",
-                        subtitle: "PNG · A4 · 300 DPI · B/N",
-                        title: "Formulario B/N"
+                        title: "Formulario B/N",
+                        subtitle: "PNG · A4 · 300 DPI · B/N"
                     ) {
                         service.selectedColorMode = .monochrome
                         service.selectedResolution = .dpi300
