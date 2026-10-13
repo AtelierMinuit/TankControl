@@ -52,7 +52,8 @@ public struct PrintCenterView: View {
                         id: "testpage",
                         icon: "paperplane.fill",
                         title: loc.t("preset_testpage"),
-                        subtitle: "Verificar inyectores"
+                        subtitle: "Verificar inyectores",
+                        isDisabled: !printer.connectionState.isConnected || printer.isBusy
                     ) {
                         triggerTestPage()
                     },

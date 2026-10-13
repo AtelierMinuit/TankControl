@@ -125,7 +125,10 @@ public struct ColorCalibrationView: View {
                                 }
                             }
                             .buttonStyle(.borderedProminent)
-                            .disabled(calibService.isProcessing)
+                            .disabled(calibService.isProcessing || !printer.connectionState.isConnected)
+                            .help(printer.connectionState.isConnected
+                                  ? "Inicia el escaneo espectral real de la carta impresa"
+                                  : "Requiere la impresora conectada por USB para el escaneo real")
 
                             Button(action: {
                                 calibService.runCalibration(mock: true) { result in
@@ -213,7 +216,7 @@ public struct ColorCalibrationView: View {
                     .font(.system(size: 11, weight: .bold))
                     .foregroundColor(isActive ? .primary : .secondary)
                 Text(subtitle)
-                    .font(.system(size: 9))
+                    .font(.system(size: 10))
                     .foregroundColor(.secondary)
             }
         }

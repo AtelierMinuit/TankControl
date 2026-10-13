@@ -194,7 +194,7 @@ public struct ScannerView: View {
                                         Text("Texto Buscable (OCR)")
                                             .font(DesignTokens.Fonts.bodyMedium)
                                         Text("Vision")
-                                            .font(.system(size: 9, weight: .bold))
+                                            .font(.system(size: 10, weight: .bold))
                                             .foregroundColor(.purple)
                                             .padding(.horizontal, 4)
                                             .padding(.vertical, 1)

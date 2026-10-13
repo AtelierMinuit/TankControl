@@ -10,13 +10,15 @@ public struct PresetChipRow: View {
         public let icon: String
         public let title: String
         public let subtitle: String
+        public var isDisabled: Bool = false
         public let action: () -> Void
 
-        public init(id: String, icon: String, title: String, subtitle: String, action: @escaping () -> Void) {
+        public init(id: String, icon: String, title: String, subtitle: String, isDisabled: Bool = false, action: @escaping () -> Void) {
             self.id = id
             self.icon = icon
             self.title = title
             self.subtitle = subtitle
+            self.isDisabled = isDisabled
             self.action = action
         }
     }
@@ -60,6 +62,8 @@ public struct PresetChipRow: View {
                         )
                     }
                     .buttonStyle(.plain)
+                    .disabled(preset.isDisabled)
+                    .opacity(preset.isDisabled ? 0.5 : 1)
                     .help(preset.subtitle)
                     .accessibilityLabel(preset.title)
                     .accessibilityHint(preset.subtitle)
