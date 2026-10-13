@@ -4,6 +4,7 @@ public struct PrintCenterView: View {
     @ObservedObject var printer: PrinterManager
     @StateObject private var service = PrinterService()
     @StateObject private var inkSaverService = InkSaverService()
+    @ObservedObject private var loc = LocalizationService.shared
     @State private var message = ""
     @State private var showingResult = false
     @State private var showingManualDuplex = false
@@ -30,11 +31,11 @@ public struct PrintCenterView: View {
                 Divider()
 
                 // MARK: - Presets de Impresión Frecuentes
-                PresetChipRow(header: "Tareas Frecuentes", presets: [
+                PresetChipRow(header: loc.t("presets_header_print"), presets: [
                     PresetChipRow.Preset(
                         id: "fastdraft",
                         icon: "bolt.fill",
-                        title: "Borrador Rápido",
+                        title: loc.t("preset_fastdraft"),
                         subtitle: "300 DPI · Ahorro 70%"
                     ) {
                         inkSaverService.setFastDraftMode(enabled: true)
@@ -42,7 +43,7 @@ public struct PrintCenterView: View {
                     PresetChipRow.Preset(
                         id: "normal",
                         icon: "doc.text.fill",
-                        title: "Calidad Normal",
+                        title: loc.t("preset_normal_quality"),
                         subtitle: "600 DPI · Uso diario"
                     ) {
                         inkSaverService.setFastDraftMode(enabled: false)
@@ -50,7 +51,7 @@ public struct PrintCenterView: View {
                     PresetChipRow.Preset(
                         id: "testpage",
                         icon: "paperplane.fill",
-                        title: "Página de Prueba",
+                        title: loc.t("preset_testpage"),
                         subtitle: "Verificar inyectores"
                     ) {
                         triggerTestPage()
@@ -58,13 +59,13 @@ public struct PrintCenterView: View {
                     PresetChipRow.Preset(
                         id: "duplex",
                         icon: "doc.on.doc.fill",
-                        title: "Dúplex Manual",
+                        title: loc.t("preset_duplex"),
                         subtitle: "PDF a doble cara"
                     ) {
                         showingManualDuplex = true
                     }
                 ])
-                Text("Accesos rápidos a las operaciones habituales. La configuración técnica completa sigue abajo.")
+                Text(loc.t("presets_print_hint"))
                     .font(DesignTokens.Fonts.caption)
                     .foregroundColor(.secondary)
 

@@ -3,6 +3,7 @@ import SwiftUI
 public struct InkSaverCenterView: View {
     @ObservedObject var printer: PrinterManager
     @StateObject private var inkSaverService = InkSaverService()
+    @ObservedObject private var loc = LocalizationService.shared
     @State private var sliderPos: CGFloat = 0.5
 
     @State private var showSuccessBanner: Bool = false
@@ -65,7 +66,7 @@ public struct InkSaverCenterView: View {
                     
                     // Presets rápidos de nivel (1 clic, sin perder el slider fino)
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Niveles Rápidos")
+                        Text(loc.t("presets_inksaver_header"))
                             .font(DesignTokens.Fonts.sectionHeader)
                         HStack(spacing: 8) {
                             ForEach(InkSaverLevel.allCases, id: \.self) { level in

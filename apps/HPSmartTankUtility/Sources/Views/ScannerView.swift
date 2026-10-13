@@ -3,6 +3,7 @@ import SwiftUI
 public struct ScannerView: View {
     @ObservedObject var printer: PrinterManager
     @StateObject private var service = ScannerService()
+    @ObservedObject private var loc = LocalizationService.shared
     @State private var preview: NSImage?
     @State private var errorMessage: String?
     @State private var successNotice: String?
@@ -45,11 +46,11 @@ public struct ScannerView: View {
                 }
 
                 // MARK: - Presets de un clic (tareas comunes)
-                PresetChipRow(header: "Escaneos Frecuentes", presets: [
+                PresetChipRow(header: loc.t("presets_header_scan"), presets: [
                     PresetChipRow.Preset(
                         id: "doc",
                         icon: "doc.text.fill",
-                        title: "Documento",
+                        title: loc.t("preset_doc"),
                         subtitle: "PDF · A4 · 300 DPI · OCR"
                     ) {
                         service.selectedColorMode = .color
@@ -61,7 +62,7 @@ public struct ScannerView: View {
                     PresetChipRow.Preset(
                         id: "photo",
                         icon: "photo.fill",
-                        title: "Fotografía",
+                        title: loc.t("preset_photo"),
                         subtitle: "JPEG · 10×15 cm · 600 DPI"
                     ) {
                         service.selectedColorMode = .color
@@ -73,7 +74,7 @@ public struct ScannerView: View {
                     PresetChipRow.Preset(
                         id: "form",
                         icon: "text.viewfinder",
-                        title: "Formulario B/N",
+                        title: loc.t("preset_form"),
                         subtitle: "PNG · A4 · 300 DPI · B/N"
                     ) {
                         service.selectedColorMode = .monochrome
@@ -85,7 +86,7 @@ public struct ScannerView: View {
                     PresetChipRow.Preset(
                         id: "archive",
                         icon: "internaldrive.fill",
-                        title: "Archivo",
+                        title: loc.t("preset_archive"),
                         subtitle: "PDF · A4 · 600 DPI · OCR"
                     ) {
                         service.selectedColorMode = .grayscale
@@ -95,7 +96,7 @@ public struct ScannerView: View {
                         service.enableOCR = true
                     }
                 ])
-                Text("Un clic ajusta modo, resolución y formato. Los ajustes finos de abajo siguen disponibles para usuarios avanzados.")
+                Text(loc.t("presets_scan_hint"))
                     .font(DesignTokens.Fonts.caption)
                     .foregroundColor(.secondary)
 
