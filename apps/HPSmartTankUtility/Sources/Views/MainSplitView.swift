@@ -167,7 +167,15 @@ public struct MainSplitView: View {
             ToolbarItem(placement: .automatic) {
                 Button(action: { printer.refresh() }) {
                     Image(systemName: "arrow.clockwise")
+                        .rotationEffect(.degrees(printer.isBusy ? 360 : 0))
+                        .animation(
+                            printer.isBusy
+                                ? Animation.linear(duration: 1).repeatForever(autoreverses: false)
+                                : .default,
+                            value: printer.isBusy
+                        )
                 }
+                .disabled(printer.isBusy)
                 .help("Actualizar estado de hardware")
                 .accessibilityLabel("Actualizar estado")
                 .keyboardShortcut("r", modifiers: .command)
