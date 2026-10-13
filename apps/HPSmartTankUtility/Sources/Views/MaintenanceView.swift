@@ -154,9 +154,9 @@ public struct MaintenanceView: View {
                         HStack(spacing: DesignTokens.Spacing.sm) {
                             Image(systemName: "sparkles")
                                 .font(.system(size: 16))
-                                .foregroundColor(Color(red: 0.0, green: 0.64, blue: 0.88))
+                                .foregroundColor(DesignTokens.Colors.inkCyan)
                                 .frame(width: 32, height: 32)
-                                .background(Color(red: 0.0, green: 0.64, blue: 0.88).opacity(0.12))
+                                .background(DesignTokens.Colors.inkCyan.opacity(0.12))
                                 .cornerRadius(DesignTokens.Radii.small)
 
                             VStack(alignment: .leading, spacing: 2) {
