@@ -24,6 +24,20 @@ public struct MaintenanceView: View {
                 }
 
                 Divider()
+                // Indicador de operación mecánica en curso
+                if printer.isBusy {
+                    HStack(spacing: DesignTokens.Spacing.sm) {
+                        ProgressView()
+                            .controlSize(.small)
+                        Text("Operación mecánica en curso. No desconectes el cable USB ni apagues la impresora.")
+                            .font(DesignTokens.Fonts.callout)
+                            .foregroundColor(.primary)
+                    }
+                    .padding(DesignTokens.Spacing.sm)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color.blue.opacity(0.1))
+                    .cornerRadius(DesignTokens.Radii.small)
+                }
 
                 if !printer.connectionState.isConnected {
                     HStack(spacing: DesignTokens.Spacing.sm) {
