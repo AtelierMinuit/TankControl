@@ -4,6 +4,7 @@ public struct PrintCenterView: View {
     @ObservedObject var printer: PrinterManager
     @StateObject private var service = PrinterService()
     @StateObject private var inkSaverService = InkSaverService()
+    @ObservedObject private var loc = LocalizationService.shared
     @State private var message = ""
     @State private var showingResult = false
     @State private var showingManualDuplex = false
@@ -28,6 +29,46 @@ public struct PrintCenterView: View {
                 }
 
                 Divider()
+
+                // MARK: - Presets de Impresión Frecuentes
+                PresetChipRow(header: loc.t("presets_header_print"), presets: [
+                    PresetChipRow.Preset(
+                        id: "fastdraft",
+                        icon: "bolt.fill",
+                        title: loc.t("preset_fastdraft"),
+                        subtitle: "300 DPI · Ahorro 70%"
+                    ) {
+                        inkSaverService.setFastDraftMode(enabled: true)
+                    },
+                    PresetChipRow.Preset(
+                        id: "normal",
+                        icon: "doc.text.fill",
+                        title: loc.t("preset_normal_quality"),
+                        subtitle: "600 DPI · Uso diario"
+                    ) {
+                        inkSaverService.setFastDraftMode(enabled: false)
+                    },
+                    PresetChipRow.Preset(
+                        id: "testpage",
+                        icon: "paperplane.fill",
+                        title: loc.t("preset_testpage"),
+                        subtitle: "Verificar inyectores",
+                        isDisabled: !printer.connectionState.isConnected || printer.isBusy
+                    ) {
+                        triggerTestPage()
+                    },
+                    PresetChipRow.Preset(
+                        id: "duplex",
+                        icon: "doc.on.doc.fill",
+                        title: loc.t("preset_duplex"),
+                        subtitle: "PDF a doble cara"
+                    ) {
+                        showingManualDuplex = true
+                    }
+                ])
+                Text(loc.t("presets_print_hint"))
+                    .font(DesignTokens.Fonts.caption)
+                    .foregroundColor(.secondary)
 
                 // MARK: - Tarjeta de Cola CUPS Activa
                 VStack(alignment: .leading, spacing: DesignTokens.Spacing.sm) {

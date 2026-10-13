@@ -24,6 +24,8 @@ import subprocess
 import tempfile
 import unittest
 
+from tests._env import CUPSTESTPPD_AVAILABLE, NATIVE_FILTER
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 PPD_PATH = PROJECT_ROOT / "research" / "builds" / "hp-smart_tank_500_series_mac.ppd"
 FILTER_PATH = PROJECT_ROOT / "tools" / "rastertopcl3gui"
@@ -66,6 +68,7 @@ def create_mock_cups_raster(width_pt: int, height_pt: int, dpi: int = 300, cups_
     return magic + bytes(hdr) + body
 
 
+@unittest.skipUnless(CUPSTESTPPD_AVAILABLE, "requiere cupstestppd")
 class TestPaperFormatsPPD(unittest.TestCase):
     """Verifica que el PPD declare correctamente los formatos regionales y pase cupstestppd."""
 
@@ -100,6 +103,7 @@ class TestPaperFormatsPPD(unittest.TestCase):
         self.assertTrue("PASA" in res.stdout or "PASS" in res.stdout, f"cupstestppd no pasó:\n{res.stdout}")
 
 
+@unittest.skipUnless(NATIVE_FILTER, "requiere binario nativo rastertopcl3gui ejecutable")
 class TestRasterToPCL3GUIMediaID(unittest.TestCase):
     """Verifica que rastertopcl3gui asigne el ID de medio exacto para cada formato regional."""
 

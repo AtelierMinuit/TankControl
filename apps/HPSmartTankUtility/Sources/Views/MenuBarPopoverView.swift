@@ -59,6 +59,7 @@ public struct MenuBarPopoverView: View {
                 }
                 .buttonStyle(.plain)
                 .help("Abrir Utilidad Completa")
+                .accessibilityLabel("Abrir utilidad completa")
             }
             .padding(.bottom, 2)
 
@@ -72,15 +73,15 @@ public struct MenuBarPopoverView: View {
                         .foregroundColor(.secondary)
                     Spacer()
                     Text("HP GT51 / GT52 / GT53")
-                        .font(.system(size: 9))
+                        .font(.system(size: 10))
                         .foregroundColor(.secondary.opacity(0.8))
                 }
 
                 HStack(spacing: 8) {
-                    miniInkTank(code: "K", name: "Negro", color: Color(red: 0.15, green: 0.15, blue: 0.18), level: supplyLevel("K"))
-                    miniInkTank(code: "C", name: "Cian", color: Color(red: 0.0, green: 0.65, blue: 0.90), level: supplyLevel("C"))
-                    miniInkTank(code: "M", name: "Magenta", color: Color(red: 0.90, green: 0.10, blue: 0.55), level: supplyLevel("M"))
-                    miniInkTank(code: "Y", name: "Amarillo", color: Color(red: 0.95, green: 0.75, blue: 0.05), level: supplyLevel("Y"))
+                    miniInkTank(code: "K", name: "Negro", color: DesignTokens.Colors.inkBlackFill, level: supplyLevel("K"))
+                    miniInkTank(code: "C", name: "Cian", color: DesignTokens.Colors.inkCyan, level: supplyLevel("C"))
+                    miniInkTank(code: "M", name: "Magenta", color: DesignTokens.Colors.inkMagenta, level: supplyLevel("M"))
+                    miniInkTank(code: "Y", name: "Amarillo", color: DesignTokens.Colors.inkYellow, level: supplyLevel("Y"))
                 }
             }
 
@@ -120,7 +121,7 @@ public struct MenuBarPopoverView: View {
                     Text("Puente AirPrint")
                         .font(.system(size: 11, weight: .semibold))
                     Text(airPrint.isAdvertising ? "Activo para iPhone/iPad" : "Compartición inactiva")
-                        .font(.system(size: 9))
+                        .font(.system(size: 10))
                         .foregroundColor(.secondary)
                 }
                 Spacer()
@@ -199,7 +200,7 @@ public struct MenuBarPopoverView: View {
                     .frame(width: 44, height: max(4, CGFloat(level) * 0.48))
 
                 Text("\(level)%")
-                    .font(.system(size: 9, weight: .bold, design: .rounded))
+                    .font(.system(size: 10, weight: .bold, design: .rounded))
                     .foregroundColor(.white)
                     .shadow(color: .black.opacity(0.8), radius: 1.5, x: 0, y: 1)
                     .padding(.bottom, 2)
@@ -222,7 +223,7 @@ public struct MenuBarPopoverView: View {
             inkSaver.applyPresetToCUPS(percent: percent)
         }) {
             Text(title)
-                .font(.system(size: 9, weight: isSelected ? .bold : .regular))
+                .font(.system(size: 10, weight: isSelected ? .bold : .regular))
                 .padding(.horizontal, 4)
                 .padding(.vertical, 3)
                 .frame(maxWidth: .infinity)
@@ -231,5 +232,7 @@ public struct MenuBarPopoverView: View {
                 .cornerRadius(4)
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("Ahorro de tinta \(percent) por ciento")
+        .accessibilityValue(isSelected ? "Seleccionado" : "No seleccionado")
     }
 }

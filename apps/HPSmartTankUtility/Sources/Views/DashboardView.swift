@@ -80,9 +80,17 @@ public struct DashboardView: View {
 
                             Button(action: { printer.refresh() }) {
                                 Image(systemName: "arrow.clockwise")
+                                    .rotationEffect(.degrees(printer.isBusy ? 360 : 0))
+                                    .animation(
+                                        printer.isBusy
+                                            ? Animation.linear(duration: 1).repeatForever(autoreverses: false)
+                                            : .default,
+                                        value: printer.isBusy
+                                    )
                             }
                             .buttonStyle(.bordered)
                             .controlSize(.regular)
+                            .disabled(printer.isBusy)
                             .help("Actualizar estado de la impresora")
                             .accessibilityLabel("Actualizar estado")
                         }

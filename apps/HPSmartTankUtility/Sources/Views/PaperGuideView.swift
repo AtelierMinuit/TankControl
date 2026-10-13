@@ -193,7 +193,7 @@ public struct PaperGuideView: View {
 
                                     if fmt.id == selectedFormatId {
                                         Text("\(Int(fmt.heightMm)) mm")
-                                            .font(.system(size: 9, weight: .bold))
+                                            .font(.system(size: 10, weight: .bold))
                                             .foregroundColor(.white)
                                             .padding(.bottom, 4)
                                     }

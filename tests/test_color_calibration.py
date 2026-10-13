@@ -8,6 +8,8 @@ from pathlib import Path
 import subprocess
 import unittest
 
+from tests._env import SIPS_AVAILABLE
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 GEN_TARGET = PROJECT_ROOT / "tools" / "generate_color_target.py"
 CALIB_ICC = PROJECT_ROOT / "tools" / "calibrate_icc.py"
@@ -21,6 +23,7 @@ MOD_CALIB = importlib.util.module_from_spec(SPEC_CALIB)
 SPEC_CALIB.loader.exec_module(MOD_CALIB)
 
 
+@unittest.skipUnless(SIPS_AVAILABLE, "requiere sips de macOS")
 class ColorCalibrationTests(unittest.TestCase):
     def setUp(self) -> None:
         self.tmp_dir = PROJECT_ROOT / "scratch" / "test_calib"

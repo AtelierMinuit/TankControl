@@ -11,6 +11,7 @@ import importlib.util
 import os
 from pathlib import Path
 import random
+import shutil
 import struct
 import subprocess
 import sys
@@ -33,9 +34,19 @@ def build_host_asan_binary() -> Path:
     subprocess.run(cmd, check=True)
     return ASAN_BIN
 
-# Asegurar compilación en el host actual (especialmente en entornos CI)
-if not ASAN_BIN.exists() or os.environ.get("CI"):
-    build_host_asan_binary()
+# Asegurar compilación en el host actual (especialmente en entornos CI).
+# Si el toolchain (clang + cups) no está disponible, se omite la suite
+# en lugar de romper el descubrimiento completo de pruebas.
+CLANG_AVAILABLE = shutil.which("clang") is not None
+ASAN_TOOLCHAIN_MISSING = False
+try:
+    if not ASAN_BIN.exists() or os.environ.get("CI"):
+        build_host_asan_binary()
+except (OSError, subprocess.CalledProcessError):
+    if not CLANG_AVAILABLE:
+        ASAN_TOOLCHAIN_MISSING = True
+    else:
+        raise
 
 # Cargar decodificador
 SPEC_DEC = importlib.util.spec_from_file_location("pcl3gui_decode", DECODER_PATH)
@@ -82,6 +93,8 @@ def build_cups_raster_header(
     return magic + bytes(hdr)
 
 
+@unittest.skipIf(not CLANG_AVAILABLE or ASAN_TOOLCHAIN_MISSING,
+               "clang/cups no disponible: se omite el fuzzing con AddressSanitizer")
 class DifferentialFuzzingPCL3GUITests(unittest.TestCase):
     """Batería de pruebas de fuzzing diferencial y robustez de memoria."""
 

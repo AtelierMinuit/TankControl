@@ -23,6 +23,8 @@ import sys
 import tempfile
 import unittest
 
+from tests._env import NATIVE_BACKEND, NATIVE_FILTER
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
@@ -44,6 +46,7 @@ HARNESS_PATH = PROJECT_ROOT / "tools" / "run_hardware_validation.sh"
 SCHEMA_PATH = PROJECT_ROOT / "docs" / "hardware-validation-summary.schema.json"
 
 
+@unittest.skipUnless(NATIVE_FILTER, "requiere binario nativo rastertopcl3gui ejecutable")
 class TestRasterFilterContract(unittest.TestCase):
     """Contrato del Filtro Raster CUPS (rastertopcl3gui)."""
 
@@ -84,6 +87,7 @@ class TestRasterFilterContract(unittest.TestCase):
         self.assertIn(b"@PJL EOJ\n", out)
 
 
+@unittest.skipUnless(NATIVE_BACKEND, "requiere binario nativo smarttank ejecutable")
 class TestCUPSBackendContract(unittest.TestCase):
     """Contrato del Backend CUPS (smarttank)."""
 

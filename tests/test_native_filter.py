@@ -10,6 +10,8 @@ import subprocess
 import sys
 import unittest
 
+from tests._env import IS_MACOS
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 AUDIT_BUILD = Path(os.environ.get("HP_AUDIT_BUILD_DIR", str(PROJECT_ROOT / "research" / "builds" / "audit-clean" / "night-20260904")))
 BINARY_PATH = AUDIT_BUILD / "rastertopcl3gui"
@@ -23,6 +25,7 @@ sys.modules[SPEC_DEC.name] = DECODER
 SPEC_DEC.loader.exec_module(DECODER)
 
 
+@unittest.skipUnless(IS_MACOS, "requiere herramientas de macOS (file/otool)")
 class NativeFilterTests(unittest.TestCase):
     def test_binary_exists_and_is_arm64(self) -> None:
         self.assertTrue(BINARY_PATH.exists(), "rastertopcl3gui debe existir en research/builds/")

@@ -11,10 +11,13 @@ import subprocess
 import tempfile
 import unittest
 
+from tests._env import IPPEVEPS_AVAILABLE
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
+@unittest.skipUnless(IPPEVEPS_AVAILABLE, "requiere componentes IPP de macOS (ippeveps/ippeveprinter)")
 class AirPrintBridgeTests(unittest.TestCase):
     def setUp(self) -> None:
         self.fixture_dir = tempfile.TemporaryDirectory(prefix="hp-ipp-fixtures-")

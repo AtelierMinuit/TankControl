@@ -24,6 +24,20 @@ public struct MaintenanceView: View {
                 }
 
                 Divider()
+                // Indicador de operación mecánica en curso
+                if printer.isBusy {
+                    HStack(spacing: DesignTokens.Spacing.sm) {
+                        ProgressView()
+                            .controlSize(.small)
+                        Text("Operación mecánica en curso. No desconectes el cable USB ni apagues la impresora.")
+                            .font(DesignTokens.Fonts.callout)
+                            .foregroundColor(.primary)
+                    }
+                    .padding(DesignTokens.Spacing.sm)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color.blue.opacity(0.1))
+                    .cornerRadius(DesignTokens.Radii.small)
+                }
 
                 if !printer.connectionState.isConnected {
                     HStack(spacing: DesignTokens.Spacing.sm) {
@@ -154,9 +168,9 @@ public struct MaintenanceView: View {
                         HStack(spacing: DesignTokens.Spacing.sm) {
                             Image(systemName: "sparkles")
                                 .font(.system(size: 16))
-                                .foregroundColor(Color(red: 0.0, green: 0.64, blue: 0.88))
+                                .foregroundColor(DesignTokens.Colors.inkCyan)
                                 .frame(width: 32, height: 32)
-                                .background(Color(red: 0.0, green: 0.64, blue: 0.88).opacity(0.12))
+                                .background(DesignTokens.Colors.inkCyan.opacity(0.12))
                                 .cornerRadius(DesignTokens.Radii.small)
 
                             VStack(alignment: .leading, spacing: 2) {
@@ -268,7 +282,7 @@ public struct MaintenanceView: View {
                                     Text("Limpieza Profunda (Nivel 2)")
                                         .font(DesignTokens.Fonts.bodyMedium)
                                     Text("Alto Consumo")
-                                        .font(.system(size: 9, weight: .bold))
+                                        .font(.system(size: 10, weight: .bold))
                                         .foregroundColor(.orange)
                                         .padding(.horizontal, 4)
                                         .padding(.vertical, 1)
@@ -307,7 +321,7 @@ public struct MaintenanceView: View {
                                     Text("Cebado de Mangueras CISS (Prime Tubes)")
                                         .font(DesignTokens.Fonts.bodyMedium)
                                     Text("Taller CISS")
-                                        .font(.system(size: 9, weight: .bold))
+                                        .font(.system(size: 10, weight: .bold))
                                         .foregroundColor(.purple)
                                         .padding(.horizontal, 4)
                                         .padding(.vertical, 1)

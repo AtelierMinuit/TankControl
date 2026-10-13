@@ -11,7 +11,9 @@ fi
 if [ ! -d "$STATE_DIR" ]; then
     mkdir -m 700 "$STATE_DIR"
 fi
-if [ "$(stat -f '%u' "$STATE_DIR" 2>/dev/null || echo -1)" != "$(id -u)" ]; then
+STATE_OWNER="$(stat -f '%u' "$STATE_DIR" 2>/dev/null || true)"
+if [ -z "${STATE_OWNER}" ]; then STATE_OWNER="$(stat -c '%u' "$STATE_DIR")"; fi
+if [ "${STATE_OWNER}" != "$(id -u)" ]; then
     echo "[smart_tank] ERROR: directorio de estado no pertenece al usuario actual." >&2
     exit 1
 fi

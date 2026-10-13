@@ -9,6 +9,8 @@ Verifica:
 """
 
 import unittest
+
+from tests._env import IS_MACOS
 import os
 import subprocess
 import plistlib
@@ -20,6 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BUILDS_DIR = os.path.join(BASE_DIR, "research", "builds")
 PPD_PATH = os.path.join(BUILDS_DIR, "hp-smart_tank_500_series_mac.ppd")
 
+@unittest.skipUnless(IS_MACOS, "requiere herramientas de macOS (sips, cupstestppd, pkgbuild)")
 class TestEnterpriseFeatures(unittest.TestCase):
     def test_01_retina_icon_validity(self):
         icon_path = os.path.join(BUILDS_DIR, "HP_Smart_Tank_500.icns")

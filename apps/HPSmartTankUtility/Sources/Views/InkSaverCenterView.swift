@@ -3,6 +3,7 @@ import SwiftUI
 public struct InkSaverCenterView: View {
     @ObservedObject var printer: PrinterManager
     @StateObject private var inkSaverService = InkSaverService()
+    @ObservedObject private var loc = LocalizationService.shared
     @State private var sliderPos: CGFloat = 0.5
 
     @State private var showSuccessBanner: Bool = false
@@ -63,6 +64,48 @@ public struct InkSaverCenterView: View {
                     VisualComparatorView(sliderPosition: $sliderPos, savingsPercent: inkSaverService.savingsPercent)
                         .frame(height: 140)
                     
+                    // Presets rápidos de nivel (1 clic, sin perder el slider fino)
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(loc.t("presets_inksaver_header"))
+                            .font(DesignTokens.Fonts.sectionHeader)
+                        HStack(spacing: 8) {
+                            ForEach(InkSaverLevel.allCases, id: \.self) { level in
+                                Button(action: { inkSaverService.setLevel(level) }) {
+                                    VStack(spacing: 2) {
+                                        Text(level.friendlyLabel)
+                                            .font(DesignTokens.Fonts.bodyMedium)
+                                            .lineLimit(1)
+                                        Text(level.rawValue)
+                                            .font(DesignTokens.Fonts.caption)
+                                            .foregroundColor(.secondary)
+                                            .lineLimit(1)
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 6)
+                                    .background(
+                                        inkSaverService.activeLevel == level
+                                            ? Color.accentColor.opacity(0.15)
+                                            : DesignTokens.Colors.surfaceGrouped
+                                    )
+                                    .cornerRadius(DesignTokens.Radii.small)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: DesignTokens.Radii.small)
+                                            .stroke(
+                                                inkSaverService.activeLevel == level
+                                                    ? Color.accentColor.opacity(0.5)
+                                                    : DesignTokens.Colors.border,
+                                                lineWidth: 1
+                                            )
+                                    )
+                                }
+                                .buttonStyle(.plain)
+                                .help("\(level.description) Reducción estimada: \(level.estimatedCoverageReduction).")
+                                .accessibilityLabel("Nivel InkSaver: \(level.friendlyLabel)")
+                                .accessibilityHint(level.description)
+                            }
+                        }
+                    }
+
                     // Slider
                     VStack(spacing: 8) {
                         HStack {
@@ -84,6 +127,8 @@ public struct InkSaverCenterView: View {
                             in: 0...75,
                             step: 5
                         )
+                        .accessibilityLabel("Porcentaje de ahorro de tinta")
+                        .accessibilityValue("\(inkSaverService.savingsPercent) por ciento")
                         
                         HStack {
                             Text("Normal").font(.caption).foregroundColor(.secondary)
@@ -176,6 +221,8 @@ public struct VisualComparatorView: View {
                             sliderPosition = max(0.05, min(0.95, value.location.x / width))
                         }
                     )
+                    .accessibilityLabel("Comparador visual antes y después")
+                    .accessibilityHint("Arrastra para comparar el renderizado con y sin InkSaver")
             }
         }
         .cornerRadius(8)

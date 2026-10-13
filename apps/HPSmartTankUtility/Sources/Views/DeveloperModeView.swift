@@ -19,7 +19,7 @@ public struct DeveloperModeView: View {
                             Text("Desarrollo")
                                 .font(DesignTokens.Fonts.title)
                             Text("DEVELOPER MODE")
-                                .font(.system(size: 9, weight: .bold))
+                                .font(.system(size: 10, weight: .bold))
                                 .foregroundColor(.red)
                                 .padding(.horizontal, 6)
                                 .padding(.vertical, 2)

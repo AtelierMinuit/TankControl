@@ -565,8 +565,16 @@ action_binaries() {
         "${BUILD_DIR}/hp_scan"
         "${BUILD_DIR}/hp-smart-tank-tool"
     )
+    local offline=0
+    if [[ "${MODE}" == "dry-run" || "${MODE}" == "fault-tests" ]]; then
+        offline=1
+    fi
     for b in "${bins[@]}"; do
         if [[ ! -x "${b}" ]]; then
+            if (( offline == 1 )) && [[ -f "${b}" ]]; then
+                echo "[OFFLINE] Binario presente pero no ejecutable en este host: $(basename "${b}")"
+                continue
+            fi
             echo "ERROR: Binario ausente o sin permisos de ejecución: ${b}" >&2
             return 1
         fi
@@ -576,6 +584,14 @@ action_binaries() {
     local ppd="${ROOT_DIR}/research/builds/hp-smart_tank_500_series_mac.ppd"
     if [[ ! -f "${ppd}" ]]; then
         echo "ERROR: Archivo PPD ausente: ${ppd}" >&2
+        return 1
+    fi
+    if ! command -v cupstestppd >/dev/null 2>&1; then
+        if (( offline == 1 )); then
+            echo "[OFFLINE] cupstestppd no disponible en este host; validación PPD diferida"
+            return 0
+        fi
+        echo "ERROR: cupstestppd no disponible" >&2
         return 1
     fi
     cupstestppd -W all "${ppd}"
@@ -682,11 +698,11 @@ action_print_pipeline() {
 
     # Registrar integridad del stream antes del backend
     local pdf_size
-    pdf_size="$(stat -f '%z' "${pdf_file}")"
+    pdf_size="$(stat -f '%z' "${pdf_file}" 2>/dev/null || stat -c '%s' "${pdf_file}" 2>/dev/null)"
     local raster_size
-    raster_size="$(stat -f '%z' "${raster_file}")"
+    raster_size="$(stat -f '%z' "${raster_file}" 2>/dev/null || stat -c '%s' "${raster_file}" 2>/dev/null)"
     local pcl_size
-    pcl_size="$(stat -f '%z' "${pcl_file}")"
+    pcl_size="$(stat -f '%z' "${pcl_file}" 2>/dev/null || stat -c '%s' "${pcl_file}" 2>/dev/null)"
     local pcl_sha
     pcl_sha="$(shasum -a 256 "${pcl_file}" | awk '{print $1}')"
 

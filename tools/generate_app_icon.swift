@@ -235,6 +235,34 @@ func renderMasterIcon() -> NSImage {
 
 // MARK: - Exportación y Generación de Conjunto de Iconos
 
+// Renderiza la imagen a un mapa de pixeles exacto (independiente de la escala
+// retina del contexto grafico activo) y lo codifica como PNG.
+func pngData(from image: NSImage, pixelSize: Int) -> Data? {
+    guard image.tiffRepresentation != nil else { return nil }
+    let rep = NSBitmapImageRep(
+        bitmapDataPlanes: nil,
+        pixelsWide: pixelSize,
+        pixelsHigh: pixelSize,
+        bitsPerSample: 8,
+        samplesPerPixel: 4,
+        hasAlpha: true,
+        isPlanar: false,
+        colorSpaceName: .deviceRGB,
+        bytesPerRow: 0,
+        bitsPerPixel: 0
+    )
+    rep.size = NSSize(width: pixelSize, height: pixelSize)
+    NSGraphicsContext.saveGraphicsState()
+    NSGraphicsContext.current = NSGraphicsContext(bitmapImageRep: rep)
+    NSGraphicsContext.current?.imageInterpolation = .high
+    image.draw(in: NSRect(x: 0, y: 0, width: pixelSize, height: pixelSize),
+               from: NSRect(origin: .zero, size: image.size),
+               operation: .copy,
+               fraction: 1.0)
+    NSGraphicsContext.restoreGraphicsState()
+    return rep.representation(using: .png, properties: [:])
+}
+
 func exportIconAssets() {
     let fileManager = FileManager.default
     let rootPath = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
@@ -250,9 +278,7 @@ func exportIconAssets() {
     print("[*] Renderizando icono maestro 1024x1024...")
     let master = renderMasterIcon()
 
-    guard let tiffData = master.tiffRepresentation,
-          let bitmap = NSBitmapImageRep(data: tiffData),
-          let masterPng = bitmap.representation(using: .png, properties: [:]) else {
+    guard let masterPng = pngData(from: master, pixelSize: 1024) else {
         print("[ERROR] No se pudo codificar el PNG maestro")
         exit(1)
     }
@@ -277,18 +303,7 @@ func exportIconAssets() {
 
     print("[*] Generando resoluciones para iconset y appiconset...")
     for item in iconSizes {
-        let resized = NSImage(size: NSSize(width: item.px, height: item.px))
-        resized.lockFocus()
-        NSGraphicsContext.current?.imageInterpolation = .high
-        master.draw(in: NSRect(x: 0, y: 0, width: item.px, height: item.px),
-                    from: NSRect(origin: .zero, size: master.size),
-                    operation: .copy,
-                    fraction: 1.0)
-        resized.unlockFocus()
-
-        if let resTiff = resized.tiffRepresentation,
-           let resRep = NSBitmapImageRep(data: resTiff),
-           let resPng = resRep.representation(using: .png, properties: [:]) {
+        if let resPng = pngData(from: master, pixelSize: item.px) {
             let pathInIconset = iconsetDir.appendingPathComponent(item.name)
             let pathInAppiconset = appiconsetDir.appendingPathComponent(item.name)
             try? resPng.write(to: pathInIconset)

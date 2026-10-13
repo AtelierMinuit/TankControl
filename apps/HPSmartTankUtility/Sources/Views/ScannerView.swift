@@ -3,6 +3,7 @@ import SwiftUI
 public struct ScannerView: View {
     @ObservedObject var printer: PrinterManager
     @StateObject private var service = ScannerService()
+    @ObservedObject private var loc = LocalizationService.shared
     @State private var preview: NSImage?
     @State private var errorMessage: String?
     @State private var successNotice: String?
@@ -43,6 +44,61 @@ public struct ScannerView: View {
                     .background(DesignTokens.Colors.surfaceGrouped)
                     .cornerRadius(DesignTokens.Radii.small)
                 }
+
+                // MARK: - Presets de un clic (tareas comunes)
+                PresetChipRow(header: loc.t("presets_header_scan"), presets: [
+                    PresetChipRow.Preset(
+                        id: "doc",
+                        icon: "doc.text.fill",
+                        title: loc.t("preset_doc"),
+                        subtitle: "PDF · A4 · 300 DPI · OCR"
+                    ) {
+                        service.selectedColorMode = .color
+                        service.selectedResolution = .dpi300
+                        service.selectedPaperSize = .a4
+                        service.selectedFormat = .pdf
+                        service.enableOCR = true
+                    },
+                    PresetChipRow.Preset(
+                        id: "photo",
+                        icon: "photo.fill",
+                        title: loc.t("preset_photo"),
+                        subtitle: "JPEG · 10×15 cm · 600 DPI"
+                    ) {
+                        service.selectedColorMode = .color
+                        service.selectedResolution = .dpi600
+                        service.selectedPaperSize = .photo
+                        service.selectedFormat = .jpeg
+                        service.enableOCR = false
+                    },
+                    PresetChipRow.Preset(
+                        id: "form",
+                        icon: "text.viewfinder",
+                        title: loc.t("preset_form"),
+                        subtitle: "PNG · A4 · 300 DPI · B/N"
+                    ) {
+                        service.selectedColorMode = .monochrome
+                        service.selectedResolution = .dpi300
+                        service.selectedPaperSize = .a4
+                        service.selectedFormat = .png
+                        service.enableOCR = false
+                    },
+                    PresetChipRow.Preset(
+                        id: "archive",
+                        icon: "internaldrive.fill",
+                        title: loc.t("preset_archive"),
+                        subtitle: "PDF · A4 · 600 DPI · OCR"
+                    ) {
+                        service.selectedColorMode = .grayscale
+                        service.selectedResolution = .dpi600
+                        service.selectedPaperSize = .a4
+                        service.selectedFormat = .pdf
+                        service.enableOCR = true
+                    }
+                ])
+                Text(loc.t("presets_scan_hint"))
+                    .font(DesignTokens.Fonts.caption)
+                    .foregroundColor(.secondary)
 
                 // MARK: - Layout en dos columnas
                 HStack(alignment: .top, spacing: DesignTokens.Spacing.md) {
@@ -138,7 +194,7 @@ public struct ScannerView: View {
                                         Text("Texto Buscable (OCR)")
                                             .font(DesignTokens.Fonts.bodyMedium)
                                         Text("Vision")
-                                            .font(.system(size: 9, weight: .bold))
+                                            .font(.system(size: 10, weight: .bold))
                                             .foregroundColor(.purple)
                                             .padding(.horizontal, 4)
                                             .padding(.vertical, 1)

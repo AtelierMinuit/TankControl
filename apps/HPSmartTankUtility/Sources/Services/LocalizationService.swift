@@ -339,6 +339,68 @@ public final class LocalizationService: ObservableObject {
             .portuguese: "Processamento 100% offline e privado com o Neural Engine da Apple Silicon.",
             .french: "Traitement 100% hors ligne et privé avec le Neural Engine d'Apple Silicon.",
             .german: "100% offline und private Verarbeitung mit der Apple Silicon Neural Engine."
+        ],
+        // Presets de un clic (Scanner, Impresión, InkSaver)
+        "presets_header_scan": [
+            .spanish: "Escaneos Frecuentes", .english: "Common Scans",
+            .portuguese: "Digitalizações Frequentes", .french: "Numérisations Fréquentes",
+            .german: "Häufige Scans"
+        ],
+        "presets_scan_hint": [
+            .spanish: "Un clic ajusta modo, resolución y formato. Los ajustes finos de abajo siguen disponibles para usuarios avanzados.",
+            .english: "One tap sets mode, resolution and format. Fine-tuning controls below remain available for advanced users.",
+            .portuguese: "Um toque ajusta modo, resolução e formato. Os ajustes finos abaixo continuam disponíveis para usuários avançados.",
+            .french: "Un seul clic règle le mode, la résolution et le format. Les réglages fins ci-dessous restent disponibles.",
+            .german: "Ein Klick setzt Modus, Auflösung und Format. Die Feineinstellungen unten bleiben verfügbar."
+        ],
+        "presets_header_print": [
+            .spanish: "Tareas Frecuentes", .english: "Common Tasks",
+            .portuguese: "Tarefas Frequentes", .french: "Tâches Fréquentes",
+            .german: "Häufige Aufgaben"
+        ],
+        "presets_print_hint": [
+            .spanish: "Accesos rápidos a las operaciones habituales. La configuración técnica completa sigue abajo.",
+            .english: "Quick access to usual operations. Full technical settings remain below.",
+            .portuguese: "Acesso rápido às operações habituais. A configuração técnica completa continua abaixo.",
+            .french: "Accès rapide aux opérations courantes. La configuration technique complète reste ci-dessous.",
+            .german: "Schnellzugriff auf häufige Vorgänge. Die vollständige technische Konfiguration folgt unten."
+        ],
+        "preset_doc": [
+            .spanish: "Documento", .english: "Document",
+            .portuguese: "Documento", .french: "Document", .german: "Dokument"
+        ],
+        "preset_photo": [
+            .spanish: "Fotografía", .english: "Photo",
+            .portuguese: "Fotografia", .french: "Photo", .german: "Foto"
+        ],
+        "preset_form": [
+            .spanish: "Formulario B/N", .english: "B/W Form",
+            .portuguese: "Formulário P/B", .french: "Formulaire N/B", .german: "S/W-Formular"
+        ],
+        "preset_archive": [
+            .spanish: "Archivo", .english: "Archive",
+            .portuguese: "Arquivo", .french: "Archive", .german: "Archiv"
+        ],
+        "preset_fastdraft": [
+            .spanish: "Borrador Rápido", .english: "Fast Draft",
+            .portuguese: "Rascunho Rápido", .french: "Brouillon Rapide", .german: "Schnellentwurf"
+        ],
+        "preset_normal_quality": [
+            .spanish: "Calidad Normal", .english: "Normal Quality",
+            .portuguese: "Qualidade Normal", .french: "Qualité Normale", .german: "Normale Qualität"
+        ],
+        "preset_testpage": [
+            .spanish: "Página de Prueba", .english: "Test Page",
+            .portuguese: "Página de Teste", .french: "Page de Test", .german: "Testseite"
+        ],
+        "preset_duplex": [
+            .spanish: "Dúplex Manual", .english: "Manual Duplex",
+            .portuguese: "Duplex Manual", .french: "Recto-Verso Manuel", .german: "Manueller Duplex"
+        ],
+        "presets_inksaver_header": [
+            .spanish: "Niveles Rápidos", .english: "Quick Levels",
+            .portuguese: "Níveis Rápidos", .french: "Niveaux Rapides",
+            .german: "Schnelle Stufen"
         ]
     ]
 }
